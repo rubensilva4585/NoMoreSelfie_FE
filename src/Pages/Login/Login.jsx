@@ -19,7 +19,7 @@ export default function Login() {
                         <div className="flex flex-col mb-6">
                             <div className="relative">
                                 <input
-                                    type="text"
+                                    type="email"
                                     id="email"
                                     className=" rounded-lg flex-1 appearance-none border border-gray-300 w-full py-3.5 px-5 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 hover:bg-gray-50"
                                     name="email"
@@ -30,7 +30,7 @@ export default function Login() {
                         <div className="flex flex-col">
                             <div className="relative">
                                 <input
-                                    type="text"
+                                    type="password"
                                     id="password"
                                     className=" rounded-lg flex-1 appearance-none border border-gray-300 w-full py-3.5 px-5 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 hover:bg-gray-50"
                                     name="password"
