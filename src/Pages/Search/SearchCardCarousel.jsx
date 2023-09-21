@@ -7,8 +7,8 @@ export default function SearchCardCarousel() {
     const settings = {
         dots: true,
         infinite: true,
-        accessibility: false,
-        autoplay: true,
+        accessibility: true,
+        autoplay: false,
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1
