@@ -1,22 +1,30 @@
 import { FaCoins, FaMapPin } from "react-icons/fa"
+import SearchCardCarousel from './SearchCardCarousel'
 
 export default function SearchResultCard() {
     return (
         <>
-        {/* h-90 w-60 md:w-80 */}
-            <div class="m-auto overflow-hidden rounded-lg shadow-lg cursor-pointer w-full"> 
+            {/* h-90 w-60 md:w-80 */}
+            <div class="m-auto overflow-hidden rounded-lg shadow-lg cursor-pointer w-full">
                 <a href="#" class="block w-full h-full">
-                    <img alt="blog photo" src="https://www.tailwind-kit.com/images/blog/1.jpg" class="object-cover w-full max-h-40"/>
+
+
+                    <SearchCardCarousel />
+
+                    {/* <img alt="blog photo" src="https://www.tailwind-kit.com/images/blog/1.jpg" class="object-cover w-full max-h-40" /> */}
+
+
+
                     <div class="w-full p-4 bg-white">
                         <div class="flex items-center">
                             <a href="#" class="relative block">
-                                <img alt="profil" src="https://www.tailwind-kit.com/images/person/6.jpg" class="mx-auto object-cover rounded-full h-10 w-10 "/>
+                                <img alt="profil" src="https://www.tailwind-kit.com/images/person/6.jpg" class="mx-auto object-cover rounded-full h-10 w-10 " />
                             </a>
                             <p class="text-gray-800 font-medium ml-4 ">
                                 Zeca Afonso
                             </p>
                         </div>
-                        
+
                         <div class="flex gap-1 mt-2">
                             <span class="px-2  text-xs rounded-full text-red-600 border border-red-600 bg-red-200 ">
                                 Edição Video
@@ -31,18 +39,18 @@ export default function SearchResultCard() {
                         </p> */}
                         <div class="flex flex-col gap-1 my-4 text-gray-600">
                             <div class="flex gap-1 items-center">
-                                <FaMapPin/>
+                                <FaMapPin />
                                 <span class="px-2 text-sm">
                                     Porto
                                 </span>
-                            </div>       
+                            </div>
                             <div class="flex gap-1 items-center">
-                                <FaCoins/>
+                                <FaCoins />
                                 <span class="px-2 text-sm">
                                     Desde 500€ até 1500€
                                 </span>
                             </div>
-                        </div>          
+                        </div>
                         {/* <p class="mb-2 text-xl font-medium text-gray-800">
                             Work at home
                         </p>

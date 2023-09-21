@@ -1,0 +1,24 @@
+.slick-dots {
+    bottom: 15px !important;
+}
+
+.slick-dots li {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.slick-dots li button:before {
+    font-size: 55px;
+    content: '-';
+    opacity: .40;
+    color: rgb(255, 255, 255);
+}
+
+.slick-dots li.slick-active button:before {
+    opacity: 1;
+    color: rgb(251 146 60);
+}
+
+.slick-dots li button:hover::before {
+    color: rgb(249 115 22);
+}
