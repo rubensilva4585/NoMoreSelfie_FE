@@ -5,12 +5,14 @@ import {
 } from "react-router-dom";
 import Login from "./Pages/Login/Login";
 import PageHome from "./Pages/Home/PageHome";
+import PageSearch from "./Pages/Search/PageSearch";
 
 export default function App() {
   return (
       <Routes>
           <Route path="/" element={<PageHome />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/search" element={<PageSearch />} />
       </Routes>
   );
 }
