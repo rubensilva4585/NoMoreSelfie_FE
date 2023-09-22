@@ -2,6 +2,7 @@ import * as React from "react";
 import {
   Routes,
   Route,
+  Navigate,
 } from "react-router-dom";
 import Login from "./Pages/Login/Login";
 import Register from "./Pages/Register/Register";
@@ -15,6 +16,9 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/search" element={<PageSearch />} />
           <Route path="/register" element={<Register />} />
+          
+          {/* Other Routes */}
+          <Route path="*" element={<Navigate to="/" replace />}/>
       </Routes>
   );
 }
