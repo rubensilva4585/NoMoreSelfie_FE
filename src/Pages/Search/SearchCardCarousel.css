@@ -22,3 +22,23 @@
 .slick-dots li button:hover::before {
     color: rgb(249 115 22);
 }
+
+.slick-prev {
+    left: 10px;
+    opacity: 0;
+    z-index: 1;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.slick-next {
+    right: 10px;
+    opacity: 0;
+    z-index: 1;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.slick-slider:hover .slick-prev,
+.slick-slider:hover .slick-next {
+    opacity: 100%;
+    transition: opacity 0.2s ease-in-out;
+}
