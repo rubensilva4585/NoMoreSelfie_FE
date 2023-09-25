@@ -46,11 +46,11 @@ export default function SearchCardCarousel() {
             </Slider>
             <div>
                 <AiOutlineHeart
-                    className={`text-gray-100 hover:text-white text-3xl z-20 absolute right-4 top-4 transition duration-200 ease-in-out ${isLiked && 'opacity-0 z-0'}`}
+                    className={`text-gray-100 hover:text-white drop-shadow-md text-2xl z-20 absolute right-2 top-2 transition duration-200 ease-in-out  ${isLiked && 'opacity-0 z-0'}`}
                     onClick={handleLike}
                 />
                 <AiFillHeart
-                    className={`text-rose-600 hover:text-rose-500 text-3xl z-20 absolute right-4 top-4 transition duration-200 ease-in-out ${!isLiked && 'opacity-0 z-0'}`}
+                    className={`text-orange-400 hover:text-orange-500 drop-shadow-md text-2xl z-20 absolute right-2 top-2 transition duration-200 ease-in-out ${!isLiked && 'opacity-0 z-0'}`}
                     onClick={handleLike}
                 />
             </div>
