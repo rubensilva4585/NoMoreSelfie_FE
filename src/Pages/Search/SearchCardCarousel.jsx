@@ -23,7 +23,7 @@ export default function SearchCardCarousel() {
     }
 
     return (
-        <div className="relative">
+        <div className="relative SearchCardCarousel">
             <Slider {...settings}>
                 <div>
                     <img alt="blog photo" src="https://www.tailwind-kit.com/images/blog/1.jpg" className="object-cover w-full max-h-40" />
