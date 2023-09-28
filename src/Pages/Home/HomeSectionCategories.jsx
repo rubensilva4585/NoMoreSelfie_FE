@@ -32,7 +32,7 @@ export default function HomeSectionCategories() {
           {
             breakpoint: 480,
             settings: {
-              slidesToShow: 1,
+              slidesToShow: 2,
               slidesToScroll: 1
             }
           }
@@ -41,7 +41,7 @@ export default function HomeSectionCategories() {
 
     return (
         <>
-            <div className="container mx-auto px-3 py-16">
+            <div className="container mx-auto px-3 md:px-12 py-16">
                 <div className="w-full bg-white">
                     <div className="title mb-8">
                         <p className="mb-2 text-4xl font-bold text-gray-800">
