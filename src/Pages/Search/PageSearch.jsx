@@ -13,7 +13,7 @@ export default function PageSearch() {
 
     return (
         <>
-            <div className="container mx-auto px-3">
+            <div className="container mx-auto px-3 md:px-12 py-16">
                 <div className="w-full bg-white">
                     <div className="flex items-end justify-between mb-12 header">
                         <div className="flex flex-col justify-between gap-8 mb-12 header">
