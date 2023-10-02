@@ -1,0 +1,48 @@
+@keyframes SiderbarFadeInLeft {
+    0% {
+        opacity: 0;
+        transform: translate3d(-100%, 0, 0);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateZ(0);
+    }
+}
+
+@keyframes SiderbarFadeInUp {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, 50%, 0);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateZ(0);
+    }
+}
+
+@keyframes SiderbarFadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.siderbar-animation {
+    animation: SiderbarFadeInUp 0.2s ease-in-out;
+}
+
+.siderbar-animation-bg {
+    animation: SiderbarFadeIn 0.2s ease-in-out;
+}
+
+@media (min-width: 768px) {
+
+    .siderbar-animation {
+        animation: SiderbarFadeInLeft 0.2s ease-in-out;
+    }
+}

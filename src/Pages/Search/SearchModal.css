@@ -1,4 +1,4 @@
-@keyframes fadeInUp {
+@keyframes ModalFadeInUp {
     0% {
         opacity: 0;
         transform: translate3d(0, 50%, 0);
@@ -10,7 +10,7 @@
     }
 }
 
-@keyframes fadeIn {
+@keyframes ModalFadeIn {
     0% {
         opacity: 0;
     }
@@ -20,10 +20,10 @@
     }
 }
 
-.animation {
-    animation: fadeInUp 0.2s ease-in-out;
+.modal-animation {
+    animation: ModalFadeInUp 0.2s ease-in-out;
 }
 
-.animation-bg {
-    animation: fadeIn 0.2s ease-in-out;
+.modal-animation-bg {
+    animation: ModalFadeIn 0.2s ease-in-out;
 }

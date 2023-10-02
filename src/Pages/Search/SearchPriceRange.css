@@ -1,0 +1,20 @@
+.rc-slider-track {
+    background-color: orange;
+}
+
+.rc-slider-handle {
+    border: 2px solid orange;
+    background-color: white;
+}
+
+.rc-slider-handle:hover {
+    border-color: darkorange !important;
+}
+
+.rc-slider-handle:active {
+    border-color: darkorange !important;
+}
+
+.rc-slider-handle-dragging {
+    box-shadow: 0px 0px 0px 5px rgba(255, 140, 0, 0.582) !important;
+}

@@ -1,7 +1,16 @@
+import { useState } from 'react';
+import { BsFilterLeft } from 'react-icons/bs';
 import SearchResultCard from './SearchResultCard';
-import SearchModal from './SearchModal'
+import SearchFilterSidebar from './SearchFilterSidebar';
+
 
 export default function PageSearch() {
+    const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(false);
+
+    function handleFilterSidebar() {
+        setIsFilterSidebarOpen(!isFilterSidebarOpen);
+    }
+
     return (
         <>
             <div className="container mx-auto px-3">
@@ -26,7 +35,17 @@ export default function PageSearch() {
                         </div>
                     </div>
 
-                    {/* <SearchModal /> */}
+                    <div className="w-full border-t border-gray-200">
+                    </div>
+
+                    <div className="flex items-center justify-end my-6" >
+                        <button
+                            className="flex items-center justify-center px-4 py-2 text-base font-semibold text-white bg-orange-400 rounded-lg shadow-md hover:bg-orange-500 focus:ring-orange-500 focus:ring-2 focus:ring-offset-2 focus:ring-offset-orange-200 focus:outline-none transition duration-200 ease-in"
+                            type="button"
+                            onClick={handleFilterSidebar} >
+                            <BsFilterLeft className="mr-2 text-xl" /> Filtros
+                        </button>
+                    </div>
 
 
                     <div className="grid grid-cols-2 gap-6 md:grid-cols-3 xl:grid-cols-4">
@@ -40,6 +59,9 @@ export default function PageSearch() {
                         <SearchResultCard />
                     </div>
                 </div>
+                {isFilterSidebarOpen && (
+                    <SearchFilterSidebar closeSidebar={handleFilterSidebar} />
+                )}
             </div>
         </>
     )

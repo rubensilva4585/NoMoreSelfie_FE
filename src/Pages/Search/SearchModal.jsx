@@ -5,12 +5,19 @@ export default function SearchModal(props) {
 
     return (
         <>
-
-            <div className="modal fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 animation-bg">
-                <div className="bg-white absolute bottom-0 md:static w-full md:min-w-[416px] md:max-w-[90vw] md:w-auto md:mx-16 p-4 rounded-lg shadow-lg animation">
+            <div
+                className="modal fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 modal-animation-bg"
+                onClick={props.closeModal}>
+                <div
+                    className="bg-white absolute bottom-0 w-full md:static md:min-w-[416px] md:max-w-[90vw] md:w-auto md:mx-16 p-4 rounded-lg shadow-lg modal-animation"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                    }}>
                     <div className='flex justify-between items-center mb-4'>
                         <h2 className="text-xl  font-bold text-gray-800">Pedir informação</h2>
-                        <AiOutlineClose onClick={props.closeModal} className='text-gray-400 hover:text-gray-800  text-2xl transition ease-in duration-200' />
+                        <AiOutlineClose
+                            onClick={props.closeModal}
+                            className='text-gray-400 hover:text-gray-800  text-2xl transition ease-in duration-200' />
                     </div>
                     <form>
                         <div className="mb-4">
