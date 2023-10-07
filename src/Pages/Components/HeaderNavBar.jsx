@@ -1,15 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import { FaAngleDown, FaBars, FaTimes } from "react-icons/fa";
-import { Link, useLocation } from "react-router-dom";
+import { FaBars, FaTimes } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
-export default function HeaderNavBar() 
+export default function HeaderNavBar({ home = false }) 
 {
     const [burgerMenuOpen, setBurgerMenuOpen] = useState(false);
     const [profileMenuOpen, setProfileMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
     const profileMenuRef = useRef(null); 
-    const home = useLocation().pathname === "/";
-
 
     useEffect(() => {
         const handleScroll = () => {
@@ -46,21 +44,13 @@ export default function HeaderNavBar()
         setProfileMenuOpen(!profileMenuOpen);
     };
 
-    const scrollToSection = () => {
-        const target = document.getElementById('sobre');
-        window.scrollTo({
-            top: target.offsetTop,
-            behavior: 'smooth',
-        });
-    };
-
     return (     
-        <div className="relative h-screen overflow-hidden bg-gray-900">
-            <img src="../../../images/wallpaper1.jpg" className="absolute object-cover w-full h-full"/>
-            {/* Image filter */}
-            <div className="absolute inset-0 bg-black opacity-25">
-            </div>
-            <header className={`top-0 left-0 right-0 z-20 transition ease-in duration-200 ${isScrolled ? 'bg-white text-black fixed w-full shadow-md' : 'absolute text-white'}`}>
+        <>
+            <header 
+                className={`
+                    ${home 
+                        ? `top-0 left-0 right-0 z-30 transition ease-in duration-200 ${isScrolled ? 'bg-white text-black fixed w-full shadow-md' : 'absolute text-white'}` 
+                        : 'bg-white text-black fixed w-full shadow-md z-30'}` }>
                 <nav className="container px-6 py-4 mx-auto md:px-12">
                     <div className="items-center justify-between md:flex">
                         <div className="flex items-center justify-between">
@@ -192,29 +182,5 @@ export default function HeaderNavBar()
                     </a>
                 </div>
             </div>
-
-            {/* Hero */}
-            <div className="container relative z-10 flex items-center px-6 py-32 mx-auto md:px-12 xl:py-40">
-                <div className="relative z-10 flex flex-col items-start lg:w-3/5 xl:w-2/5">
-                    <span className="font-bold text-orange-400 uppercase">
-                        NoMoreSelfie
-                    </span>
-                    <h1 className="mt-4 text-6xl font-bold leading-tight text-white sm:text-7xl">
-                        Capture Momentos
-                        <br/>
-                        Inesquecíveis
-                    </h1>
-                    <button onClick={scrollToSection} className="block px-4 py-3 mt-10 text-lg font-bold text-gray-800 uppercase bg-white rounded-lg hover:bg-gray-100 scroll-button">
-                        Começar agora
-                    </button>
-                </div>
-            </div>
-            {/* Scroll Button */}
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
-                <button onClick={scrollToSection} className="block text-white text-center hover:text-gray-300">
-                    <FaAngleDown size={30} />
-                </button>
-            </div>
-        </div>
-
+        </>
 )}
