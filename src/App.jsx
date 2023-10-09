@@ -12,6 +12,7 @@ import PageSearch from "./Pages/Search/PageSearch";
 import Footer from "./Pages/Components/Footer";
 import Header from "./Pages/Components/Header";
 import PageUserSettings from "./Pages/UserSettings/PageUserSettings";
+import { RegisterUser } from "./Pages/Register/RegisterUser";
 
 export default function App() {
   const location = useLocation();
@@ -27,6 +28,8 @@ export default function App() {
             <Route path="/search" element={<PageSearch />} />
 
             <Route path="/register" element={<Register />} />
+            <Route path="/registeruser" element={<RegisterUser />} />
+            <Route path="/registersupplier" element={<Register />} />
             <Route path="/login" element={<Login />} />
 
             {/* Other Routes */}
