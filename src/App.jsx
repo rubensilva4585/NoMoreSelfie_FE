@@ -13,11 +13,11 @@ import Footer from "./Pages/Components/Footer";
 import Header from "./Pages/Components/Header";
 import PageUserSettings from "./Pages/UserSettings/PageUserSettings";
 import { RegisterUser } from "./Pages/Register/RegisterUser";
+import { RegisterSupplier } from "./Pages/Register/RegisterSupplier";
 
 export default function App() {
   const location = useLocation();
-  const layoutRender = !['/login', '/register'].includes(location.pathname);
-
+  const layoutRender = !['/login', '/register', '/registeruser', '/registersupplier'].includes(location.pathname);
 
   return (
     <>
@@ -29,7 +29,7 @@ export default function App() {
 
             <Route path="/register" element={<Register />} />
             <Route path="/registeruser" element={<RegisterUser />} />
-            <Route path="/registersupplier" element={<Register />} />
+            <Route path="/registersupplier" element={<RegisterSupplier />} />
             <Route path="/login" element={<Login />} />
 
             {/* Other Routes */}

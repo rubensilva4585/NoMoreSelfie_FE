@@ -8,34 +8,31 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 export default function Login() {
-	// states
-	const [values, setValues] = useState({
-		email: "",
-		password: "",
-		showPassword: false,
-	});
-
-	const [valuesError, setValuesError] = useState({
-		email: "",
-		password: ""
-	});
+  // states
+  const [values, setValues] = useState({
+    email: "",
+    password: "",
+    showPassword: false,
+  });
+  const [valuesError, setValuesError] = useState({
+    email: "",
+    password: ""
+  });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
   // functions
-	const handleClickShowPassword = () => {
-		setValues({ ...values, showPassword: !values.showPassword });
-	};
+  const handleClickShowPassword = () => {
+    setValues({ ...values, showPassword: !values.showPassword });
+  };
 
-	const handleChange = (prop) => (e) => {
-		setValues({ ...values, [prop]: e.target.value });
-	};
+  const handleChange = (prop) => (e) => {
+    setValues({ ...values, [prop]: e.target.value });
+  };
 
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+  const inputsValidation = () => {
+    let isValid = true;
 
     setValuesError({
       email: "",
@@ -47,21 +44,33 @@ export default function Login() {
         ...prevErrors,
         email: 'Email inválido'
       }));
-      return;
+      isValid = false;
     }
 
     if (!values.password || values.password.length < 6) {
       setValuesError((prevErrors) => ({
         ...prevErrors,
-        password: 'Senha deve ter pelo menos 6 caracteres'
+        password: 'Password deve ter pelo menos 6 caracteres'
       }));
+      isValid = false;
+    }
+
+    return isValid;
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    if(!inputsValidation()) {
+      setIsSubmitting(false);
       return;
     }
 
     try {
       const response = await axios.post('http://127.0.0.1:8000/api/auth/login', {
-        email: values.email, 
-        password: values.password, 
+        email: values.email,
+        password: values.password,
       });
 
       const token = response.data.authorization.token;
@@ -78,24 +87,24 @@ export default function Login() {
       navigate('/');
 
     } catch (error) {
-      if(error.response) {
-        if(error.response.data.email) {
+      if (error.response) {
+        if (error.response.data.email) {
           setValuesError((prevErrors) => ({
             ...prevErrors,
             email: error.response.data.email
           }));
         }
-        if(error.response.data.password) {
+        if (error.response.data.password) {
           setValuesError((prevErrors) => ({
             ...prevErrors,
             password: error.response.data.password
           }));
         }
-      } 
-      else if(error.request) 
+      }
+      else if (error.request)
         // METER POPUP DE ERRO
         console.log("Error: Sem resposta do servidor", error.request);
-      else 
+      else
         console.log('Error', error.message);
 
     } finally {
@@ -144,76 +153,74 @@ export default function Login() {
                   </div>
                 </div>
                 <div className="mx-auto max-w-xs">
-                <form action="#" autoComplete="off" onSubmit={handleSubmit}>
-                  <input
-                    className={`w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border ${
-                      valuesError.email ? 'border-red-500' : 'border-gray-200'
-                    } placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 focus:bg-gray-50`}
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="Email"
-                    onChange={handleChange("email")}
-                    // required
-                  />
-                  {valuesError.email && (
-                    <p className="text-red-500 text-xs mt-1">{valuesError.email}</p>
-                  )}
-                  <div className="relative">
-                    {values.password && (
-                      <button
-                        type="button"
-                        className="absolute transform top-1/2 right-4"
-                        onClick={handleClickShowPassword}
-                      >
-                        {values.showPassword ? (
-                          <AiFillEyeInvisible className="text-xl text-gray-400" />
-                        ) : (
-                          <AiFillEye className="text-xl text-gray-400" />
-                        )}
-                      </button>
-                    )}
+                  <form action="#" autoComplete="off" onSubmit={handleSubmit}>
                     <input
-                       className={`w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border ${
-                        valuesError.password ? 'border-red-500' : 'border-gray-200'
-                      } placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 focus:bg-gray-50 mt-5`}
-                      type={values.showPassword ? 'text' : 'password'}
-                      id="password"
-                      name="password"
-                      placeholder="Password"
-                      onChange={handleChange("password")}
-                      // required
+                      className={`w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border ${valuesError.email ? 'border-red-500' : 'border-gray-200'
+                        } placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 focus:bg-gray-50`}
+                      type="email"
+                      id="email"
+                      name="email"
+                      placeholder="Email"
+                      onChange={handleChange("email")}
+                    // required
                     />
-                  </div>
-                  {valuesError.password && (
+                    {valuesError.email && (
+                      <p className="text-red-500 text-xs mt-1">{valuesError.email}</p>
+                    )}
+                    <div className="relative">
+                      {values.password && (
+                        <button
+                          type="button"
+                          className="absolute transform top-1/2 right-4"
+                          onClick={handleClickShowPassword}
+                        >
+                          {values.showPassword ? (
+                            <AiFillEyeInvisible className="text-xl text-gray-400" />
+                          ) : (
+                            <AiFillEye className="text-xl text-gray-400" />
+                          )}
+                        </button>
+                      )}
+                      <input
+                        className={`w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border ${valuesError.password ? 'border-red-500' : 'border-gray-200'
+                          } placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 focus:bg-gray-50 mt-5`}
+                        type={values.showPassword ? 'text' : 'password'}
+                        id="password"
+                        name="password"
+                        placeholder="Password"
+                        onChange={handleChange("password")}
+                      // required
+                      />
+                    </div>
+                    {valuesError.password && (
                       <p className="text-red-500 text-xs mt-1">{valuesError.password}</p>
                     )}
-                  <div className="flex items-center mt-2">
-                    <div className="flex ml-auto">
-                      <Link
-                        to=""
-                        className="inline-flex text-xs text-gray-400 hover:text-gray-600"
-                      >
-                        Esqueceu-se da sua password?
-                      </Link>
+                    <div className="flex items-center mt-2">
+                      <div className="flex ml-auto">
+                        <Link
+                          to=""
+                          className="inline-flex text-xs text-gray-400 hover:text-gray-600"
+                        >
+                          Esqueceu-se da sua password?
+                        </Link>
+                      </div>
                     </div>
-                  </div>
-                  <button
-                    className="mt-5 tracking-wide font-semibold bg-orange-400 text-white w-full py-4 rounded-lg hover:bg-orange-500 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
-                    type="submit"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? (
-                      <FaSpinner className="animate-spin -ml-1 h-5 w-5 text-white" />
-                    ) : (
-                      <span>Entrar</span>
-                    )}
-                  </button>
-                </form>
+                    <button
+                      className="mt-5 tracking-wide font-semibold bg-orange-400 text-white w-full py-4 rounded-lg hover:bg-orange-500 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                      type="submit"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? (
+                        <FaSpinner className="animate-spin -ml-1 h-5 w-5 text-white" />
+                      ) : (
+                        <span>Entrar</span>
+                      )}
+                    </button>
+                  </form>
                   <p className="mt-2 text-xs text-gray-400">
                     Não tem uma conta?
-                    <Link to="/register" className="text-orange-400 hover:text-orange-600 ml-1">
-                        Registe-se
+                    <Link to="/registeruser" className="text-orange-400 hover:text-orange-600 ml-1">
+                      Registe-se
                     </Link>
                   </p>
                 </div>
@@ -221,13 +228,13 @@ export default function Login() {
             </div>
           </div>
           <div className="relative flex-1 bg-black text-center hidden lg:flex">
-            <img src="../../../images/wallpaperlogin.jpg" className="absolute object-cover w-full h-full"/>
-            <div className="absolute inset-0 bg-black opacity-25"/>
+            <img src="../../../images/wallpaperlogin.jpg" className="absolute object-cover w-full h-full" />
+            <div className="absolute inset-0 bg-black opacity-25" />
           </div>
         </div>
       </div>
 
-            {/* <div className="flex flex-col w-full max-w-md px-4 py-8 bg-white rounded-lg shadow sm:px-6 md:px-8 lg:px-10">
+      {/* <div className="flex flex-col w-full max-w-md px-4 py-8 bg-white rounded-lg shadow sm:px-6 md:px-8 lg:px-10">
                 <div className="self-start text-xl font-bold text-slate-900 sm:text-3xl ">
                     Bem-Vindo
                 </div>
