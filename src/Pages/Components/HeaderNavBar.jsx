@@ -1,21 +1,25 @@
+import Cookies from "js-cookie";
 import { useEffect, useRef, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-export default function HeaderNavBar({ home = false }) 
-{
+export default function HeaderNavBar({ home = false }) {
     const [burgerMenuOpen, setBurgerMenuOpen] = useState(false);
     const [profileMenuOpen, setProfileMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
-    const profileMenuRef = useRef(null); 
+    const profileMenuRef = useRef(null);
+    // const token = Cookies.get('token') ? Cookies.get('token') : null;
+    const token = "asdasd"
+    // const token = null;
+    const navigate = useNavigate();
 
     useEffect(() => {
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 0);
         };
-    
+
         window.addEventListener('scroll', handleScroll);
-    
+
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
@@ -23,17 +27,17 @@ export default function HeaderNavBar({ home = false })
 
 
     useEffect(() => {
-      function handleClickOutside(event) {
-        if (profileMenuRef.current && !profileMenuRef.current.contains(event.target)) {
-            setProfileMenuOpen(false);
+        function handleClickOutside(event) {
+            if (profileMenuRef.current && !profileMenuRef.current.contains(event.target)) {
+                setProfileMenuOpen(false);
+            }
         }
-      }
-      
-      document.addEventListener('click', handleClickOutside);
 
-      return () => {
-        document.removeEventListener('click', handleClickOutside);
-      };
+        document.addEventListener('click', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
     }, []);
 
     const toggleBurgerMenu = () => {
@@ -44,19 +48,24 @@ export default function HeaderNavBar({ home = false })
         setProfileMenuOpen(!profileMenuOpen);
     };
 
-    return (     
+    const handleLogout = () => {
+        Cookies.remove('token');
+        navigate('/login');
+    };
+
+    return (
         <>
-            <header 
+            <header
                 className={`
-                    ${home 
-                        ? `top-0 left-0 right-0 z-30 transition ease-in duration-200 ${isScrolled ? 'bg-white text-black fixed w-full shadow-md' : 'absolute text-white'}` 
+                    ${home
+                        ? `top-0 left-0 right-0 z-30 transition ease-in duration-200 ${isScrolled ? 'bg-white text-black fixed w-full shadow-md' : 'absolute text-white'}`
                         : 'bg-white text-black fixed w-full shadow-md z-30'}` }>
-                <nav className="container px-6 py-4 mx-auto md:px-12">
+                <nav className={`container px-6 ${token ? 'py-2' : 'py-4'} mx-auto md:px-12`}>
                     <div className="items-center justify-between md:flex">
                         <div className="flex items-center justify-between">
-                            <a href="#">
+                            <h1 className="text-center text-xl xl:text-2xl text-orange-400">
                                 NoMoreSelfie
-                            </a>
+                            </h1>
                             <div className="md:hidden">
                                 <button className="focus:outline-none" onClick={toggleBurgerMenu}>
                                     <FaBars size={30} />
@@ -64,61 +73,74 @@ export default function HeaderNavBar({ home = false })
                             </div>
                         </div>
                         <div className="items-center hidden md:flex">
-                            <Link to="/" className="mx-3 text-lg uppercase cursor-pointer hover:text-orange-400">
+                            <Link to="/" className="mx-3 text-md uppercase cursor-pointer hover:text-orange-400">
                                 Página Inicial
                             </Link>
-                            <Link to="/search" className="mx-3 text-lg uppercase cursor-pointer hover:text-orange-400">
+                            <Link to="/search" className="mx-3 text-md uppercase cursor-pointer hover:text-orange-400">
                                 Fornecedores
                             </Link>
-                            
+
                             {/* Login / Menu perfil */}
                             <div class="block">
                                 <div class="flex items-center ml-4 md:ml-6">
                                     <div class="relative ml-3">
                                         <div class="relative inline-block text-left">
-                                            <div ref={profileMenuRef}>
-                                                <button onClick={toggleProfileMenu} type="button" className={ `flex items-center justify-center w-full rounded-md px-4 py-2 text-gray-700 hover:bg-gray-50 focus:outline-none`} id="options-menu">
-                                                    {/* <svg width="20" fill="currentColor" height="20" class="text-gray-800" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M1523 1339q-22-155-87.5-257.5t-184.5-118.5q-67 74-159.5 115.5t-195.5 41.5-195.5-41.5-159.5-115.5q-119 16-184.5 118.5t-87.5 257.5q106 150 271 237.5t356 87.5 356-87.5 271-237.5zm-243-699q0-159-112.5-271.5t-271.5-112.5-271.5 112.5-112.5 271.5 112.5 271.5 271.5 112.5 271.5-112.5 112.5-271.5zm512 256q0 182-71 347.5t-190.5 286-285.5 191.5-349 71q-182 0-348-71t-286-191-191-286-71-348 71-348 191-286 286-191 348-71 348 71 286 191 191 286 71 348z">
-                                                        </path>
-                                                    </svg> */}
-                                                    <a href="#" className="relative block">
-                                                        <img alt="profil" src="https://www.tailwind-kit.com/images/person/6.jpg" className="mx-auto object-cover rounded-full h-10 w-10 " />
-                                                    </a>
-                                                    <div className="flex items-start justify-center flex-col ml-4">
-                                                        <p className="text-gray-800 font-medium">
-                                                            Zeca Afonso
-                                                        </p>
-                                                        <span className="text-sm">
-                                                            Profissional
-                                                        </span>
-                                                    </div>
-                                                </button>
-                                            </div>
-
-                                            {/* Profile menu */}
-                                            {profileMenuOpen && (
-                                                <div class="absolute right-0 w-56 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
-                                                    <div class="py-1 " role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                                                        <Link to="/settings">
-                                                            <a href="#" class="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">
-                                                                <span class="flex flex-col">
-                                                                    <span>
-                                                                        Gerir Conta
+                                            {/* Profile dropdown */}
+                                            {token
+                                                ? (
+                                                    <>
+                                                        <div ref={profileMenuRef}>
+                                                            <button onClick={toggleProfileMenu} type="button" className={`flex items-center justify-center w-full rounded-md px-4 py-2 text-gray-700 hover:bg-gray-50 focus:outline-none`} id="options-menu">
+                                                                <a href="#" className="relative block">
+                                                                    <img alt="profil" src="https://www.tailwind-kit.com/images/person/6.jpg" className="mx-auto object-cover rounded-full h-10 w-10" />
+                                                                </a>
+                                                                <div className="flex items-start justify-center flex-col ml-4">
+                                                                    <p className="text-gray-800 font-medium ">
+                                                                        Zeca Afonso
+                                                                    </p>
+                                                                    <span className="text-sm">
+                                                                        Profissional
                                                                     </span>
-                                                                </span>
-                                                            </a>
+                                                                </div>
+                                                            </button>
+                                                        </div>
+                                                        {/* Profile menu */}
+                                                        {profileMenuOpen && (
+                                                            <div class="absolute right-0 w-56 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+                                                                <div class="py-1 " role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                                                                    <Link to="/settings">
+                                                                        <a href="#" class="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">
+                                                                            <span class="flex flex-col">
+                                                                                <span>
+                                                                                    Gerir Conta
+                                                                                </span>
+                                                                            </span>
+                                                                        </a>
+                                                                    </Link>
+                                                                    <a href="#" class="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem"
+                                                                        onClick={handleLogout}
+                                                                    >
+                                                                        <span class="flex flex-col">
+                                                                            <span>
+                                                                                Sair
+                                                                            </span>
+                                                                        </span>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        )}
+                                                    </>
+                                                )
+                                                : (
+                                                    <div className="flex items-center">
+                                                        <Link to="/login" className="bg-orange-400 px-4 py-2 rounded text-white hover:bg-orange-500 text-sm">
+                                                            Login
                                                         </Link>
-                                                        <a href="#" class="block block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">
-                                                            <span class="flex flex-col">
-                                                                <span>
-                                                                    Sair
-                                                                </span>
-                                                            </span>
-                                                        </a>
+                                                        <Link to="/signin" className={`${isScrolled || !home ? 'text-black' : 'text-white'} text-sm px-4 py-2`}>
+                                                            Registe-se
+                                                        </Link>
                                                     </div>
-                                                </div>
-                                            )}
+                                                )}
                                         </div>
                                     </div>
                                 </div>
@@ -183,4 +205,5 @@ export default function HeaderNavBar({ home = false })
                 </div>
             </div>
         </>
-)}
+    )
+}

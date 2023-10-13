@@ -1,8 +1,6 @@
 import { useState } from "react"
-import { AiFillCalendar } from 'react-icons/ai'
 import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai'
-import { FcGoogle } from "react-icons/fc"
-import { FaFacebookF, FaSpinner } from "react-icons/fa"
+import { FaSpinner } from "react-icons/fa"
 import { Link, useNavigate } from "react-router-dom"
 import axios from 'axios';
 import Cookies from 'js-cookie';

@@ -12,12 +12,13 @@ import PageSearch from "./Pages/Search/PageSearch";
 import Footer from "./Pages/Components/Footer";
 import Header from "./Pages/Components/Header";
 import PageUserSettings from "./Pages/UserSettings/PageUserSettings";
-import { RegisterUser } from "./Pages/Register/RegisterUser";
 import { RegisterSupplier } from "./Pages/Register/RegisterSupplier";
+import SupplierServices from "./Pages/Supplier/SupplierServices";
+import SupplierServicesForm from "./Pages/Supplier/SupplierServicesForm";
 
 export default function App() {
   const location = useLocation();
-  const layoutRender = !['/login', '/register', '/registeruser', '/registersupplier'].includes(location.pathname);
+  const layoutRender = !['/login', '/signin', '/signin/supplier'].includes(location.pathname);
 
   return (
     <>
@@ -25,11 +26,13 @@ export default function App() {
         <Routes>
             <Route path="/" element={<PageHome />} />
             <Route path="/settings" element={<PageUserSettings />} />
+            <Route path="/supplier/services" element={<SupplierServices  />} />
+            <Route path="/supplier/services/edit/:id" element={<SupplierServicesForm  />} />
+            <Route path="/supplier/services/new" element={<SupplierServicesForm  />} />
             <Route path="/search" element={<PageSearch />} />
 
-            <Route path="/register" element={<Register />} />
-            <Route path="/registeruser" element={<RegisterUser />} />
-            <Route path="/registersupplier" element={<RegisterSupplier />} />
+            <Route path="/signin" element={<Register />} />
+            <Route path="/signin/supplier" element={<RegisterSupplier />} />
             <Route path="/login" element={<Login />} />
 
             {/* Other Routes */}
