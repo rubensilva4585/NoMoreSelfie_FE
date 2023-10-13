@@ -219,7 +219,7 @@ export default function Login() {
                   </form>
                   <p className="mt-2 text-xs text-gray-400">
                     Não tem uma conta?
-                    <Link to="/registeruser" className="text-orange-400 hover:text-orange-600 ml-1">
+                    <Link to="/signin" className="text-orange-400 hover:text-orange-600 ml-1">
                       Registe-se
                     </Link>
                   </p>

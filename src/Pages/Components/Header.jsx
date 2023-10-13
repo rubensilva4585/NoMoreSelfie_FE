@@ -44,7 +44,7 @@ export default function Header()
     };
 
     return (     
-        <div className={`relative ${home ? ' h-screen overflow-hidden bg-gray-900' : 'h-24'}`}>
+        <div className={`relative ${home ? ' h-screen overflow-hidden bg-gray-900' : 'h-16'}`}>
             { home && (
                 <>
                     <img src="../../../images/wallpaper1.jpg" className="absolute object-cover w-full h-full"/>
@@ -61,9 +61,6 @@ export default function Header()
                     {/* Hero */}
                     <div className="container relative z-10 flex items-center px-6 py-32 mx-auto md:px-12 xl:py-40">
                         <div className="relative z-10 flex flex-col items-start lg:w-3/5 xl:w-2/5">
-                            <span className="font-bold text-orange-400 uppercase">
-                                NoMoreSelfie
-                            </span>
                             <h1 className="mt-4 text-6xl font-bold leading-tight text-white sm:text-7xl">
                                 Capture Momentos
                                 <br/>
