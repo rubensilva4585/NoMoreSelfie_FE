@@ -6,8 +6,36 @@ import { SearchPriceRange } from './SearchPriceRange'
 import { SearchCategories } from './SearchCategories'
 
 export default function SearchFilterSidebar(props) {
+    const newData = [
+        {
+            category: 'Casamentos',
+            subCategory: [
+                { name: 'Casamento1', checked: false },
+                { name: 'Casamento2', checked: false },
+                { name: 'Casamento3', checked: false }
+            ],
+        },
+        {
+            category: 'Fotografia',
+            subCategory: [
+                { name: 'Fotografia1', checked: false },
+                { name: 'Fotografia2', checked: false },
+                { name: 'Fotografia3', checked: false }
+            ],
+        },
+        {
+            category: 'Edição',
+            subCategory: [
+                { name: 'Edição1', checked: false },
+                { name: 'Edição2', checked: false },
+                { name: 'Edição3', checked: false }
+            ],
+        },
+    ]
+
     const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
     const [isPriceOpen, setIsPriceOpen] = useState(false);
+    const [CategoriesData, setCategoriesData] = useState(newData);
 
     function handleCategories() {
         setIsCategoriesOpen(!isCategoriesOpen);
@@ -15,6 +43,10 @@ export default function SearchFilterSidebar(props) {
 
     function handlePrice() {
         setIsPriceOpen(!isPriceOpen);
+    }
+
+    function handleCategoriesData(newData) {
+        setCategoriesData(newData)
     }
 
     return (
@@ -30,32 +62,35 @@ export default function SearchFilterSidebar(props) {
                         <AiOutlineClose onClick={props.closeSidebar} className='text-gray-400 hover:text-gray-800  text-2xl transition ease-in duration-200' />
                     </div>
 
-                    <form className='flex flex-col justify-between h-[calc(100%-44px)]'>
+                    <form className='flex flex-col justify-between h-[calc(100%-44px)] overflow-y-auto overflow-x-hidden'>
                         <div>
                             <div className='mb-4 border-b'>
                                 <div className="mb-2 flex justify-between items-center hover:cursor-pointer select-none" onClick={handleCategories}>
+
                                     <button className="block font-semibold text-gray-800 " type='button'>Categorias</button>
                                     <MdKeyboardArrowUp className={`text-2xl text-gray-800 transition duration-200 ${isCategoriesOpen ? '-rotate-180' : 'rotate-0'}`} />
+
                                 </div>
                                 <div className={`mb-2 ${isCategoriesOpen ? 'block' : 'hidden'}`}>
 
-                                    <SearchCategories CategoryName='Casamentos' SubCategories={['Casamento1', 'Casamento2', 'Casamento3']} />
-                                    <SearchCategories CategoryName='Fotografia' SubCategories={['Fotografia1', 'Fotografia2', 'Fotografia3']} />
-                                    <SearchCategories CategoryName='Edição' SubCategories={['Edição1', 'Edição2', 'Edição3']} />
-                                    <SearchCategories CategoryName='Edição de Vídeo' SubCategories={['Vídeo1', 'Vídeo2', 'Vídeo3']} />
-
+                                    {CategoriesData.map((category) => (
+                                        <SearchCategories Category={category.category} subCategories={category.subCategory} />
+                                    ))}
                                 </div>
                             </div>
 
                             <div className='mb-4 border-b'>
                                 <div className="mb-2 flex justify-between items-center hover:cursor-pointer select-none" onClick={handlePrice}>
+
                                     <button className="block font-semibold text-gray-800 " type='button'>Preço</button>
                                     <MdKeyboardArrowUp className={`text-2xl text-gray-800 transition duration-200 ${isPriceOpen ? '-rotate-180' : 'rotate-0'}`} />
 
                                 </div>
                                 <div className={`mb-2 ${isPriceOpen ? 'block' : 'hidden'}`}>
                                     <div className="flex flex-col">
+
                                         <SearchPriceRange />
+
                                     </div>
                                 </div>
                             </div>

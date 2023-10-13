@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import './SearchPriceRange.css';
 
 export function SearchPriceRange() {
     const defaultValues = [500, 2000];
+    const priceStart = useRef(null)
+    const priceEnd = useRef(null)
 
     const [range, setRange] = useState(defaultValues);
 
@@ -27,7 +29,7 @@ export function SearchPriceRange() {
                     className='my-2'
                 />
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div className='flex justify-between'>
                 <div>{range[0]} €</div>
                 <div>{range[1]} €</div>
             </div>

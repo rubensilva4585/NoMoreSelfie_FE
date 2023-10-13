@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { BsFilterLeft } from 'react-icons/bs';
 import SearchResultCard from './SearchResultCard';
 import SearchFilterSidebar from './SearchFilterSidebar';
+import SearchServices from "./SearchServices.jsx";
 
 
 export default function PageSearch() {
@@ -10,6 +11,33 @@ export default function PageSearch() {
     function handleFilterSidebar() {
         setIsFilterSidebarOpen(!isFilterSidebarOpen);
     }
+
+    const regions = [
+        { name: "Aveiro" },
+        { name: "Beja" },
+        { name: "Braga" },
+        { name: "Bragança" },
+        { name: "Castelo Branco" },
+        { name: "Coimbra" },
+        { name: "Évora" },
+        { name: "Faro" },
+        { name: "Guarda" },
+        { name: "Leiria" },
+        { name: "Lisboa" },
+        { name: "Portalegre" },
+        { name: "Porto" },
+        { name: "Santarém" },
+        { name: "Setúbal" },
+        { name: "Viana do Castelo" },
+        { name: "Vila Real" },
+        { name: "Viseu" },
+    ];
+
+    const categories = [
+        { name: "Casamento" },
+        { name: "Fotografia" },
+        { name: "Edição de Vídeo" },
+    ];
 
     return (
         <>
@@ -25,13 +53,16 @@ export default function PageSearch() {
                                     Procure o que precisa na nossa lista de fornecedores
                                 </p>
                             </div>
-                            <form className="flex justify-start w-4/4">
-                                <input type="text" id="category" className=" rounded-s-lg flex-1 border border-gray-300 w-full py-4 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" placeholder="O que procura?" />
-                                <input type="text" id="category" className=" flex-1 border border-gray-300 w-full py-4 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" placeholder="Onde?" />
-                                <button className="flex-shrink-0 px-4 py-2 text-base font-semibold text-white bg-orange-400 rounded-e-lg shadow-md hover:bg-orange-500 focus:ring-orange-500 focus:ring-2 focus:ring-offset-2 focus:ring-offset-orange-200 focus:outline-none" type="submit">
-                                    Pesquisar
-                                </button>
-                            </form>
+
+                            <SearchServices Regions={regions} Categories={categories}/>
+
+                            {/*<form className="flex justify-start w-4/4">*/}
+                            {/*    <input type="text" id="category" className=" rounded-s-lg flex-1 border border-gray-300 w-full py-4 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" placeholder="O que procura?" />*/}
+                            {/*    <input type="text" id="category" className=" flex-1 border border-gray-300 w-full py-4 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" placeholder="Onde?" />*/}
+                            {/*    <button className="flex-shrink-0 px-4 py-2 text-base font-semibold text-white bg-orange-400 rounded-e-lg shadow-md hover:bg-orange-500 focus:ring-orange-500 focus:ring-2 focus:ring-offset-2 focus:ring-offset-orange-200 focus:outline-none" type="submit">*/}
+                            {/*        Pesquisar*/}
+                            {/*    </button>*/}
+                            {/*</form>*/}
                         </div>
                     </div>
 
