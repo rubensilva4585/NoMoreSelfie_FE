@@ -8,9 +8,8 @@ export default function HeaderNavBar({ home = false }) {
     const [profileMenuOpen, setProfileMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
     const profileMenuRef = useRef(null);
-    // const token = Cookies.get('token') ? Cookies.get('token') : null;
-    const token = "asdasd"
-    // const token = null;
+    const token = Cookies.get('token') ? Cookies.get('token') : null;
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -63,9 +62,9 @@ export default function HeaderNavBar({ home = false }) {
                 <nav className={`container px-6 ${token ? 'py-2' : 'py-4'} mx-auto md:px-12`}>
                     <div className="items-center justify-between md:flex">
                         <div className="flex items-center justify-between">
-                            <h1 className="text-center text-xl xl:text-2xl text-orange-400">
+                            <Link to="/" className="text-center text-xl xl:text-2xl text-orange-400">
                                 NoMoreSelfie
-                            </h1>
+                            </Link>
                             <div className="md:hidden">
                                 <button className="focus:outline-none" onClick={toggleBurgerMenu}>
                                     <FaBars size={30} />
@@ -81,10 +80,10 @@ export default function HeaderNavBar({ home = false }) {
                             </Link>
 
                             {/* Login / Menu perfil */}
-                            <div class="block">
-                                <div class="flex items-center ml-4 md:ml-6">
-                                    <div class="relative ml-3">
-                                        <div class="relative inline-block text-left">
+                            <div className="block">
+                                <div className="flex items-center ml-4 md:ml-6">
+                                    <div className="relative ml-3">
+                                        <div className="relative inline-block text-left">
                                             {/* Profile dropdown */}
                                             {token
                                                 ? (
@@ -106,21 +105,26 @@ export default function HeaderNavBar({ home = false }) {
                                                         </div>
                                                         {/* Profile menu */}
                                                         {profileMenuOpen && (
-                                                            <div class="absolute right-0 w-56 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
-                                                                <div class="py-1 " role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                                                                    <Link to="/settings">
-                                                                        <a href="#" class="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">
-                                                                            <span class="flex flex-col">
+                                                            <div className="absolute right-0 w-56 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+                                                                <div className="py-1 " role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                                                                    <Link to="/supplier/services" className="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">
+                                                                            <span className="flex flex-col">
+                                                                                <span>
+                                                                                    Gerir Serviços
+                                                                                </span>
+                                                                            </span>
+                                                                    </Link>
+                                                                    <Link to="/settings" className="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">
+                                                                            <span className="flex flex-col">
                                                                                 <span>
                                                                                     Gerir Conta
                                                                                 </span>
                                                                             </span>
-                                                                        </a>
                                                                     </Link>
-                                                                    <a href="#" class="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem"
+                                                                    <a href="#" className="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem"
                                                                         onClick={handleLogout}
                                                                     >
-                                                                        <span class="flex flex-col">
+                                                                        <span className="flex flex-col">
                                                                             <span>
                                                                                 Sair
                                                                             </span>
@@ -134,7 +138,7 @@ export default function HeaderNavBar({ home = false }) {
                                                 : (
                                                     <div className="flex items-center">
                                                         <Link to="/login" className="bg-orange-400 px-4 py-2 rounded text-white hover:bg-orange-500 text-sm">
-                                                            Login
+                                                            Aceder
                                                         </Link>
                                                         <Link to="/signin" className={`${isScrolled || !home ? 'text-black' : 'text-white'} text-sm px-4 py-2`}>
                                                             Registe-se
@@ -192,7 +196,7 @@ export default function HeaderNavBar({ home = false }) {
                                     </svg>
                                 </span>
                                 <span className="ml-2 text-sm tracking-wide truncate">
-                                    Fornecedores
+                                    Profissionais
                                 </span>
                             </a>
                         </li>

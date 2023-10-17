@@ -15,6 +15,7 @@ import PageUserSettings from "./Pages/UserSettings/PageUserSettings";
 import { RegisterSupplier } from "./Pages/Register/RegisterSupplier";
 import SupplierServices from "./Pages/Supplier/SupplierServices";
 import SupplierServicesForm from "./Pages/Supplier/SupplierServicesForm";
+import "./App.css";
 
 export default function App() {
   const location = useLocation();

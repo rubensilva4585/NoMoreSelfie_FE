@@ -41,7 +41,7 @@ export default function Register() {
         const handleChangePhone = () => (e) => {
                 let input = e.target.value.replace(/\D/g, '');
                 input = input.slice(0, 9);
-            
+
                 e.target.value = input;
                 setValues({ ...values, phone: input });
         };
@@ -158,18 +158,18 @@ export default function Register() {
                         <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
                                 <div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1 overflow-hidden">
                                         <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
-                                                <div>
+                                                <Link to="/">
                                                         <h1 className="text-center text-3xl xl:text-4xl font-light">
                                                                 NoMoreSelfie
                                                         </h1>
-                                                </div>
+                                                </Link>
                                                 <div className="mt-8 flex flex-col items-center">
                                                         <h1 className="text-xl xl:text-2xl font-bold">
                                                                 Registe a sua conta
                                                         </h1>
                                                         <div className="w-full flex-1 mt-8">
                                                                 <div className="flex flex-col items-center">
-                                                                        <button className="w-full max-w-sm font-bold shadow-sm rounded-lg py-3 bg-orange-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline">
+                                                                        <button className="w-full max-w-sm font-bold rounded-lg py-3 border-gray-200 hover:bg-gray-50 border text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline">
                                                                                 <div className="bg-white p-1 rounded-full">
                                                                                         <FcGoogle className="text-xl" />
                                                                                 </div>
@@ -178,7 +178,7 @@ export default function Register() {
                                                                                 </span>
                                                                         </button>
 
-                                                                        <button className="w-full max-w-sm font-bold shadow-sm rounded-lg py-3 bg-orange-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-5">
+                                                                        <button className="w-full max-w-sm font-bold rounded-lg py-3 border-gray-200 hover:bg-gray-50 border text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-5">
                                                                                 <div className="bg-white p-1 rounded-full">
                                                                                         <FaFacebookF className="text-xl text-blue-600" />
                                                                                 </div>

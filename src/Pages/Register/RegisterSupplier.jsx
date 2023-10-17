@@ -28,7 +28,7 @@ export function RegisterSupplier() {
                 address: "",
                 phone: "",
                 email: "",
-                password: "",           
+                password: "",
                 confirmPassword: "",
         });
         const [isSubmitting, setIsSubmitting] = useState(false);
@@ -57,7 +57,7 @@ export function RegisterSupplier() {
                 e.target.value = input;
                 setValues({ ...values, phone: input });
         };
-        
+
         const inputsValidation = () => {
                 let isValid = true;
 
@@ -68,7 +68,7 @@ export function RegisterSupplier() {
                         address: "",
                         phone: "",
                         email: "",
-                        password: "",           
+                        password: "",
                         confirmPassword: "",
                 });
 
@@ -214,17 +214,17 @@ export function RegisterSupplier() {
                                                 <div className="absolute inset-0 bg-black opacity-25" />
                                         </div>
                                         <div className="lg:w-1/2 xl:w-7/12 p-6 sm:p-12">
-                                                <div>
+                                                <Link to="/">
                                                         <h1 className="text-center text-3xl xl:text-4xl font-light">
                                                                 NoMoreSelfie
                                                         </h1>
-                                                </div>
+                                                </Link>
                                                 <div className="mt-8 flex flex-col items-center">
                                                         <h1 className="text-xl xl:text-2xl font-bold">
                                                                 Crie a sua conta profissional
                                                         </h1>
                                                         <div className="w-full flex-1 mt-8">
-                                                                
+
                                                                 <div className="mx-auto max-w-sm">
                                                                         <form action="#" autoComplete="off" onSubmit={handleSubmit}>
                                                                                 <input
@@ -278,7 +278,7 @@ export function RegisterSupplier() {
                                                                                 {valuesError.nif && (
                                                                                         <p className="text-red-500 text-xs mt-1">{valuesError.nif}</p>
                                                                                 )}
-                                                                                
+
                                                                                 <input
                                                                                         className={`w-full mt-5 px-8 py-4 rounded-lg font-medium bg-gray-100 border ${valuesError.address ? 'border-red-500' : 'border-gray-200'
                                                                                                 } placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 focus:bg-gray-50`}
@@ -291,7 +291,7 @@ export function RegisterSupplier() {
                                                                                 {valuesError.address && (
                                                                                         <p className="text-red-500 text-xs mt-1">{valuesError.address}</p>
                                                                                 )}
-                                                                                
+
                                                                                 <input
                                                                                         className={`w-full mt-5 px-8 py-4 rounded-lg font-medium bg-gray-100 border ${valuesError.email ? 'border-red-500' : 'border-gray-200'
                                                                                                 } placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 focus:bg-gray-50`}
