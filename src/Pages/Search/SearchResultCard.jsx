@@ -73,7 +73,7 @@ export default function SearchResultCard() {
                         <button
                             className=" px-6 py-2 transition ease-in duration-200 text-orange-500 uppercase rounded-md hover:bg-orange-400 hover:text-white border border-orange-400 focus:outline-none w-full"
                             onClick={openModal}>
-                            Orçamento gratuito
+                            Pedir informação
                         </button>
                         {modalOpen && ((
                             <SearchModal closeModal={closeModal} />

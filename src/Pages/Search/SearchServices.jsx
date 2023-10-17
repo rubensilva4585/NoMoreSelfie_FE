@@ -28,7 +28,6 @@ export default function SearchServices(props) {
 
     return (
         <form className="flex justify-start w-4/4 z-[25]">
-
             <div className="relative w-56 h-14">
 
                 <input
@@ -41,7 +40,6 @@ export default function SearchServices(props) {
                     placeholder="O que procura?"
                 />
                 <ClickAwayListener
-                    className="absolute top-[100%+5px] left-0 w-[620px]"
                     onClickAway={(e) => {
                         console.log('cenas')
                         e.stopPropagation();

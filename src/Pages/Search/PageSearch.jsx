@@ -41,9 +41,8 @@ export default function PageSearch() {
 
     return (
         <>
-            <section class="relative bg-gray-100/50 overflow-x-hidden" id="sobre">
-
-                <div class="absolute bottom-0 right-0 mt-[100px] ml-[-50%] h-[200%] w-[50%] rounded-l-[50%] overflow-hidden">
+            <section class="relative bg-gray-100/50 overflow-hidden" id="sobre">
+                <div class="absolute top-[-796px] right-0 mt-[100px] ml-[-50%] h-[1000px] w-[50%] rounded-l-[50%] overflow-hidden">
                     <img src='../../../images/wallsearch.jpg' alt="" className="xl:bottom-[-130px] lg:bottom-[-20px] lg:block hidden absolute" />
                 </div>
                 <div className="container mx-auto px-3 md:px-12 py-16">
@@ -72,9 +71,6 @@ export default function PageSearch() {
                         </div>
                     </div>
                 </div>
-            </section>
-
-            <section class="relative bg-gray-100/50 overflow-x-hidden" id="sobre">
                 <div className="container mx-auto px-3 md:px-12 pb-16">
                     <div className="w-full border-t border-gray-200">
                     </div>
@@ -104,6 +100,7 @@ export default function PageSearch() {
                     <SearchFilterSidebar closeSidebar={handleFilterSidebar} />
                 )}
             </section>
+
         </>
     )
 }

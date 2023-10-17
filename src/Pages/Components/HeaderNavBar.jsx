@@ -76,7 +76,7 @@ export default function HeaderNavBar({ home = false }) {
                                 Página Inicial
                             </Link>
                             <Link to="/search" className="mx-3 text-md uppercase cursor-pointer hover:text-orange-400">
-                                Fornecedores
+                                Profissionais
                             </Link>
 
                             {/* Login / Menu perfil */}

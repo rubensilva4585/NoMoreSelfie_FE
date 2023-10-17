@@ -5,7 +5,7 @@ export default function PageUserSettingsAdminSuppliers() {
         <>             
             <div class="flex flex-row justify-between w-full mb-1 sm:mb-0">
                 <h2 class="text-2xl leading-tight">
-                    Lista de Fornecedores
+                    Lista de Profissionais
                 </h2>
                 <div class="text-end">
                     <form>   
