@@ -1,9 +1,11 @@
-export default function RegionModal(props) {
+import { forwardRef } from "react";
 
+const RegionModal = forwardRef((props, ref) => {
     return (
         <>
             <div
-                className={`flex-col ${props.open ? 'flex' : "hidden"} mt-2 w-100 lg:w-[620px] h-96 lg:h-auto  rounded-lg bg-white border-[1px] border-gray-200 shadow-md modal`}>
+                ref={ref}
+                className={`absolute z-[25] flex-col ${props.open ? 'flex' : "hidden"} mt-2 w-100 lg:w-[620px] h-96 lg:h-auto  rounded-lg bg-white border-[1px] border-gray-200 shadow-md modal`}>
                 <div className="mt-4 pl-6 pb-4 w-full border-b-[1px] border-gray-200 font-semibold ">
                     Região
                 </div>
@@ -18,4 +20,6 @@ export default function RegionModal(props) {
             </div>
         </>
     );
-}
+});
+
+export default RegionModal;

@@ -6,9 +6,10 @@ import CategoryModal from "./CategoryModal.jsx";
 export default function SearchServices(props) {
     const [category, setCategory] = useState("");
     const [region, setRegion] = useState("");
-    const [categoryModalOpen, setCategoryModalOpen] = useState(false);
+    const [categoryModalOpen, setCategoryModalOpen] = useState(true);
     const [regionModalOpen, setRegionModalOpen] = useState(false);
-    const ref = useRef(null);
+    const refCategory = useRef(null);
+    const refRegion = useRef(null);
 
     function handleCategoryClick(category) {
         setCategory(category);
@@ -27,7 +28,7 @@ export default function SearchServices(props) {
     }
 
     return (
-        <form className="flex justify-start w-4/4 z-[25]">
+        <form className="flex justify-start w-4/4 ">
             <div className="relative w-56 h-14">
 
                 <input
@@ -39,28 +40,32 @@ export default function SearchServices(props) {
                     className=" rounded-s-lg flex-1 border border-gray-300 w-56 h-full py-4 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                     placeholder="O que procura?"
                 />
-                <ClickAwayListener
-                    onClickAway={(e) => {
-                        console.log('cenas')
-                        e.stopPropagation();
-                        if (!e.target.contains(ref.current)) {
-
-                            if (categoryModalOpen) {
+                <div
+                    style={{
+                        position: 'absolute', // Alteração para 'position: absolute'
+                        top: '100%', // Ajuste de acordo com a posição desejada
+                        left: '0',
+                        zIndex: 9999,
+                    }}
+                >
+                    <ClickAwayListener
+                        onClickAway={(e) => {
+                            if (categoryModalOpen && refCategory.current && !refCategory.current.contains(e.target)) {
                                 setCategoryModalOpen(false);
                             }
-                        }
-                    }}>
-                    <>
+                        }}>
                         <CategoryModal
-                            ref={ref}
-                            className="absolute top-[100%+5px] left-0"
-                            Categories={props.Categories}
+                            ref={refCategory}
+                            Categories={props.Regions}
                             CategoryClick={handleCategoryClick}
                             open={categoryModalOpen}
                         />
-                    </>
-                </ClickAwayListener>
+
+                    </ClickAwayListener>
+                </div>
             </div>
+
+
             <div className="relative w-56 h-14">
                 <input
                     value={region}
@@ -70,16 +75,16 @@ export default function SearchServices(props) {
                     id="location"
                     className="flex-1 border border-gray-300 w-56 h-full py-4 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                     placeholder="Onde?" />
+
                 <ClickAwayListener
-                    className="absolute top-[100%+5px] left-0 w-[620px]"
                     onClickAway={(e) => {
-                        console.log('cenas2')
-                        e.stopPropagation()
-                        setRegionModalOpen(false);
+                        if (regionModalOpen && refRegion.current && !refRegion.current.contains(e.target)) {
+                            setRegionModalOpen(false);
+                        }
                     }}>
                     <>
                         <RegionModal
-                            className="absolute top-[100%+5px] left-0"
+                            ref={refRegion}
                             Regions={props.Regions}
                             RegionClick={handleRegionClick}
                             open={regionModalOpen}

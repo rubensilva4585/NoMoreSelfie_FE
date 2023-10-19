@@ -44,15 +44,15 @@ export default function PageUserSettings() {
                                             placeholder="Escreva o seu nome e apelido" />
                                     </div>
                                     <div className="relative">
-                                        <label for="name">
+                                        <label for="date">
                                             Data de nascimento
                                         </label>
                                         <input
-                                            type="text"
-                                            id="name"
+                                            type="date"
+                                            id="date"
                                             className=" rounded-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 hover:bg-gray-50"
-                                            name="name"
-                                            placeholder="Escreva o seu nome" />
+                                            name="date"
+                                            placeholder="Escreva a sua data de nascimento" />
                                     </div>
                                     <div className="relative">
                                         <label for="phone">

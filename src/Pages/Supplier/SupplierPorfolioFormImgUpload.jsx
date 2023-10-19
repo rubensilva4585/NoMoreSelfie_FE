@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { FaTrash } from 'react-icons/fa';
 
-export default function SupplierServicesFormImgUpload() {
+export default function SupplierPorfolioFormImgUpload() {
         const [selectedFiles, setSelectedFiles] = useState([]);
 
         const { getRootProps, getInputProps } = useDropzone({
@@ -132,11 +132,13 @@ export default function SupplierServicesFormImgUpload() {
                                         </div>
                                 ))}
                         </aside>
-                        {/* {selectedFiles.length > 0 && (
+                        {selectedFiles.length > 0 && (
                                 <div>
-                                        <button onClick={handleFileUpload}>Enviar</button>
+                                        <button 
+                                        className="py-2.5 px-4 text-green-400 border-green-400 border hover:bg-green-400 hover:text-white w-fit transition ease-in duration-200 text-center text-sm font-semibold shadow-md focus:outline-none rounded-lg "
+                                        onClick={handleFileUpload}>Enviar</button>
                                 </div>
-                        )} */}
+                        )}
                 </div>
         );
 }
