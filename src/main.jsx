@@ -6,14 +6,13 @@ import './index.css'
 import App from "./App";
 import PageHome from './Pages/Home/PageHome';
 import PageUserSettings from './Pages/UserSettings/PageUserSettings';
-import SupplierPanel from './Pages/Supplier/Settings/SupplierPanel';
 import PageSearch from './Pages/Search/PageSearch';
 import Register from './Pages/Register/Register';
 import { RegisterSupplier } from './Pages/Register/RegisterSupplier';
 import Login from './Pages/Login/Login';
 import SupplierPorfolio from './Pages/Supplier/Settings/SupplierPorfolio';
 import SupplierServices from './Pages/Supplier/Settings/SupplierServices';
-import SupplierPage from './Pages/Supplier/SupplierPage';
+import PageSupplier from './Pages/Supplier/PageSupplier';
 import SupplierContacts from './Pages/Supplier/Settings/SupplierContacts';
 
 const routes = [
@@ -31,8 +30,8 @@ const routes = [
         element: <PageUserSettings />,
       },
       {
-        path: "/supplier",
-        element: <SupplierPage  />,
+        path: "/supplier/:supplier_id",
+        element: <PageSupplier  />,
       },
       {
         path: "/supplier/dashboard",
