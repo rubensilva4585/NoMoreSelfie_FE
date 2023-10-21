@@ -14,6 +14,7 @@ import Login from './Pages/Login/Login';
 import SupplierPorfolio from './Pages/Supplier/Settings/SupplierPorfolio';
 import SupplierServices from './Pages/Supplier/Settings/SupplierServices';
 import SupplierPage from './Pages/Supplier/SupplierPage';
+import SupplierContacts from './Pages/Supplier/Settings/SupplierContacts';
 
 const routes = [
   {
@@ -47,7 +48,7 @@ const routes = [
       },
       {
         path: "/supplier/contacts",
-        element: <SupplierPanel  />,
+        element: <SupplierContacts  />,
       },
       {
         path: "/search",

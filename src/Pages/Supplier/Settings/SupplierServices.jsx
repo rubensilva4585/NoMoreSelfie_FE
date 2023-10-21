@@ -22,14 +22,8 @@ export default function SupplierServices(props) {
 
         return (
                 <section className=" bg-gray-100/50 ">
-                        {/* <div className="container max-w-6xl mx-auto shadow-md"> */}
                         <div className="container max-w-6xl mx-auto px-3 md:px-12 pb-16">
-                                <div className="border-t-2 border-orange-400 rounded-lg bg-gray-100/5 flex justify-between items-center">
-                                        {/* <h2 className="text-2xl leading-tight">
-                                                Portfólio
-                                        </h2> */}
-                                </div>
-                                <div className="space-y-6 bg-white">
+                                <div className="space-y-6 bg-white border-t-2 border-orange-400 rounded-lg">
                                         <div className="items-center w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
                                                 <div className="max-w-xl md:max-w-sm mx-auto md:w-1/3 pr-5">
                                                         <h3 className="text-gray-800 text-bold text-xl">Categoria</h3>

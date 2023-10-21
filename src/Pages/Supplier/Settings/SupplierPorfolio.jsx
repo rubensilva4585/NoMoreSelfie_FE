@@ -7,21 +7,15 @@ export default function SupplierPorfolio(props) {
 
         return (
                 <section className=" bg-gray-100/50 ">
-                        {/* <div className="container max-w-6xl mx-auto shadow-md"> */}
                         <div className="container max-w-6xl mx-auto px-3 md:px-12 pb-16">
-                                <div className="border-t-2 border-orange-400 rounded-lg bg-gray-100/5 flex justify-between items-center">
-                                        {/* <h2 className="text-2xl leading-tight">
-                                                Portfólio
-                                        </h2> */}
-                                </div>
-                                <div className="space-y-6 bg-white">
+                                <div className="space-y-6 bg-white border-t-2 border-orange-400 rounded-lg">
                                         <div className="items-center w-full p-8 space-y-4 text-gray-500 md:space-y-0">
                                                 <div className="">
                                                         <h3 className="text-gray-800 text-bold text-xl">Portfolio</h3>
                                                         <span className="text-sm">Chame a atenção dos compradores certos com exemplos visuais dos seus serviços.</span>
                                                 </div>
 
-                                                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 pt-4">
+                                                <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 pt-4">
                                                         <div>
                                                                 <img className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg" alt="" />
                                                         </div>

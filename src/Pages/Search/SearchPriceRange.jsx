@@ -4,15 +4,26 @@ import 'rc-slider/assets/index.css';
 import './SearchPriceRange.css';
 
 export function SearchPriceRange() {
-    const defaultValues = [500, 2000];
-    const priceStart = useRef(null)
-    const priceEnd = useRef(null)
-
-    const [range, setRange] = useState(defaultValues);
+    const [range, setRange] = useState([500, 2000]);
 
     const handleRangeChange = (newRange) => {
         setRange(newRange);
     };
+
+    // const handleRangeInput = (start, end)=> {
+    //     console.log(start, end);
+    //     if (start < 1) {
+    //         start = 1;
+    //     }
+    //     if (end > 5000) {
+    //         end = 5000;
+    //     }
+    //     if (start > end) {
+    //         start = end;
+    //     }
+
+    //     setRange([start, end]);
+    // };
 
     return (
         <>
@@ -23,13 +34,14 @@ export function SearchPriceRange() {
                     min={1}
                     max={5000}
                     allowCross={false}
-                    defaultValue={defaultValues}
                     value={range}
                     onChange={handleRangeChange}
                     className='my-2'
                 />
             </div>
             <div className='flex justify-between'>
+                {/* <input type="number" value={range[0]} onChange={(e) => handleRangeInput(e.target.value, range[1])}/>
+                <input type="number" value={range[1]} onChange={(e) => handleRangeInput(range[0], e.target.value)}/> */}
                 <div>{range[0]} €</div>
                 <div>{range[1]} €</div>
             </div>
