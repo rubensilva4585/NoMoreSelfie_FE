@@ -1,150 +1,74 @@
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { FaTrash } from 'react-icons/fa';
+import { FaPlus, FaTrash } from 'react-icons/fa';
+import axios from 'axios';
+import { IMAGE_TOTAL_MAX } from '../../../constants/General';
+import { uploadSupplierImages } from '../../../API/User';
 
-export default function SupplierPorfolioFormImgUpload() {
-        const [selectedFiles, setSelectedFiles] = useState([]);
+export default function SupplierPorfolioFormImgUpload({ totalImages, handleGetImages }) {
+        // states
+        const [isLoading, setIsLoading] = useState(false);
 
+        // functions
         const { getRootProps, getInputProps } = useDropzone({
-                accept: 'image/png, image/jpeg, image/jpg', // Defina os tipos de imagem desejados
+                accept: 'image/png, image/jpeg, image/jpg',
                 onDrop: acceptedFiles => {
+                        setIsLoading(true);
                         const imageFiles = acceptedFiles.filter(file =>
                                 file.type.startsWith('image/')
                         );
 
-                        setSelectedFiles(prevSelectedFiles => [
-                                ...prevSelectedFiles,
-                                ...imageFiles.map(file => Object.assign(file, {
-                                        preview: URL.createObjectURL(file)
-                                }))
-                        ]);
+                        handleFileUpload(imageFiles);
                 }
         });
 
-        const dropzoneStyles = {
-                border: '2px dashed #ccc',
-                borderRadius: '4px',
-                padding: '20px',
-                textAlign: 'center',
-                cursor: 'pointer',
-        };
+        const handleFileUpload = (imageFiles) => {
+                setIsLoading(true);
+                try {
+                        if (imageFiles.length === 0)
+                                throw new Error('Por favor, selecione um ou mais arquivos válidos (png, jpeg, jpg).');
 
-        const thumbsContainer = {
-                display: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                marginTop: 16
-        };
-
-        const thumb = {
-                position: 'relative',
-                display: 'inline-flex',
-                borderRadius: 2,
-                border: '1px solid #eaeaea',
-                marginBottom: 8,
-                marginRight: 8,
-                width: 100,
-                height: 100,
-                padding: 4,
-                boxSizing: 'border-box'
-        };
-
-        const thumbInner = {
-                display: 'flex',
-                minWidth: 0,
-                overflow: 'hidden'
-        };
-
-        const img = {
-                display: 'block',
-                width: 'auto',
-                height: '100%'
-        };
-
-        const iconStyle = {
-                position: 'absolute',
-                top: 0,
-                right: 0,
-                cursor: 'pointer',
-                backgroundColor: 'rgba(255, 255, 255, 0.5)',
-                padding: '4px',
-                borderRadius: '50%'
-        };
-
-        const handleRemove = (index) => {
-                const newSelectedFiles = [...selectedFiles];
-                newSelectedFiles.splice(index, 1);
-                setSelectedFiles(newSelectedFiles);
-        };
-
-        const handleFileUpload = async () => {
-                if (selectedFiles.length === 0) {
-                        alert('Por favor, selecione um ou mais arquivos.');
+                        if (totalImages + imageFiles.length > IMAGE_TOTAL_MAX)
+                                throw new Error(`Limite de imagens atingido (${totalImages + imageFiles.length}/${IMAGE_TOTAL_MAX})`);
+                }
+                catch (error) {
+                        alert(error);
+                        setIsLoading(false);
                         return;
                 }
 
-                const formData = new FormData();
-                selectedFiles.forEach(file => {
-                        formData.append('files[]', file);
-                });
-
-                try {
-                        // Substitua a URL abaixo pela URL da rota de upload no seu backend Laravel
-                        const response = await fetch('URL_DA_ROTA_DE_UPLOAD', {
-                                method: 'POST',
-                                body: formData,
+                uploadSupplierImages(imageFiles)
+                        .then((response) => {
+                                if (response.status === 201) {
+                                        return handleGetImages();
+                                } else {
+                                        throw new Error('Falha no upload. Por favor, tente novamente.');
+                                }
+                        })
+                        .catch((error) => {
+                                alert(error.response.data.error);
+                        })
+                        .finally(() => {
+                                setIsLoading(false);
                         });
-
-                        if (response.ok) {
-                                alert('Upload bem-sucedido!');
-                                setSelectedFiles([]);
-                        } else {
-                                alert('Falha no upload. Por favor, tente novamente.');
-                        }
-                } catch (error) {
-                        console.error('Erro ao fazer upload:', error);
-                        alert('Ocorreu um erro ao fazer upload. Por favor, tente novamente.');
-                }
         };
 
+        
         return (
-                <div>
-                        <div {...getRootProps({ style: dropzoneStyles })} className="dropzone">
-                                <input {...getInputProps()} />
-                                <p>Arraste e solte arquivos aqui ou clique para selecionar arquivos.</p>
-                        </div>
-                        <aside style={thumbsContainer}>
-                                {selectedFiles.map((file, index) => (
-                                        <div style={thumb} key={file.name}>
-                                                <div style={thumbInner}>
-                                                        <img
-                                                                src={file.preview}
-                                                                style={img}
-                                                                alt={file.name}
-                                                        />
-                                                        <div
-                                                                style={iconStyle}
-                                                                onClick={() => handleRemove(index)}
-                                                        >
-                                                                <FaTrash />
-                                                        </div>
+                <div className="h-60 w-full flex justify-center items-center border-2 border-dashed border-gray-300 rounded p-4 text-center cursor-pointer">
+                        {isLoading
+                                ? <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-orange-400 bg-gray-100/50" />
+                                : !totalImages >= IMAGE_TOTAL_MAX ? (
+                                        <p>Limite de {IMAGE_TOTAL_MAX} imagens atingido.</p>
+                                )
+                                        : (
+                                                <div {...getRootProps()} className='flex flex-col gap-4 justify-center items-center h-full'>
+                                                        <input {...getInputProps()} />
+                                                        <FaPlus className="text-gray-400 text-4xl" />
+                                                        <p>Arraste e solte ou clique aqui para adicionar imagens. ({totalImages}/{IMAGE_TOTAL_MAX})</p>
                                                 </div>
-                                        </div>
-                                ))}
-                        </aside>
-                        {selectedFiles.length > 0 && (
-                                <div>
-                                        <button 
-                                        className="py-2.5 px-4 text-green-400 border-green-400 border hover:bg-green-400 hover:text-white w-fit transition ease-in duration-200 text-center text-sm font-semibold shadow-md focus:outline-none rounded-lg "
-                                        onClick={handleFileUpload}>Enviar</button>
-                                </div>
-                        )}
+                                        )
+                        }
                 </div>
         );
 }
-
-
-
-
-
-

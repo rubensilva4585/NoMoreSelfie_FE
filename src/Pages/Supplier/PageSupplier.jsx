@@ -4,12 +4,13 @@ import { useEffect, useState } from 'react';
 import { FaFacebook, FaInstagram, FaLink, FaLinkedin, FaMapPin, FaPinterest } from 'react-icons/fa'
 import ImageGallery from "react-image-gallery";
 import PageSupplierService from './PageSupplierService';
-import { getSupplierServicesById, getUserById } from '../../API/General';
+import { getSupplierImagesById, getSupplierServicesById, getUserById } from '../../API/General';
 
 
 export default function PageSupplier() {
     const [supplierData, setSupplierData] = useState(null)
     const [supplierServicesData, setSupplierServicesData] = useState(null)
+    const [supplierImages, setSupplierImages] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const { supplier_id } = useParams();
     console.log(supplier_id);
@@ -28,6 +29,19 @@ export default function PageSupplier() {
             thumbnail: "https://picsum.photos/id/1019/250/150/",
         },
     ];
+
+    const handleGetImages = () => {
+        getSupplierImagesById(supplier_id)
+            .then((data) => {
+                setSupplierImages(data);
+            })
+            .catch((error) => {
+                alert("Erro ao carregar imagens: " + error);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    };
 
     useEffect(() => {
         const abortController = new AbortController();
@@ -57,7 +71,7 @@ export default function PageSupplier() {
         } finally {
             setIsLoading(false);
         }
-        
+
 
         return () => {
             abortController.abort();
