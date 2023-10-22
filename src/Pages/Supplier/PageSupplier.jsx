@@ -5,73 +5,63 @@ import { FaFacebook, FaInstagram, FaLink, FaLinkedin, FaMapPin, FaPinterest } fr
 import ImageGallery from "react-image-gallery";
 import PageSupplierService from './PageSupplierService';
 import { getSupplierImagesById, getSupplierServicesById, getUserById } from '../../API/General';
+import { IMAGE_STORAGE_PATH } from '../../constants/General';
 
 
 export default function PageSupplier() {
     const [supplierData, setSupplierData] = useState(null)
     const [supplierServicesData, setSupplierServicesData] = useState(null)
-    const [supplierImages, setSupplierImages] = useState([])
+    const [supplierImages, setSupplierImages] = useState([
+        {
+            original: "../../../images/noimage.png",
+            thumbnail: "../../../images/noimage.png",
+        }
+    ])
     const [isLoading, setIsLoading] = useState(true)
     const { supplier_id } = useParams();
-    console.log(supplier_id);
-
-    const images = [
-        {
-            original: "https://picsum.photos/id/1018/1000/600/",
-            thumbnail: "https://picsum.photos/id/1018/250/150/",
-        },
-        {
-            original: "https://picsum.photos/id/1015/1000/600/",
-            thumbnail: "https://picsum.photos/id/1015/250/150/",
-        },
-        {
-            original: "https://picsum.photos/id/1019/1000/600/",
-            thumbnail: "https://picsum.photos/id/1019/250/150/",
-        },
-    ];
-
-    const handleGetImages = () => {
-        getSupplierImagesById(supplier_id)
-            .then((data) => {
-                setSupplierImages(data);
-            })
-            .catch((error) => {
-                alert("Erro ao carregar imagens: " + error);
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
-    };
 
     useEffect(() => {
         const abortController = new AbortController();
 
         try {
-            try {
-                getUserById(supplier_id).then((data) => {
+            getSupplierImagesById(supplier_id)
+                .then((data) => {
                     console.log(data);
+                    data.length > 0 &&
+                        setSupplierImages(data.map((image) => {
+                            return {
+                                original: IMAGE_STORAGE_PATH + image.path,
+                                thumbnail: IMAGE_STORAGE_PATH + image.path,
+                            }
+                        }));
+                })
+                .catch((error) => {
+                    throw error;
+                })
+
+            getUserById(supplier_id)
+                .then((data) => {
+                    // console.log(data);
                     setSupplierData(data);
                 })
-            } catch (error) {
-                throw error;
-            }
+                .catch((error) => {
+                    throw error;
+                });
 
-            try {
-                getSupplierServicesById(supplier_id).then((data) => {
-                    console.log(data);
+            getSupplierServicesById(supplier_id)
+                .then((data) => {
+                    // console.log(data);
                     setSupplierServicesData(data);
                 })
-            } catch (error) {
-                throw error;
-            }
-        }
-        catch (error) {
-            //setHasError(true);
-            console.log(error);
+                .catch((error) => {
+                    throw error;
+                });
+        } catch (error) {
+            alert("Erro ao carregar pagina")
+            console.log("Erro geral: ", error);
         } finally {
             setIsLoading(false);
         }
-
 
         return () => {
             abortController.abort();
@@ -90,7 +80,7 @@ export default function PageSupplier() {
                 ) : (
                     <div className="container mx-auto px-3 md:px-12 py-20 flex flex-col lg:grid lg:grid-cols-3 gap-8">
                         <div className='rounded-lg lg:block lg:col-span-2 h-100'>
-                            <ImageGallery items={images}
+                            <ImageGallery items={supplierImages}
                                 // onClick={this._onImageClick.bind(this)}
                                 // onImageLoad={this._onImageLoad}
                                 // onSlide={this._onSlide.bind(this)}
@@ -100,7 +90,7 @@ export default function PageSupplier() {
                                 infinite={true}
                                 showBullets={true}
                                 showFullscreenButton={true}
-                                useBrowserFullscreen={false}
+                                useBrowserFullscreen={true}
                                 showPlayButton={true}
                                 showThumbnails={true}
                                 showIndex={true}
