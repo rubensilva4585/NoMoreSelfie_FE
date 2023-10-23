@@ -1,7 +1,7 @@
 import { API_URL } from '../constants/General';
 import axios from 'axios';
 
-const authToken = 'Bearer 3|44PkRs8HQIrgxbCSgJ1mA5Y3RrYNjmQbjYuwu6D01d884252';
+const authToken = 'Bearer 19|rG6RdVaMOwgGah8l77yd92XDwNGDAycxzuK8rfCb065632ee';
 
 const errorHandler = (error) => {
         console.error('API Error:', error);

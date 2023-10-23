@@ -154,7 +154,7 @@ export default function Footer() {
                                         href="#"
                                         className="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
                                     >
-                                        Frofissionais
+                                        Profissionais
                                     </a>
                                 </li>
 

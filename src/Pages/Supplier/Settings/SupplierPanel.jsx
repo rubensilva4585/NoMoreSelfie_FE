@@ -32,7 +32,7 @@ export default function SupplierPanel() {
                                                 <Link to="/supplier/contacts" 
                                                         className={`inline-block p-4 border-b-2 rounded-t-lg ease-in duration-100 text-lg ${activeTab === 'contacts' ? 'text-orange-400  border-orange-400 hover:text-orange-500 hover:border-orange-500' : 'border-transparent text-gray-400 hover:text-gray-600 hover:border-gray-300'} `}
                                                         >
-                                                        Contactos
+                                                        Redes Sociais
                                                 </Link>
                                         </div>
                                 </div>

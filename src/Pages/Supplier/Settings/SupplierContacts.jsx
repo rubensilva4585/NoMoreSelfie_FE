@@ -28,7 +28,7 @@ export default function SupplierContacts(props) {
                                         <div className="items-top w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
                                                 <div className="max-w-xl md:max-w-sm mx-auto md:w-1/3 pr-5">
                                                         <h3 className="text-gray-800 text-bold text-xl">Redes Sociais</h3>
-                                                        <span className="text-sm">Preencha os campos com os links das suas redes sociais e do website, de modo a destacar o seu trabalho para o público e futuros clientes.</span>
+                                                        <span className="text-sm">Preencha os campos com os links das suas redes sociais e do seu website/portfolio, de modo a dar a conhecer o seu trabalho para o público e futuros clientes.</span>
                                                 </div>
                                                 <div className="max-w-xl mx-auto space-y-5 md:w-2/3 ">
                                                         <div className=" relative flex flex-col gap-4">

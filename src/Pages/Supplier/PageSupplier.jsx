@@ -97,7 +97,7 @@ export default function PageSupplier() {
                                 showNav={true}
                                 thumbnailPosition={"bottom"}
                                 slideDuration={parseInt(500)}
-                                slideInterval={parseInt(450)}
+                                slideInterval={parseInt(2000)}
                                 slideOnThumbnailOver={true}
                                 useWindowKeyDown={true}
                             />
@@ -121,7 +121,7 @@ export default function PageSupplier() {
                                         </div>
                                         <div className='mx-4 text-gray-600'>|</div>
                                         <div className=''>
-                                            Lisboa
+                                            Aveiro
                                         </div>
                                         <div className='mx-4 text-gray-600'>|</div>
                                         <div className=''>
@@ -129,23 +129,7 @@ export default function PageSupplier() {
                                         </div>
                                         <div className='mx-4 text-gray-600'>|</div>
                                         <div className=''>
-                                            Braga
-                                        </div>
-                                        <div className='mx-4 text-gray-600'>|</div>
-                                        <div className=''>
-                                            Braga
-                                        </div>
-                                        <div className='mx-4 text-gray-600'>|</div>
-                                        <div className=''>
-                                            Braga
-                                        </div>
-                                        <div className='mx-4 text-gray-600'>|</div>
-                                        <div className=''>
-                                            Braga
-                                        </div>
-                                        <div className='mx-4 text-gray-600'>|</div>
-                                        <div className=''>
-                                            Braga
+                                            Coimbra
                                         </div>
                                     </div>
                                 </div>
@@ -187,7 +171,7 @@ export default function PageSupplier() {
                                     </div>
                                     <div className='h-1 w-10 bg-orange-400 mx-auto' />
                                 </div>
-                                <div className="w-full p-2 bg-orange-100/50 rounded-lg">
+                                {/* <div className="w-full p-2 bg-orange-100/50 rounded-lg">
                                     <div className="flex items-center justify-around text-xs text-gray-400">
                                         <p className="flex text-center flex-col">
                                             Data registo
@@ -208,7 +192,7 @@ export default function PageSupplier() {
                                             </span>
                                         </p>
                                     </div>
-                                </div>
+                                </div> */}
 
                                 <div>
                                     <p className="text-gray-600 text-center">
