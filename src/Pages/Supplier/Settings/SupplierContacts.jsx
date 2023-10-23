@@ -25,7 +25,7 @@ export default function SupplierContacts(props) {
 
         const usernamePattern = /^[\w]+$/;
         const websitePattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
-        const token = Cookies.get('token');
+        const token = sessionStorage.getItem("TOKEN");
         const [user, setUser] = useState({});
         const [errors, setErrors] = useState({
                 facebook: '',

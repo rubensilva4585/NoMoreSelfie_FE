@@ -1,7 +1,9 @@
 import { API_URL } from '../constants/General';
 import axios from 'axios';
 
-const authToken = 'Bearer 19|rG6RdVaMOwgGah8l77yd92XDwNGDAycxzuK8rfCb065632ee';
+export const authToken = () => {
+        return 'Bearer ' + sessionStorage.getItem("TOKEN");
+}
 
 const errorHandler = (error) => {
         console.error('API Error:', error);
@@ -11,7 +13,7 @@ const errorHandler = (error) => {
 export async function getSupplierImages() {
         const response = await axios.get(`${API_URL}/supplier/images`, {
                 headers: {
-                        'Authorization': authToken,
+                        'Authorization': authToken(),
                 },
         });
         return response.data;
@@ -27,7 +29,7 @@ export async function uploadSupplierImages(imageFiles) {
                 const response = axios.post(`${API_URL}/supplier/images`, formData, {
                         headers: {
                                 'Content-Type': 'multipart/form-data',
-                                'Authorization': authToken,
+                                'Authorization': authToken(),
                         },
                 });
                 return response;
@@ -41,7 +43,7 @@ export async function removeSupplierImage(imageId) {
         try {
                 const response = await axios.delete(`${API_URL}/supplier/images/${imageId}`, {
                         headers: {
-                                'Authorization': authToken,
+                                'Authorization': authToken(),
                         },
                 });
                 return response.data;

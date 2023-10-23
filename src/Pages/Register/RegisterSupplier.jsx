@@ -3,7 +3,6 @@ import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai'
 import { FaSpinner } from "react-icons/fa"
 import { Link, useNavigate } from "react-router-dom"
 import axios from 'axios';
-import Cookies from 'js-cookie';
 
 export function RegisterSupplier() {
         const [selectedDate, setSelectedDate] = useState(null);
@@ -159,10 +158,10 @@ export function RegisterSupplier() {
                 try {
                         const response = await axios.post('http://127.0.0.1:8000/api/auth/register', {
                                 name: values.name,
-                                //phone: values.phone,  // verificar se aceita null
-                                // company: values.company,
-                                // nif: values.nif,
-                                // address: values.address,
+                                phone: values.phone,  // verificar se aceita null
+                                company: values.company,
+                                nif: values.nif,
+                                address: values.address,
                                 role: "supplier",
                                 email: values.email,
                                 password: values.password,
@@ -171,16 +170,7 @@ export function RegisterSupplier() {
                         console.log(response.data);
 
                         const token = response.data.authorization.token;
-                        const userId = response.data.user.id;
-                        // // const role = response.data.authorization.token;
-                        console.log('Token de login:', token);
-                        console.log('User ID:', userId);
-
-                        Cookies.set('token', token, { secure: true, sameSite: 'strict' });
-                        Cookies.set('userId', userId, { secure: true, sameSite: 'strict' });
-                        Cookies.set('role', "supplier", { secure: true, sameSite: 'strict' });
-
-                        console.log(Cookies.get('token'), Cookies.get('userId'), Cookies.get('role'));
+                        sessionStorage.setItem("TOKEN", token);
 
                         navigate('/');
                 } catch (error) {

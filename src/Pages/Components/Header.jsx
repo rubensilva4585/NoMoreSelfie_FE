@@ -7,34 +7,6 @@ export default function Header()
 {
     const home = useLocation().pathname === "/";
 
-
-    useEffect(() => {
-        const handleScroll = () => {
-            setIsScrolled(window.scrollY > 0);
-        };
-    
-        window.addEventListener('scroll', handleScroll);
-    
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
-
-
-    useEffect(() => {
-      function handleClickOutside(event) {
-        if (profileMenuRef.current && !profileMenuRef.current.contains(event.target)) {
-            setProfileMenuOpen(false);
-        }
-      }
-      
-      document.addEventListener('click', handleClickOutside);
-
-      return () => {
-        document.removeEventListener('click', handleClickOutside);
-      };
-    }, []);
-
     const scrollToSection = () => {
         const target = document.getElementById('sobre');
         window.scrollTo({

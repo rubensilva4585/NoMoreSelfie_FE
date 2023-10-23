@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 
 export default function PageUserSettings() {
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const token = Cookies.get('token');
+    const token = sessionStorage.getItem("TOKEN");
     const [user, setUser] = useState({});
     const [errors, setErrors] = useState({
         name: '',
@@ -31,7 +31,7 @@ export default function PageUserSettings() {
     };
 
     useEffect(() => {
-        getUserByID(Cookies.get('userId'))
+        getUserByID(sessionStorage.getItem("TOKEN"))
             .then((response) => {
                 setUser(response);
                 console.log(response)

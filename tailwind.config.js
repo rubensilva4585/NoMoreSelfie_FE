@@ -23,8 +23,22 @@ export default {
           '900': '#9b3a1c',
         },
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            p: {
+              // Adjust the margin here (in this case, it's set to 0)
+              margin: '0',
+              padding: '0',
+            },
+          },
+        },
+      },
     },
   },
-  plugins: [require("@tailwindcss/forms")],
+  plugins: [
+    require("@tailwindcss/forms"),
+    require('@tailwindcss/typography'),
+  ],
 }
 

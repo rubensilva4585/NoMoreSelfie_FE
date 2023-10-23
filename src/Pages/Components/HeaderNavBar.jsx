@@ -1,5 +1,5 @@
-import Cookies from "js-cookie";
 import { useEffect, useRef, useState } from "react";
+import ClickAwayListener from "react-click-away-listener";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -8,7 +8,6 @@ export default function HeaderNavBar({ home = false }) {
     const [profileMenuOpen, setProfileMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
     const profileMenuRef = useRef(null);
-    const token = Cookies.get('token') ? Cookies.get('token') : null;
 
     const navigate = useNavigate();
 
@@ -24,20 +23,19 @@ export default function HeaderNavBar({ home = false }) {
         };
     }, []);
 
+    // useEffect(() => {
+    //     function handleClickOutside(event) {
+    //         if (profileMenuRef.current && !profileMenuRef.current.contains(event.target)) {
+    //             setProfileMenuOpen(false);
+    //         }
+    //     }
 
-    useEffect(() => {
-        function handleClickOutside(event) {
-            if (profileMenuRef.current && !profileMenuRef.current.contains(event.target)) {
-                setProfileMenuOpen(false);
-            }
-        }
+    //     document.addEventListener('click', handleClickOutside);
 
-        document.addEventListener('click', handleClickOutside);
-
-        return () => {
-            document.removeEventListener('click', handleClickOutside);
-        };
-    }, []);
+    //     return () => {
+    //         document.removeEventListener('click', handleClickOutside);
+    //     };
+    // }, []);
 
     const toggleBurgerMenu = () => {
         setBurgerMenuOpen(!burgerMenuOpen);
@@ -48,7 +46,7 @@ export default function HeaderNavBar({ home = false }) {
     };
 
     const handleLogout = () => {
-        Cookies.remove('token');
+        sessionStorage.removeItem("TOKEN");
         navigate('/login');
     };
 
@@ -58,8 +56,8 @@ export default function HeaderNavBar({ home = false }) {
                 className={`
                     ${home
                         ? `top-0 left-0 right-0 z-30 transition ease-in duration-200 ${isScrolled ? 'bg-white text-black fixed w-full shadow-md' : 'absolute text-white'}`
-                        : 'bg-white text-black fixed w-full shadow-md z-30'}` }>
-                <nav className={`container px-6 ${token ? 'py-2' : 'py-4'} mx-auto md:px-12`}>
+                        : 'bg-white text-black fixed w-full shadow-md z-30'}`}>
+                <nav className={`container px-6 ${sessionStorage.getItem("TOKEN") ? 'py-2' : 'py-4'} mx-auto md:px-12`}>
                     <div className="items-center justify-between md:flex">
                         <div className="flex items-center justify-between">
                             <Link to="/" className="text-center text-xl xl:text-2xl text-orange-400">
@@ -85,55 +83,68 @@ export default function HeaderNavBar({ home = false }) {
                                     <div className="relative ml-3">
                                         <div className="relative inline-block text-left">
                                             {/* Profile dropdown */}
-                                            {token
+                                            {sessionStorage.getItem("TOKEN")
                                                 ? (
                                                     <>
-                                                        <div ref={profileMenuRef}>
-                                                            <button onClick={toggleProfileMenu} type="button" className={`flex items-center justify-center w-full rounded-md px-4 py-2 text-gray-700 hover:bg-gray-50 focus:outline-none`} id="options-menu">
-                                                                <a href="#" className="relative block">
-                                                                    <img alt="profil" src="https://www.tailwind-kit.com/images/person/6.jpg" className="mx-auto object-cover rounded-full h-10 w-10" />
-                                                                </a>
-                                                                <div className="flex items-start justify-center flex-col ml-4">
-                                                                    <p className="text-gray-800 font-medium ">
-                                                                        Zeca Afonso
-                                                                    </p>
-                                                                    <span className="text-sm">
-                                                                        Profissional
-                                                                    </span>
+
+                                                        <ClickAwayListener
+                                                            onClickAway={(e) => {
+                                                                if (profileMenuOpen && profileMenuRef.current && !profileMenuRef.current.contains(e.target)) {
+                                                                    setProfileMenuOpen(false);
+                                                                }
+                                                            }}>
+                                                            <>
+                                                                <div ref={profileMenuRef}>
+                                                                    <button onClick={toggleProfileMenu} type="button" className={`flex items-center justify-center w-full rounded-md px-4 py-2 text-gray-700 hover:bg-gray-50 focus:outline-none`} id="options-menu">
+                                                                        <a href="#" className="relative block">
+                                                                            <img alt="profil" src="https://www.tailwind-kit.com/images/person/6.jpg" className="mx-auto object-cover rounded-full h-10 w-10" />
+                                                                        </a>
+                                                                        <div className="flex items-start justify-center flex-col ml-4">
+                                                                            <p className="text-gray-800 font-medium ">
+                                                                                Zeca Afonso
+                                                                            </p>
+                                                                            <span className="text-sm">
+                                                                                Profissional
+                                                                            </span>
+                                                                        </div>
+                                                                    </button>
+
+                                                                    {profileMenuOpen && (
+                                                                        <div className="absolute right-0 w-56 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+                                                                            <div className="py-1 " role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                                                                                <Link to="/supplier/dashboard" className="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">
+                                                                                    <span className="flex flex-col">
+                                                                                        <span>
+                                                                                            Painel Fornecedor
+                                                                                        </span>
+                                                                                    </span>
+                                                                                </Link>
+                                                                                <Link to="/settings" className="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">
+                                                                                    <span className="flex flex-col">
+                                                                                        <span>
+                                                                                            Gerir Conta
+                                                                                        </span>
+                                                                                    </span>
+                                                                                </Link>
+                                                                                <a href="#" className="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem"
+                                                                                    onClick={handleLogout}
+                                                                                >
+                                                                                    <span className="flex flex-col">
+                                                                                        <span>
+                                                                                            Sair
+                                                                                        </span>
+                                                                                    </span>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                    )}
                                                                 </div>
-                                                            </button>
-                                                        </div>
-                                                        {/* Profile menu */}
-                                                        {profileMenuOpen && (
-                                                            <div className="absolute right-0 w-56 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
-                                                                <div className="py-1 " role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                                                                    <Link to="/supplier/dashboard" className="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">
-                                                                            <span className="flex flex-col">
-                                                                                <span>
-                                                                                    Painel Fornecedor
-                                                                                </span>
-                                                                            </span>
-                                                                    </Link>
-                                                                    <Link to="/settings" className="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">
-                                                                            <span className="flex flex-col">
-                                                                                <span>
-                                                                                    Gerir Conta
-                                                                                </span>
-                                                                            </span>
-                                                                    </Link>
-                                                                    <a href="#" className="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem"
-                                                                        onClick={handleLogout}
-                                                                    >
-                                                                        <span className="flex flex-col">
-                                                                            <span>
-                                                                                Sair
-                                                                            </span>
-                                                                        </span>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        )}
+                                                            </>
+
+                                                        </ClickAwayListener>
                                                     </>
+
+
                                                 )
                                                 : (
                                                     <div className="flex items-center">

@@ -107,7 +107,7 @@ export default function PageSupplier() {
 
                                 <div className=' '>
                                     <h1 className="text-2xl font-bold text-gray-800 mb-4">Descrição</h1>
-                                    <div id="service_description text-gray-600" dangerouslySetInnerHTML={{ __html: supplierData && supplierData.service_description }}>
+                                    <div id="service_description" className="text-gray-600 prose" dangerouslySetInnerHTML={{ __html: supplierData && supplierData.service_description }}>
                                     </div>
                                 </div>
 

@@ -5,7 +5,6 @@ import './Login.css'
 import { Link, useNavigate } from "react-router-dom"
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai"
 import axios from 'axios';
-import Cookies from 'js-cookie';
 
 export default function Login() {
   // states
@@ -74,18 +73,10 @@ export default function Login() {
       });
 
       const token = response.data.authorization.token;
-      const userId = response.data.user.id;
-      // const role = response.data.authorization.token;
-      console.log('Token de login:', token);
-      console.log('User ID:', userId);
+      sessionStorage.setItem("TOKEN", token);
 
-      Cookies.set('token', token, { secure: true, sameSite: 'strict' });
-      Cookies.set('userId', userId, { secure: true, sameSite: 'strict' });
-      Cookies.set('role', "user", { secure: true, sameSite: 'strict' });
-
-      console.log(Cookies.get('token'), Cookies.get('userId'), Cookies.get('role'));
       navigate('/');
-
+      
     } catch (error) {
       if (error.response) {
         if (error.response.data.email) {
