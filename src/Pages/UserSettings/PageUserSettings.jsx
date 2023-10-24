@@ -3,7 +3,7 @@ import { getUser, removeProfileImage, updateProfileImage, updateUser, updateUser
 import { IMAGE_STORAGE_PATH } from '../../constants/General';
 import { FaSpinner, FaTrash } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserRole } from './../../redux/selectors';
+import { getUserAvatar, getUserRole } from './../../redux/selectors';
 import { update, updateAvatar } from '../../redux/actions';
 
 export default function PageUserSettings() {
@@ -32,6 +32,7 @@ export default function PageUserSettings() {
     });
     const [isSubmittingPersonalInfo, setIsSubmittingPersonalInfo] = useState(false);
     const userRole = useSelector(getUserRole);
+    const userAvatar = useSelector(getUserAvatar);
     const dispatch = useDispatch();
 
 
@@ -275,7 +276,7 @@ export default function PageUserSettings() {
         })
             .then((response) => {
                 if (response.status === 201) {
-                    console.log(response.data.avatar)
+                    //setUser((prevUser) => ({ ...prevUser, avatar: response.data.avatar }));
                     dispatch(
                         updateAvatar(
                                 response.data.avatar
@@ -298,7 +299,11 @@ export default function PageUserSettings() {
         removeProfileImage()
             .then((response) => {
                 alert('Foto de perfil removida com sucesso!');
-                setUser((prevUser) => ({ ...prevUser, avatar: null }));
+                //setUser((prevUser) => ({ ...prevUser, avatar: null }));
+                dispatch(
+                    updateAvatar(
+                            null
+                    ));
             })
             .catch((error) => {
                 alert(error.response.data.error);
@@ -333,10 +338,10 @@ export default function PageUserSettings() {
                                                 <div className="relative h-16 w-16 overflow-hidden">
                                                     <img
                                                         className="h-full w-full object-cover rounded-full"
-                                                        src={user.avatar ? IMAGE_STORAGE_PATH + user.avatar : './../../images/noavatar.svg'}
+                                                        src={userAvatar ? IMAGE_STORAGE_PATH + userAvatar : './../../images/noavatar.svg'}
                                                         alt=""
                                                     />
-                                                    {user.avatar &&
+                                                    {userAvatar &&
                                                         <div
                                                             className="absolute flex justify-center items-center w-full h-full top-0 cursor-pointer text-transparent p-2 rounded-full hover:bg-red-500/50 hover:text-white"
                                                             onClick={handleDeteleAvatar}
@@ -495,10 +500,10 @@ export default function PageUserSettings() {
                                             </label>
 
                                             <input
-                                                type="text"
-                                                id="newemail"
                                                 className={`rounded-lg flex-1 appearance-none border ${errors.email === '' ? 'border-gray-200' : 'border-red-500'} w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 hover:bg-gray-50`}
-                                                name="newemail"
+                                                type="text"
+                                                id="email"
+                                                name="email"
                                                 placeholder="Escreva o seu novo Email" />
                                             {errors.email !== '' && <span className="text-red-600 text-sm">{errors.email}</span>}
                                         </div>
