@@ -24,13 +24,15 @@ export default function App() {
   // consts
   const token = sessionStorage.getItem(SESSION_TOKEN);
   const isSupplierRoute = ['/supplier/dashboard', '/supplier/services', '/supplier/portfolio', '/supplier/contacts'].includes(location.pathname);
+  const isLoginRoute = ['/settings'].includes(location.pathname);
+
   // Layout (Header + Footer) routes
   const layoutRender = !['/login', '/signin', '/signin/supplier'].includes(location.pathname);
 
   // functions
   // Verify if user is authorized to access the route
   const isAuthorized = (allowedRoles) => {
-    return allowedRoles.includes(userRole);
+    return userRole ? allowedRoles.includes(userRole) : false;
   };
 
   // Effects
@@ -69,16 +71,17 @@ export default function App() {
           </div>
         ) : (
           <>
-            {isSupplierRoute && !isAuthorized(['supplier'])
-              ? <ErrorUnauthorized />
-              : (
-                <>
-                  {layoutRender && <Header />}
-                  {isSupplierRoute && <SupplierPanel />}
-                  <Outlet />
-                  {layoutRender && <Footer />}
-                </>
-              )}
+            {
+              (isSupplierRoute && !isAuthorized(['supplier'])) || (!token && isLoginRoute)
+                ? <ErrorUnauthorized />
+                : (
+                  <>
+                    {layoutRender && <Header />}
+                    {isSupplierRoute && <SupplierPanel />}
+                    <Outlet />
+                    {layoutRender && <Footer />}
+                  </>
+                )}
           </>
         )
       }
