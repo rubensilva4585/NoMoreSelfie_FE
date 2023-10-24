@@ -3,11 +3,10 @@ import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai'
 import { FcGoogle } from "react-icons/fc"
 import { FaFacebookF, FaSpinner } from "react-icons/fa"
 import { Link, useNavigate } from "react-router-dom"
-import axios from 'axios';
+import { doRegister } from "../../API/Auth"
+import { SESSION_TOKEN } from "../../constants/General"
 
 export default function Register() {
-        const [selectedDate, setSelectedDate] = useState(null);
-
         // states
         const [values, setValues] = useState({
                 name: "",
@@ -98,7 +97,7 @@ export default function Register() {
                 return isValid;
         }
 
-        const handleSubmit = async (e) => {
+        const handleSubmit = (e) => {
                 e.preventDefault();
                 setIsSubmitting(true);
 
@@ -107,22 +106,22 @@ export default function Register() {
                         return;
                 }
 
-                try {
-                        const response = await axios.post('http://127.0.0.1:8000/api/auth/register', {
-                                name: values.name,
-                                phone: values.phone,  // verificar se aceita null
-                                email: values.email,
-                                password: values.password,
-                        });
-
-                        console.log(response.data);
-
-                        const token = response.data.authorization.token;
-                        sessionStorage.setItem("TOKEN", token);
-
+                doRegister({
+                        name: values.name,
+                        phone: values.phone,
+                        email: values.email,
+                        password: values.password,
+                }).then((response) => {
+                        sessionStorage.setItem(SESSION_TOKEN, response.data.authorization.token);
+                        dispatch(
+                                login(
+                                        response.data.authorization.token,
+                                        response.data.user.id,
+                                        response.data.user.name,
+                                        response.data.user.role
+                                ));
                         navigate('/');
-                } catch (error) {
-                        console.log(error);
+                }).catch((error) => {
                         if (error.response) {
                                 if (error.response.data.email) {
                                         setValuesError((prevErrors) => ({
@@ -136,10 +135,9 @@ export default function Register() {
                                 console.log("Error: Sem resposta do servidor", error.request);
                         else
                                 console.log('Error', error.message);
-
-                } finally {
+                }).finally(() => {
                         setIsSubmitting(false);
-                }
+                });
         };
 
 

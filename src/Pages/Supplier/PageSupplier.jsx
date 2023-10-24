@@ -24,6 +24,21 @@ export default function PageSupplier() {
         const abortController = new AbortController();
 
         try {
+            getUserById(supplier_id)
+                .then((data) => {
+                    if (data.role !== "supplier") {
+                        alert("Erro ao carregar pagina")
+                        window.location.replace("/")
+                    }
+
+                    setSupplierData(data);
+                })
+                .catch((error) => {
+                        //alert("Erro ao carregar pagina")
+                        console.log("Erro API: ", error)
+                        window.location.replace("/error404")
+                });
+
             getSupplierImagesById(supplier_id)
                 .then((data) => {
                     console.log(data);
@@ -37,15 +52,6 @@ export default function PageSupplier() {
                 })
                 .catch((error) => {
                     throw error;
-                })
-
-            getUserById(supplier_id)
-                .then((data) => {
-                    // console.log(data);
-                    setSupplierData(data);
-                })
-                .catch((error) => {
-                    throw error;
                 });
 
             getSupplierServicesById(supplier_id)
@@ -56,6 +62,7 @@ export default function PageSupplier() {
                 .catch((error) => {
                     throw error;
                 });
+                
         } catch (error) {
             alert("Erro ao carregar pagina")
             console.log("Erro geral: ", error);

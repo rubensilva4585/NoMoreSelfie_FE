@@ -1,8 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-
-import './index.css'
+import { Provider } from 'react-redux'; 
+import store from './redux/store'; 
 import App from "./App";
 import PageHome from './Pages/Home/PageHome';
 import PageUserSettings from './Pages/UserSettings/PageUserSettings';
@@ -14,12 +14,15 @@ import SupplierPorfolio from './Pages/Supplier/Settings/SupplierPorfolio';
 import SupplierServices from './Pages/Supplier/Settings/SupplierServices';
 import PageSupplier from './Pages/Supplier/PageSupplier';
 import SupplierContacts from './Pages/Supplier/Settings/SupplierContacts';
+import Error404 from './Pages/Error/Error404';
+import './index.css'
 
+// Routes
 const routes = [
   {
     path: '/',
     element: <App />,
-    errorElement: <div>404</div>,
+    errorElement: <Error404 />,
     children: [
       {
         path: "/",
@@ -31,23 +34,23 @@ const routes = [
       },
       {
         path: "/supplier/:supplier_id",
-        element: <PageSupplier  />,
+        element: <PageSupplier />,
       },
       {
         path: "/supplier/dashboard",
-        element: <PageSearch  />,
+        element: <PageSearch />,
       },
       {
         path: "/supplier/services",
-        element: <SupplierServices  />,
+        element: <SupplierServices />,
       },
       {
         path: "/supplier/portfolio",
-        element: <SupplierPorfolio  />,
+        element: <SupplierPorfolio />,
       },
       {
         path: "/supplier/contacts",
-        element: <SupplierContacts  />,
+        element: <SupplierContacts />,
       },
       {
         path: "/search",
@@ -65,18 +68,18 @@ const routes = [
         path: "/login",
         element: <Login />,
       },
-      // {
-      //   path: "*",
-      //   element: <Navigate to="/" replace />,
-      // },
     ]
   },
 ]
 
+// Router
 const router = createBrowserRouter(routes)
 
+// Render
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router}></RouterProvider>
+    <Provider store={store}>
+      <RouterProvider router={router}></RouterProvider>
+    </Provider>
   </React.StrictMode>
 )

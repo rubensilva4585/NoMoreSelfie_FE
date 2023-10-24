@@ -2,6 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import ClickAwayListener from "react-click-away-listener";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
+import { doLogout } from "../../API/Auth";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserID, getUserName, getUserRole, getUserToken } from "../../redux/selectors";
+import { SESSION_TOKEN } from "../../constants/General";
 
 export default function HeaderNavBar({ home = false }) {
     const [burgerMenuOpen, setBurgerMenuOpen] = useState(false);
@@ -9,7 +13,15 @@ export default function HeaderNavBar({ home = false }) {
     const [isScrolled, setIsScrolled] = useState(false);
     const profileMenuRef = useRef(null);
 
+    const userToken = useSelector(getUserToken);    
+    const userName = useSelector(getUserName);
+    const userRole = useSelector(getUserRole);
+    const userId = useSelector(getUserID);
+
+    const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    console.log(userName, userRole, userId);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -23,20 +35,6 @@ export default function HeaderNavBar({ home = false }) {
         };
     }, []);
 
-    // useEffect(() => {
-    //     function handleClickOutside(event) {
-    //         if (profileMenuRef.current && !profileMenuRef.current.contains(event.target)) {
-    //             setProfileMenuOpen(false);
-    //         }
-    //     }
-
-    //     document.addEventListener('click', handleClickOutside);
-
-    //     return () => {
-    //         document.removeEventListener('click', handleClickOutside);
-    //     };
-    // }, []);
-
     const toggleBurgerMenu = () => {
         setBurgerMenuOpen(!burgerMenuOpen);
     };
@@ -46,7 +44,9 @@ export default function HeaderNavBar({ home = false }) {
     };
 
     const handleLogout = () => {
-        sessionStorage.removeItem("TOKEN");
+        doLogout();
+        dispatch({ type: 'LOGOUT' });
+        sessionStorage.removeItem(SESSION_TOKEN);
         navigate('/login');
     };
 
@@ -83,10 +83,9 @@ export default function HeaderNavBar({ home = false }) {
                                     <div className="relative ml-3">
                                         <div className="relative inline-block text-left">
                                             {/* Profile dropdown */}
-                                            {sessionStorage.getItem("TOKEN")
+                                            {userToken
                                                 ? (
                                                     <>
-
                                                         <ClickAwayListener
                                                             onClickAway={(e) => {
                                                                 if (profileMenuOpen && profileMenuRef.current && !profileMenuRef.current.contains(e.target)) {
@@ -101,10 +100,10 @@ export default function HeaderNavBar({ home = false }) {
                                                                         </a>
                                                                         <div className="flex items-start justify-center flex-col ml-4">
                                                                             <p className="text-gray-800 font-medium ">
-                                                                                Zeca Afonso
+                                                                                {userName}
                                                                             </p>
                                                                             <span className="text-sm">
-                                                                                Profissional
+                                                                                {userRole === 'supplier' ? 'Fornecedor' : userRole === 'admin' ? 'Admin' : 'Cliente'}
                                                                             </span>
                                                                         </div>
                                                                     </button>
@@ -112,13 +111,25 @@ export default function HeaderNavBar({ home = false }) {
                                                                     {profileMenuOpen && (
                                                                         <div className="absolute right-0 w-56 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
                                                                             <div className="py-1 " role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                                                                                <Link to="/supplier/dashboard" className="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">
-                                                                                    <span className="flex flex-col">
-                                                                                        <span>
-                                                                                            Painel Fornecedor
-                                                                                        </span>
-                                                                                    </span>
-                                                                                </Link>
+
+                                                                                {userRole === 'supplier' && (
+                                                                                    <>
+                                                                                        <Link to={`/supplier/${userId}`} className="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">
+                                                                                            <span className="flex flex-col">
+                                                                                                <span>
+                                                                                                    Meu Perfil
+                                                                                                </span>
+                                                                                            </span>
+                                                                                        </Link>
+                                                                                        <Link to="/supplier/dashboard" className="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">
+                                                                                            <span className="flex flex-col">
+                                                                                                <span>
+                                                                                                    Painel Fornecedor
+                                                                                                </span>
+                                                                                            </span>
+                                                                                        </Link>
+                                                                                    </>
+                                                                                )}
                                                                                 <Link to="/settings" className="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">
                                                                                     <span className="flex flex-col">
                                                                                         <span>
@@ -140,7 +151,6 @@ export default function HeaderNavBar({ home = false }) {
                                                                     )}
                                                                 </div>
                                                             </>
-
                                                         </ClickAwayListener>
                                                     </>
 

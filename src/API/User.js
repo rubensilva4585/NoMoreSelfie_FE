@@ -1,8 +1,8 @@
-import { API_URL } from '../constants/General';
+import { API_URL, SESSION_TOKEN } from '../constants/General';
 import axios from 'axios';
 
 export const authToken = () => {
-        return 'Bearer ' + sessionStorage.getItem("TOKEN");
+        return 'Bearer ' + sessionStorage.getItem(SESSION_TOKEN);
 }
 
 const errorHandler = (error) => {

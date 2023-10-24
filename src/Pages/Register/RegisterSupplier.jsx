@@ -2,7 +2,7 @@ import { useState } from "react"
 import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai'
 import { FaSpinner } from "react-icons/fa"
 import { Link, useNavigate } from "react-router-dom"
-import axios from 'axios';
+import { SESSION_TOKEN } from "../../constants/General";
 
 export function RegisterSupplier() {
         const [selectedDate, setSelectedDate] = useState(null);
@@ -146,7 +146,7 @@ export function RegisterSupplier() {
                 return isValid;
         }
 
-        const handleSubmit = async (e) => {
+        const handleSubmit = (e) => {
                 e.preventDefault();
                 setIsSubmitting(true);
 
@@ -155,26 +155,26 @@ export function RegisterSupplier() {
                         return;
                 }
 
-                try {
-                        const response = await axios.post('http://127.0.0.1:8000/api/auth/register', {
-                                name: values.name,
-                                phone: values.phone,  // verificar se aceita null
-                                company: values.company,
-                                nif: values.nif,
-                                address: values.address,
-                                role: "supplier",
-                                email: values.email,
-                                password: values.password,
-                        });
-
-                        console.log(response.data);
-
-                        const token = response.data.authorization.token;
-                        sessionStorage.setItem("TOKEN", token);
-
+                doRegister({
+                        name: values.name,
+                        phone: values.phone,  // verificar se aceita null
+                        company: values.company,
+                        nif: values.nif,
+                        address: values.address,
+                        role: "supplier",
+                        email: values.email,
+                        password: values.password,
+                }).then((response) => {
+                        sessionStorage.setItem(SESSION_TOKEN, response.data.authorization.token);
+                        dispatch(
+                                login(
+                                        response.data.authorization.token,
+                                        response.data.user.id,
+                                        response.data.user.name,
+                                        response.data.user.role
+                                ));
                         navigate('/');
-                } catch (error) {
-                        console.log(error);
+                }).catch((error) => {
                         if (error.response) {
                                 if (error.response.data.email) {
                                         setValuesError((prevErrors) => ({
@@ -188,10 +188,9 @@ export function RegisterSupplier() {
                                 console.log("Error: Sem resposta do servidor", error.request);
                         else
                                 console.log('Error', error.message);
-
-                } finally {
+                }).finally(() => {
                         setIsSubmitting(false);
-                }
+                });
         };
 
 
@@ -389,123 +388,6 @@ export function RegisterSupplier() {
 
                                 </div>
                         </div>
-
-                        {/* <form action="#" autoComplete="off">
-
-                <div className="flex flex-col mb-6">
-                    <div className="relative">
-                        <input
-                            type="text"
-                            id="first_name"
-                            className=" rounded-lg flex-1 appearance-none border border-gray-300 w-full py-3.5 px-5 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 hover:bg-gray-50"
-                            name="first_name"
-                            placeholder="Primeiro nome *" />
-                    </div>
-                </div>
-
-                <div className="flex flex-col mb-6">
-                    <div className="relative">
-                        <input
-                            type="text"
-                            id="last_name"
-                            className=" rounded-lg flex-1 appearance-none border border-gray-300 w-full py-3.5 px-5 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 hover:bg-gray-50"
-                            name="last_name"
-                            placeholder="Último nome *" />
-                    </div>
-                </div>
-
-                <div className="flex flex-col mb-6">
-                    <div className="relative">
-                        <input
-                            type="email"
-                            id="email"
-                            className=" rounded-lg flex-1 appearance-none border border-gray-300 w-full py-3.5 px-5 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 hover:bg-gray-50"
-                            name="email"
-                            placeholder="Email *" />
-                    </div>
-                </div>
-
-                <div className="flex flex-col mb-6">
-                    <div className="relative">
-                        <input
-                            type="tel"
-                            pattern="^[29]\d{8}$"
-                            id="phone"
-                            className=" rounded-lg flex-1 appearance-none border border-gray-300 w-full py-3.5 px-5 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 hover:bg-gray-50"
-                            name="phone"
-                            placeholder="Telefone" />
-                    </div>
-                </div>
-
-                <div className="flex flex-col mb-6">
-                    <div className="relative">
-                        <div className="absolute transform -translate-y-1/2 top-1/2 right-4">
-                            <AiFillCalendar className="text-xl text-gray-400" />
-                        </div>
-                        <input
-                            type="text"
-                            id="date_of_birth"
-                            className=" rounded-lg flex-1 appearance-none border border-gray-300 w-full py-3.5 px-5 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 hover:bg-gray-50"
-                            name="date_of_birth"
-                            placeholder="Data de nascimento" />
-                    </div>
-                </div>
-
-                <div className="flex flex-col mb-6">
-                    <div className="relative">
-                        <button
-                            type="button"
-                            className="absolute transform -translate-y-1/2 top-1/2 right-4"
-                            onClick={handleShowPassword}>
-
-                            {showPassword === 'password' ? (
-                                <AiFillEyeInvisible className="text-xl text-gray-400" />
-                            ) : (
-                                <AiFillEye className="text-xl text-gray-400" />
-                            )}
-                        </button>
-                        <input
-                            type={showPassword}
-                            id="password"
-                            className=" rounded-lg flex-1 appearance-none border border-gray-300 w-full py-3.5 px-5 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 hover:bg-gray-50"
-                            name="password"
-                            placeholder="Password *" />
-                    </div>
-                </div>
-
-                <div className="flex flex-col">
-                    <div className="relative">
-                        <button
-                            type="button"
-                            className="absolute transform -translate-y-1/2 top-1/2 right-4"
-                            onClick={handleShowPassword}>
-                            {showPassword === 'password' ? (
-                                <AiFillEyeInvisible className="text-xl text-gray-400" />
-                            ) : (
-                                <AiFillEye className="text-xl text-gray-400" />
-                            )}
-                        </button>
-                        <input
-                            type={showPassword}
-                            id="confirm_password"
-                            className=" rounded-lg flex-1 appearance-none border border-gray-300 w-full py-3.5 px-5 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 hover:bg-gray-50"
-                            name="confirm_password"
-                            placeholder="Confirmar Password *" />
-                    </div>
-                </div>
-
-
-                <div className="flex flex-col gap-2.5 mt-6">
-                    <div className="flex w-full">
-                        <button
-                            type="submit"
-                            className="py-3.5 px-5 bg-orange-400 hover:bg-orange-500 focus:ring-orange-500 focus:ring-offset-orange-200 text-white w-full transition ease-in duration-200 text-center text-sm font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg ">
-                            Registar
-                        </button>
-                    </div>
-                </div>
-
-            </form> */}
                 </>
         )
 }
