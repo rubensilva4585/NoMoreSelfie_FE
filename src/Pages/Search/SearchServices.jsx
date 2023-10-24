@@ -6,7 +6,7 @@ import CategoryModal from "./CategoryModal.jsx";
 export default function SearchServices(props) {
     const [category, setCategory] = useState("");
     const [region, setRegion] = useState("");
-    const [categoryModalOpen, setCategoryModalOpen] = useState(true);
+    const [categoryModalOpen, setCategoryModalOpen] = useState(false);
     const [regionModalOpen, setRegionModalOpen] = useState(false);
     const refCategory = useRef(null);
     const refRegion = useRef(null);

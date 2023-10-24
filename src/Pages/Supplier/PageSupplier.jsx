@@ -164,7 +164,7 @@ export default function PageSupplier() {
                             <div className="p-4 bg-white shadow-lg rounded-2xl space-y-6">
                                 <div className="text-center my-4">
                                     <img className="h-32 w-32 rounded-full border-2 p-1 border-orange-400 mx-auto my-2"
-                                        src="https://www.tailwind-kit.com/images/person/6.jpg" alt="" />
+                                        src={supplierData && supplierData.avatar ? IMAGE_STORAGE_PATH + supplierData.avatar : './../../images/noavatar.svg'} alt="" />
                                     <div className='mb-2'>
                                         <h3 className="font-bold text-3xl text-gray-800">{supplierData && supplierData.name}</h3>
                                         <div className="inline-flex text-gray-700 items-center">

@@ -11,6 +11,22 @@ const authReducer = (state = { token: null, id: null, name: null, role: null, av
                                 role: action.role,
                                 avatar: action.avatar,
                         };
+                case 'UPDATE':
+                        return {
+                                token: state.token,
+                                id: state.id,
+                                name: action.name,
+                                role: action.role,
+                                avatar: action.avatar,
+                        };
+                case 'UPDATE_AVATAR':
+                        return {
+                                token: state.token,
+                                id: state.id,
+                                name: state.name,
+                                role: state.role,
+                                avatar: action.avatar,
+                        };
                 case 'LOGOUT':
                         return {
                                 token: null,

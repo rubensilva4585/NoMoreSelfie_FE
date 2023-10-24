@@ -1,10 +1,126 @@
 import { useState, useEffect } from 'react';
 import { getUser, removeProfileImage, updateProfileImage, updateUser, updateUserPassword } from '../../API/User';
 import { IMAGE_STORAGE_PATH } from '../../constants/General';
-import { FaTrash } from 'react-icons/fa';
+import { FaSpinner, FaTrash } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserRole } from './../../redux/selectors';
+import { update, updateAvatar } from '../../redux/actions';
 
 export default function PageUserSettings() {
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    const [personalInfo, setPersonalInfo] = useState({
+        name: '',
+        phone: '',
+        dob: '',
+        // suppliers only
+        company: "",
+        nif: "",
+        address: '',
+        // district_id: '',
+        hasEdited: false,
+    });
+    const [personalInfoError, setPersonalInfoError] = useState({
+        name: '',
+        phone: '',
+        dob: '',
+        // suppliers only
+        company: "",
+        nif: "",
+        address: '',
+        // district_id: '',
+    });
+    const [isSubmittingPersonalInfo, setIsSubmittingPersonalInfo] = useState(false);
+    const userRole = useSelector(getUserRole);
+    const dispatch = useDispatch();
+
+
+    const handleChange = (prop) => (e) => {
+        setPersonalInfo({ ...personalInfo, [prop]: e.target.value, hasEdited: true });
+        console.log(personalInfo)
+    };
+    const handleChangeNIF = () => (e) => {
+        let input = e.target.value.replace(/\D/g, '');
+        input = input.slice(0, 9);
+
+        e.target.value = input;
+        setPersonalInfo({ ...personalInfo, nif: input, hasEdited: true });
+    };
+    const handleChangePhone = () => (e) => {
+        let input = e.target.value.replace(/\D/g, '');
+        input = input.slice(0, 9);
+
+        e.target.value = input;
+        setPersonalInfo({ ...personalInfo, phone: input, hasEdited: true });
+    };
+
+    const personalDataValidation = () => {
+        let isValid = true;
+
+        setPersonalInfoError({
+            name: '',
+            phone: '',
+            dob: '',
+            // suppliers only
+            company: "",
+            nif: "",
+            address: '',
+            // district_id: '',
+        });
+
+        if (!personalInfo.name) {
+            setPersonalInfoError((prevErrors) => ({
+                ...prevErrors,
+                name: 'Nome é obrigatório'
+            }));
+            isValid = false;
+        }
+
+        if (!personalInfo.phone || personalInfo.phone.length < 9 || !/^\d+$/.test(personalInfo.phone)) {
+            setPersonalInfoError((prevErrors) => ({
+                ...prevErrors,
+                phone: 'Telefone inválido'
+            }));
+            isValid = false;
+        }
+
+        if (!personalInfo.dob || personalInfo.dob > new Date().toISOString().split('T')[0]) {
+            setPersonalInfoError((prevErrors) => ({
+                ...prevErrors,
+                dob: 'Data de nascimento inválida'
+            }));
+            isValid = false;
+        }
+
+        if (userRole === 'supplier') {
+            if (!personalInfo.company) {
+                setPersonalInfoError((prevErrors) => ({
+                    ...prevErrors,
+                    company: 'Empresa é obrigatória'
+                }));
+                isValid = false;
+            }
+
+            if (!personalInfo.nif || personalInfo.nif.length < 9) {
+                setPersonalInfoError((prevErrors) => ({
+                    ...prevErrors,
+                    nif: 'NIF inválido'
+                }));
+                isValid = false;
+            }
+
+            if (!personalInfo.address) {
+                setPersonalInfoError((prevErrors) => ({
+                    ...prevErrors,
+                    address: 'Morada é obrigatória'
+                }));
+                isValid = false;
+            }
+        }
+
+        return isValid;
+    }
+
 
     const [user, setUser] = useState({});
     const [errors, setErrors] = useState({
@@ -15,6 +131,7 @@ export default function PageUserSettings() {
         email: '',
         password: '',
     })
+
 
     const updateError = (fieldName, value) => {
         setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: value }));
@@ -34,6 +151,17 @@ export default function PageUserSettings() {
     useEffect(() => {
         getUser()
             .then((response) => {
+                setPersonalInfo({
+                    name: response.name,
+                    phone: response.phone,
+                    dob: response.dob,
+                    // suppliers only
+                    company: response.company,
+                    nif: response.nif,
+                    address: response.address,
+                    // district_id: '',
+                    hasEdited: false,
+                });
                 setUser(response);
                 console.log(response)
             })
@@ -43,45 +171,42 @@ export default function PageUserSettings() {
     }, []);
 
 
-    function submitPersonalInfo(e) {
+    function handleSubmitPersonalInfo(e) {
         e.preventDefault();
-        let hasErrors = false;
-        clearErrors();
+        setIsSubmittingPersonalInfo(true);
 
-        if (e.target.name.value === "") {
-            updateError('name', 'Nome inválido');
-            hasErrors = true;
+        if (!personalDataValidation()) {
+            setIsSubmittingPersonalInfo(false);
+            return;
         }
-        if (e.target.dob.value === "" || e.target.dob.value > new Date().toISOString().split('T')[0]) {
-            updateError('dob', 'Data de nascimento inválida');
-            hasErrors = true;
-        }
-        if (e.target.phone.value === "" || e.target.phone.value.length !== 9) {
-            updateError('phone', 'Número de telefone inválido');
-            hasErrors = true;
-        }
-        if (e.target.address.value === "") {
-            updateError('address', 'Morada inválida');
-            hasErrors = true;
-        }
-
-        if (hasErrors) return;
 
         updateUser({
-            name: e.target.name.value,
-            district_id: parseInt(e.target.address.value, 10),
-            dob: e.target.dob.value,
-            phone: e.target.phone.value,
+            name: personalInfo.name,
+            phone: personalInfo.phone,
+            dob: personalInfo.dob,
+            // supliers only
+            ...(userRole === 'supplier'
+                && {
+                company: personalInfo.company,
+                nif: personalInfo.nif,
+                address: personalInfo.address,
+            }),
         })
             .then((response) => {
                 alert('Perfil atualizado com sucesso!');
+                dispatch(
+                    update(
+                            response.data.user.name,
+                            response.data.user.role,
+                            response.data.user.avatar
+                    ));
                 //setValues((prevValues) => ({ ...prevValues, email: '' }));
             })
             .catch((error) => {
                 alert(error.response.data.error);
             })
             .finally(() => {
-                setIsLoading(false);
+                setIsSubmittingPersonalInfo(false);
             });
     }
 
@@ -150,6 +275,11 @@ export default function PageUserSettings() {
         })
             .then((response) => {
                 if (response.status === 201) {
+                    console.log(response.data.avatar)
+                    dispatch(
+                        updateAvatar(
+                                response.data.avatar
+                        ));
                     alert('Foto de perfil alterada com sucesso!');
                     // return handleGetImages();
                 } else {
@@ -194,100 +324,152 @@ export default function PageUserSettings() {
                             </h2>
                             <div className="max-w-sm mx-auto space-y-5 md:w-2/3 ">
                                 <div className=" relative flex flex-col gap-4">
-                                    <div className="max-w-sm mx-auto md:w-full md:mx-0">
-                                        <label htmlFor="name">
-                                            Foto de perfil
-                                        </label>
-                                        <div className="flex justify-start items-center gap-4">
-                                            <div className="relative h-16 w-16 overflow-hidden">
-                                                <img
-                                                    className="h-full w-full object-cover rounded-full"
-                                                    src={user.avatar ? IMAGE_STORAGE_PATH + user.avatar : './../../images/noavatar.svg'}
-                                                    alt=""
-                                                />
-                                                {user.avatar &&
-                                                    <div
-                                                        className="absolute flex justify-center items-center w-full h-full top-0 cursor-pointer text-transparent p-2 rounded-full hover:bg-red-500/50 hover:text-white"
-                                                        onClick={handleDeteleAvatar}
-                                                    >
-                                                        <FaTrash />
-                                                    </div>
-                                                }
-                                            </div>
-
-                                            <div className="mt-2">
-                                                <label className="py-2.5 px-4 text-orange-400 border-orange-400 border hover:bg-orange-400 hover:text-white w-fit transition ease-in duration-200 text-center text-sm font-semibold shadow-md focus:outline-none rounded-lg">
-                                                    Alterar Foto
-                                                    <input
-                                                        type="file"
-                                                        accept="image/jpeg, image/png, image/jpg"
-                                                        max="2048"
-                                                        style={{ display: 'none' }}
-                                                        onChange={handleAvatarChange}
+                                    {userRole === 'supplier' &&
+                                        <div className="max-w-sm mx-auto md:w-full md:mx-0">
+                                            <label htmlFor="name">
+                                                Foto de perfil
+                                            </label>
+                                            <div className="flex justify-start items-center gap-4">
+                                                <div className="relative h-16 w-16 overflow-hidden">
+                                                    <img
+                                                        className="h-full w-full object-cover rounded-full"
+                                                        src={user.avatar ? IMAGE_STORAGE_PATH + user.avatar : './../../images/noavatar.svg'}
+                                                        alt=""
                                                     />
-                                                </label>
+                                                    {user.avatar &&
+                                                        <div
+                                                            className="absolute flex justify-center items-center w-full h-full top-0 cursor-pointer text-transparent p-2 rounded-full hover:bg-red-500/50 hover:text-white"
+                                                            onClick={handleDeteleAvatar}
+                                                        >
+                                                            <FaTrash />
+                                                        </div>
+                                                    }
+                                                </div>
+
+                                                <div className="mt-2">
+                                                    <label className="py-2.5 px-4 text-orange-400 border-orange-400 border hover:bg-orange-400 hover:text-white w-fit transition ease-in duration-200 text-center text-sm font-semibold shadow-md focus:outline-none rounded-lg">
+                                                        Alterar Foto
+                                                        <input
+                                                            type="file"
+                                                            accept="image/jpeg, image/png, image/jpg"
+                                                            max="2048"
+                                                            style={{ display: 'none' }}
+                                                            onChange={handleAvatarChange}
+                                                        />
+                                                    </label>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <form onSubmit={submitPersonalInfo}>
+                                    }
+                                    <form onSubmit={handleSubmitPersonalInfo} className='space-y-2'>
                                         <div className="relative">
                                             <label htmlFor="name">
                                                 Nome
                                             </label>
                                             <input
+                                                className={`rounded-lg flex-1 appearance-none border ${personalInfoError.name === '' ? 'border-gray-200' : 'border-red-500'}  w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 hover:bg-gray-50`}
                                                 type="text"
                                                 id="name"
-                                                defaultValue={user.name}
-                                                className={`rounded-lg flex-1 appearance-none border ${errors.name === '' ? 'border-gray-300' : 'border-red-600'}  w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 hover:bg-gray-50`}
                                                 name="name"
-                                                placeholder="Escreva o seu nome e apelido" required />
-                                            {errors.name !== '' && <span className="text-red-600 text-sm">{errors.name}</span>}
+                                                placeholder="Nome e apelido"
+                                                defaultValue={user.name}
+                                                onChange={handleChange("name")}
+                                            />
+                                            {personalInfoError.name !== '' && <span className="text-red-600 text-sm">{personalInfoError.name}</span>}
                                         </div>
                                         <div className="relative">
                                             <label htmlFor="date">
                                                 Data de nascimento
                                             </label>
                                             <input
+                                                className={` rounded-lg flex-1 appearance-none border ${personalInfoError.dob === '' ? 'border-gray-200' : 'border-red-500'} w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 hover:bg-gray-50`}
                                                 type="date"
                                                 id="dob"
-                                                defaultValue={user.dob}
-                                                className={` rounded-lg flex-1 appearance-none border ${errors.dob === '' ? 'border-gray-300' : 'border-red-600'} w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 hover:bg-gray-50`}
                                                 name="dob"
-                                                placeholder="Escreva a sua data de nascimento" required />
-                                            {errors.dob !== '' && <span className="text-red-600 text-sm">{errors.dob}</span>}
+                                                placeholder="Escreva a sua data de nascimento"
+                                                defaultValue={user.dob}
+                                                onChange={handleChange("dob")}
+                                            />
+                                            {personalInfoError.dob !== '' && <span className="text-red-600 text-sm">{personalInfoError.dob}</span>}
                                         </div>
                                         <div className="relative">
                                             <label htmlFor="phone">
                                                 Telefone
                                             </label>
                                             <input
+                                                className={` rounded-lg flex-1 appearance-none border ${personalInfoError.phone === '' ? 'border-gray-200' : 'border-red-500'} w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 hover:bg-gray-50`}
                                                 type="tel"
                                                 id="phone"
-                                                defaultValue={user.phone}
-                                                className={` rounded-lg flex-1 appearance-none border ${errors.phone === '' ? 'border-gray-300' : 'border-red-600'} w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 hover:bg-gray-50`}
                                                 name="phone"
-                                                placeholder="Escreva o seu contacto" required />
-                                            {errors.phone !== '' && <span className="text-red-600 text-sm">{errors.phone}</span>}
+                                                placeholder="Telefone (9 dígitos)"
+                                                defaultValue={user.phone}
+                                                onChange={handleChangePhone()}
+                                            />
+                                            {personalInfoError.phone !== '' && <span className="text-red-600 text-sm">{personalInfoError.phone}</span>}
                                         </div>
-                                        <div className="relative">
-                                            <label htmlFor="name">
-                                                Morada
-                                            </label>
-                                            <input
-                                                type="text"
-                                                id="address"
-                                                defaultValue={user.address}
-                                                className={` rounded-lg flex-1 appearance-none border ${errors.address === '' ? 'border-gray-300' : 'border-red-600'} w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 hover:bg-gray-50`}
-                                                name="address"
-                                                placeholder="Escreva a sua localizaçao" required />
-                                            {errors.address !== '' && <span className="text-red-600 text-sm">{errors.address}</span>}
-                                        </div>
+                                        {userRole === 'supplier' &&
+                                            <>
+                                                <div className="relative">
+                                                    <label htmlFor="name">
+                                                        Morada
+                                                    </label>
+                                                    <input
+                                                        type="text"
+                                                        id="address"
+                                                        defaultValue={user.address}
+                                                        className={` rounded-lg flex-1 appearance-none border ${personalInfoError.address === '' ? 'border-gray-200' : 'border-red-500'} w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 hover:bg-gray-50`}
+                                                        name="address"
+                                                        placeholder="Vive em..."
+                                                    />
+                                                    {personalInfoError.address !== '' && <span className="text-red-600 text-sm">{personalInfoError.address}</span>}
+                                                </div>
+                                                <div className="relative">
+                                                    <label htmlFor="name">
+                                                        Empresa
+                                                    </label>
+                                                    <input
+                                                        className={` rounded-lg flex-1 appearance-none border ${personalInfoError.company === '' ? 'border-gray-200' : 'border-red-500'} w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 hover:bg-gray-50`}
+                                                        type="text"
+                                                        id="company"
+                                                        name="company"
+                                                        defaultValue={user.company}
+                                                        placeholder="Empresa"
+                                                        onChange={handleChange("company")}
+                                                    />
+                                                    {personalInfoError.company !== '' && <span className="text-red-600 text-sm">{personalInfoError.company}</span>}
+                                                </div>
+
+                                                <div className="relative">
+                                                    <label htmlFor="name">
+                                                        NIF
+                                                    </label>
+                                                    <input
+                                                        className={` rounded-lg flex-1 appearance-none border ${personalInfoError.nif === '' ? 'border-gray-200' : 'border-red-500'} w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 hover:bg-gray-50`}
+                                                        type="text"
+                                                        id="nif"
+                                                        name="nif"
+                                                        defaultValue={user.nif}
+                                                        placeholder="Número de identificação fiscal"
+                                                        onChange={handleChangeNIF()}
+                                                    />
+                                                    {personalInfoError.nif !== '' && <span className="text-red-600 text-sm">{personalInfoError.nif}</span>}
+                                                </div>
+                                            </>
+                                        }
                                         <div className="flex w-full mt-2 justify-end">
-                                            <button
-                                                type="submit"
-                                                className="py-2.5 px-4 text-orange-400 border-orange-400 border hover:bg-orange-400 hover:text-white w-fit transition ease-in duration-200 text-center text-sm font-semibold shadow-md focus:outline-none rounded-lg ">
-                                                Guardar
-                                            </button>
+                                            {personalInfo.hasEdited &&
+                                                <button
+                                                    className="py-2.5 px-4 text-orange-400 border-orange-400 border hover:bg-orange-400 hover:text-white w-fit transition ease-in duration-200 text-center text-sm font-semibold shadow-md focus:outline-none rounded-lg "
+                                                    type="submit"
+                                                    disabled={isSubmittingPersonalInfo || !personalInfo.hasEdited}
+                                                >
+                                                    {isSubmittingPersonalInfo ? (
+                                                        <FaSpinner className="animate-spin -ml-1 h-5 w-5 text-white" />
+                                                    ) : (
+                                                        <span>Guardar</span>
+                                                    )}
+                                                </button>
+                                            }
                                         </div>
                                     </form>
                                 </div>
@@ -315,7 +497,7 @@ export default function PageUserSettings() {
                                             <input
                                                 type="text"
                                                 id="newemail"
-                                                className={`rounded-lg flex-1 appearance-none border ${errors.email === '' ? 'border-gray-300' : 'border-red-600'} w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 hover:bg-gray-50`}
+                                                className={`rounded-lg flex-1 appearance-none border ${errors.email === '' ? 'border-gray-200' : 'border-red-500'} w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 hover:bg-gray-50`}
                                                 name="newemail"
                                                 placeholder="Escreva o seu novo Email" />
                                             {errors.email !== '' && <span className="text-red-600 text-sm">{errors.email}</span>}
@@ -342,7 +524,7 @@ export default function PageUserSettings() {
                             </h2>
                             <div className="max-w-sm mx-auto space-y-5 md:w-2/3 ">
                                 <div className=" relative flex flex-col gap-4">
-                                    <form onSubmit={submitUserPassword}>
+                                    <form onSubmit={submitUserPassword} className='space-y-2'>
                                         <div className="relative">
                                             <label htmlFor="oldpassword">
                                                 Password Atual
@@ -350,7 +532,7 @@ export default function PageUserSettings() {
                                             <input
                                                 type="password"
                                                 id="oldpassword"
-                                                className={` rounded-lg flex-1 appearance-none border ${errors.password !== 'Invalid password' ? 'border-gray-300' : 'border-red-600'} w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 hover:bg-gray-50`}
+                                                className={` rounded-lg flex-1 appearance-none border ${errors.password !== 'Invalid password' ? 'border-gray-200' : 'border-red-500'} w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 hover:bg-gray-50`}
                                                 name="oldpassword"
                                                 placeholder="Escreva a Password atual" />
                                             {errors.password === 'Invalid password' && <span className="text-red-600 text-sm">{errors.password}</span>}
@@ -362,7 +544,7 @@ export default function PageUserSettings() {
                                             <input
                                                 type="password"
                                                 id="newpassword"
-                                                className={` rounded-lg flex-1 appearance-none border ${errors.password !== 'New password cannot be the same as your current password.' ? 'border-gray-300' : 'border-red-600'} w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 hover:bg-gray-50`}
+                                                className={` rounded-lg flex-1 appearance-none border ${errors.password !== 'New password cannot be the same as your current password.' ? 'border-gray-200' : 'border-red-500'} w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 hover:bg-gray-50`}
                                                 name="newpassword"
                                                 placeholder="Escreva a nova Password" />
                                             {errors.password === 'New password cannot be the same as your current password.' && <span className="text-red-600 text-sm">{errors.password}</span>}
