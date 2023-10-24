@@ -4,8 +4,8 @@ import { FaBars, FaTimes } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { doLogout } from "../../API/Auth";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserID, getUserName, getUserRole, getUserToken } from "../../redux/selectors";
-import { SESSION_TOKEN } from "../../constants/General";
+import { getUserAvatar, getUserID, getUserName, getUserRole, getUserToken } from "../../redux/selectors";
+import { IMAGE_STORAGE_PATH, SESSION_TOKEN } from "../../constants/General";
 
 export default function HeaderNavBar({ home = false }) {
     const [burgerMenuOpen, setBurgerMenuOpen] = useState(false);
@@ -17,6 +17,7 @@ export default function HeaderNavBar({ home = false }) {
     const userName = useSelector(getUserName);
     const userRole = useSelector(getUserRole);
     const userId = useSelector(getUserID);
+    const userAvatar = useSelector(getUserAvatar);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -94,15 +95,17 @@ export default function HeaderNavBar({ home = false }) {
                                                             }}>
                                                             <>
                                                                 <div ref={profileMenuRef}>
-                                                                    <button onClick={toggleProfileMenu} type="button" className={`flex items-center justify-center w-full rounded-md px-4 py-2 text-gray-700 hover:bg-gray-50 focus:outline-none`} id="options-menu">
+                                                                    <button onClick={toggleProfileMenu} type="button" className={`flex items-center justify-center w-full rounded-md px-4 py-2 text-gray-700 hover:bg-gray-50/50 focus:outline-none`} id="options-menu">
                                                                         <a href="#" className="relative block">
-                                                                            <img alt="profil" src="https://www.tailwind-kit.com/images/person/6.jpg" className="mx-auto object-cover rounded-full h-10 w-10" />
+                                                                            <img alt="profil" src={userAvatar ? IMAGE_STORAGE_PATH + userAvatar : './../../images/noavatar.svg'} className="mx-auto object-cover rounded-full h-10 w-10" />
                                                                         </a>
+
+                                                                        
                                                                         <div className="flex items-start justify-center flex-col ml-4">
-                                                                            <p className="text-gray-800 font-medium ">
+                                                                            <p className={`${(home && isScrolled) || !home ? 'text-gray-800' : 'text-white'} font-medium`}>
                                                                                 {userName}
                                                                             </p>
-                                                                            <span className="text-sm">
+                                                                            <span className={`${(home && isScrolled) || !home ? 'text-gray-600' : 'text-gray-200'} text-sm`}>
                                                                                 {userRole === 'supplier' ? 'Fornecedor' : userRole === 'admin' ? 'Admin' : 'Cliente'}
                                                                             </span>
                                                                         </div>

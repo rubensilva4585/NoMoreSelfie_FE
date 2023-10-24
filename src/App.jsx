@@ -42,8 +42,8 @@ export default function App() {
         },
       })
         .then((response) => {
-          const { id, name, role } = response.data;
-          store.dispatch(login(token, id, name, role));
+          const { id, name, role, avatar } = response.data;
+          store.dispatch(login(token, id, name, role, avatar));
         })
         .catch((error) => {
           console.log(error);

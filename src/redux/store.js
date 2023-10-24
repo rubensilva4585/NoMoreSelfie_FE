@@ -1,7 +1,7 @@
 import { createStore, combineReducers } from 'redux';
 
 // Reducer para autenticação
-const authReducer = (state = { token: null, id: null, name: null, role: null }, action) => {
+const authReducer = (state = { token: null, id: null, name: null, role: null, avatar: null }, action) => {
         switch (action.type) {
                 case 'LOGIN':
                         return {
@@ -9,6 +9,7 @@ const authReducer = (state = { token: null, id: null, name: null, role: null }, 
                                 id: action.id,
                                 name: action.name,
                                 role: action.role,
+                                avatar: action.avatar,
                         };
                 case 'LOGOUT':
                         return {
@@ -16,6 +17,7 @@ const authReducer = (state = { token: null, id: null, name: null, role: null }, 
                                 id: null,
                                 name: null,
                                 role: null,
+                                avatar: null,
                         };
                 default:
                         return state;

@@ -80,7 +80,8 @@ export default function Login() {
           response.data.authorization.token,
           response.data.user.id,
           response.data.user.name,
-          response.data.user.role
+          response.data.user.role,
+          response.data.user.avatar
         ));
       navigate('/');
     }).catch((error) => {

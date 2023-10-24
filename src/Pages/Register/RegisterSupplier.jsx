@@ -3,6 +3,9 @@ import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai'
 import { FaSpinner } from "react-icons/fa"
 import { Link, useNavigate } from "react-router-dom"
 import { SESSION_TOKEN } from "../../constants/General";
+import { doRegister } from "../../API/Auth";
+import { useDispatch } from "react-redux";
+import { login } from './../../redux/actions';
 
 export function RegisterSupplier() {
         const [selectedDate, setSelectedDate] = useState(null);
@@ -31,6 +34,7 @@ export function RegisterSupplier() {
                 confirmPassword: "",
         });
         const [isSubmitting, setIsSubmitting] = useState(false);
+        const dispatch = useDispatch();
         const navigate = useNavigate();
 
 
@@ -171,7 +175,8 @@ export function RegisterSupplier() {
                                         response.data.authorization.token,
                                         response.data.user.id,
                                         response.data.user.name,
-                                        response.data.user.role
+                                        response.data.user.role,
+                                        response.data.user.avatar
                                 ));
                         navigate('/');
                 }).catch((error) => {

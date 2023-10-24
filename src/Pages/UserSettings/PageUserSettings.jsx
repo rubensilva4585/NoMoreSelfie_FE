@@ -1,10 +1,11 @@
-import { updateUser, updateUserPassword, getUserByID } from '../../services/user_api/user';
-import Cookies from 'js-cookie';
 import { useState, useEffect } from 'react';
+import { getUser, removeProfileImage, updateProfileImage, updateUser, updateUserPassword } from '../../API/User';
+import { IMAGE_STORAGE_PATH } from '../../constants/General';
+import { FaTrash } from 'react-icons/fa';
 
 export default function PageUserSettings() {
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const token = sessionStorage.getItem("TOKEN");
+
     const [user, setUser] = useState({});
     const [errors, setErrors] = useState({
         name: '',
@@ -31,7 +32,7 @@ export default function PageUserSettings() {
     };
 
     useEffect(() => {
-        getUserByID(sessionStorage.getItem("TOKEN"))
+        getUser()
             .then((response) => {
                 setUser(response);
                 console.log(response)
@@ -66,13 +67,22 @@ export default function PageUserSettings() {
 
         if (hasErrors) return;
 
-        const newUser = {
+        updateUser({
             name: e.target.name.value,
             district_id: parseInt(e.target.address.value, 10),
             dob: e.target.dob.value,
             phone: e.target.phone.value,
-        }
-        updateUser(newUser, token)
+        })
+            .then((response) => {
+                alert('Perfil atualizado com sucesso!');
+                //setValues((prevValues) => ({ ...prevValues, email: '' }));
+            })
+            .catch((error) => {
+                alert(error.response.data.error);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
     }
 
     function submitUserEmail(e) {
@@ -94,16 +104,78 @@ export default function PageUserSettings() {
         const newUser = {
             email: e.target.newemail.value,
         }
-        updateUser(newUser, token)
+
+        updateUser({
+            email: values.email
+        })
+            .then((response) => {
+                alert('Email alterado com sucesso!');
+                //setValues((prevValues) => ({ ...prevValues, email: '' }));
+            })
+            .catch((error) => {
+                alert(error.response.data.error);
+            })
+            .finally(() => {
+                //setIsLoading(false);
+            });
     }
 
     function submitUserPassword(e) {
         e.preventDefault();
-        const passwords = {
+
+        updateUserPassword({
             oldpassword: e.target.oldpassword.value,
             newpassword: e.target.newpassword.value
-        }
-        updateUserPassword(passwords, token, updateError)
+        })
+            .then((response) => {
+                alert('Password alterada com sucesso!');
+                // setValues((prevValues) => ({ ...prevValues, password: '' }));
+            })
+            .catch((error) => {
+                alert(error.response.data.error);
+            })
+            .finally(() => {
+                //setIsLoading(false);
+            });
+    }
+
+    const handleAvatarChange = (e) => {
+
+        const selectedImage = e.target.files[0];
+
+        if (!selectedImage) return;
+
+        updateProfileImage({
+            avatar: selectedImage
+        })
+            .then((response) => {
+                if (response.status === 201) {
+                    alert('Foto de perfil alterada com sucesso!');
+                    // return handleGetImages();
+                } else {
+                    throw new Error('Falha no upload. Por favor, tente novamente.');
+                }
+            })
+            .catch((error) => {
+                alert(error.response.data.error);
+            })
+            .finally(() => {
+                //setIsLoading(false);
+            });
+    };
+
+    const handleDeteleAvatar = () => {
+        removeProfileImage()
+            .then((response) => {
+                alert('Foto de perfil removida com sucesso!');
+                setUser((prevUser) => ({ ...prevUser, avatar: null }));
+            })
+            .catch((error) => {
+                alert(error.response.data.error);
+            })
+            .finally(() => {
+                //setIsLoading(false);
+            });
     }
 
     return (
@@ -114,7 +186,6 @@ export default function PageUserSettings() {
                         <h2 className="text-2xl leading-tight">
                             Definições de conta
                         </h2>
-
                     </div>
                     <div className="space-y-6 bg-white">
                         <div className="items-center w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
@@ -128,13 +199,33 @@ export default function PageUserSettings() {
                                             Foto de perfil
                                         </label>
                                         <div className="flex justify-start items-center gap-4">
-                                            <img alt="profil" src="https://www.tailwind-kit.com/images/person/1.jpg" className="object-cover rounded-full h-16 w-16 " />
+                                            <div className="relative h-16 w-16 overflow-hidden">
+                                                <img
+                                                    className="h-full w-full object-cover rounded-full"
+                                                    src={user.avatar ? IMAGE_STORAGE_PATH + user.avatar : './../../images/noavatar.svg'}
+                                                    alt=""
+                                                />
+                                                {user.avatar &&
+                                                    <div
+                                                        className="absolute flex justify-center items-center w-full h-full top-0 cursor-pointer text-transparent p-2 rounded-full hover:bg-red-500/50 hover:text-white"
+                                                        onClick={handleDeteleAvatar}
+                                                    >
+                                                        <FaTrash />
+                                                    </div>
+                                                }
+                                            </div>
+
                                             <div className="mt-2">
-                                                <button
-                                                    type="submit"
-                                                    className="py-2.5 px-4 text-orange-400 border-orange-400 border hover:bg-orange-400 hover:text-white w-fit transition ease-in duration-200 text-center text-sm font-semibold shadow-md focus:outline-none rounded-lg ">
+                                                <label className="py-2.5 px-4 text-orange-400 border-orange-400 border hover:bg-orange-400 hover:text-white w-fit transition ease-in duration-200 text-center text-sm font-semibold shadow-md focus:outline-none rounded-lg">
                                                     Alterar Foto
-                                                </button>
+                                                    <input
+                                                        type="file"
+                                                        accept="image/jpeg, image/png, image/jpg"
+                                                        max="2048"
+                                                        style={{ display: 'none' }}
+                                                        onChange={handleAvatarChange}
+                                                    />
+                                                </label>
                                             </div>
                                         </div>
                                     </div>

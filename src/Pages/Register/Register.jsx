@@ -5,6 +5,8 @@ import { FaFacebookF, FaSpinner } from "react-icons/fa"
 import { Link, useNavigate } from "react-router-dom"
 import { doRegister } from "../../API/Auth"
 import { SESSION_TOKEN } from "../../constants/General"
+import { useDispatch } from "react-redux"
+import { login } from "../../redux/actions"
 
 export default function Register() {
         // states
@@ -24,6 +26,7 @@ export default function Register() {
                 confirmPassword: "",
         });
         const [isSubmitting, setIsSubmitting] = useState(false);
+        const dispatch = useDispatch();
         const navigate = useNavigate();
 
 
@@ -118,7 +121,8 @@ export default function Register() {
                                         response.data.authorization.token,
                                         response.data.user.id,
                                         response.data.user.name,
-                                        response.data.user.role
+                                        response.data.user.role,
+                                        response.data.user.avatar
                                 ));
                         navigate('/');
                 }).catch((error) => {
