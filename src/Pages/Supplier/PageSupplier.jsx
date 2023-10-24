@@ -122,7 +122,7 @@ export default function PageSupplier() {
                                 {/* Distritos */}
                                 <div className=''>
                                     <h1 className="text-2xl font-bold text-gray-800 mb-4">Distritos</h1>
-                                    <div id="service_districts" className="text-gray-600 w-full flex overflow-x-scroll items-center text-lg rounded-lg p-2 bg-gray-100/50">
+                                    <div id="service_districts" className="text-gray-600 w-full flex overflow-x-auto items-center text-lg rounded-lg p-2 bg-gray-100/50">
                                         <div className=''>
                                             Porto
                                         </div>
@@ -163,8 +163,10 @@ export default function PageSupplier() {
                         <div className="order-first lg:order-none lg:col-span-1">
                             <div className="p-4 bg-white shadow-lg rounded-2xl space-y-6">
                                 <div className="text-center my-4">
-                                    <img className="h-32 w-32 rounded-full border-2 p-1 border-orange-400 mx-auto my-2"
+                                    <div className='h-32 w-32 rounded-full border-2 p-1 border-orange-400 mx-auto my-2 overflow-hidden'>
+                                    <img className="object-cover w-full h-full rounded-full"
                                         src={supplierData && supplierData.avatar ? IMAGE_STORAGE_PATH + supplierData.avatar : './../../images/noavatar.svg'} alt="" />
+                                    </div>
                                     <div className='mb-2'>
                                         <h3 className="font-bold text-3xl text-gray-800">{supplierData && supplierData.name}</h3>
                                         <div className="inline-flex text-gray-700 items-center">
@@ -260,175 +262,3 @@ export default function PageSupplier() {
         </section >
     )
 }
-
-
-
-// Loading
-{/* <>
-<div className='rounded-lg lg:block lg:col-span-2 h-100'>
-    <ImageGallery items={images}
-        infinite={true}
-        showBullets={true}
-        showFullscreenButton={true}
-        useBrowserFullscreen={false}
-        showPlayButton={true}
-        showThumbnails={true}
-        showIndex={true}
-        showNav={true}
-        thumbnailPosition={"bottom"}
-        slideDuration={parseInt(500)}
-        slideInterval={parseInt(450)}
-        slideOnThumbnailOver={true}
-        useWindowKeyDown={true}
-    />
-    <hr className='my-8' />
-    <div className='bg-white rounded-lg p-5 shadow-lg border border-gray-200'>
-
-        <div className=' '>
-            <h1 className="text-2xl font-bold text-gray-800 mb-4">Descrição</h1>
-            <div id="service_description text-gray-600">
-                <p className="bg-gray-400 w-3/4 h-6 mb-4"></p>
-                <p className="bg-gray-400 w-1/2 h-6 mb-1"></p>
-                <p className="bg-gray-400 w-2/3 h-6 mb-1"></p>
-                <p className="bg-gray-400 w-3/4 h-6 mb-1"></p>
-                <br />
-                <ul>
-                    <li className="bg-gray-400 w-2/3 h-6 mb-1"></li>
-                    <li className="bg-gray-400 w-1/2 h-6 mb-1"></li>
-                    <li className="bg-gray-400 w-3/4 h-6 mb-1"></li>
-                </ul>
-            </div>
-        </div>
-
-        <hr className='my-8' />
-        <div className=''>
-            <h1 className="text-2xl font-bold text-gray-800 mb-4">Distritos</h1>
-            <div id="service_districts" className="text-gray-600 w-full flex overflow-x-scroll items-center text-lg rounded-lg p-2 bg-gray-100/50">
-                <div className='bg-gray-400 w-3/4 h-6 mb-4'>
-                    Porto
-                </div>
-                <div className='mx-4 text-gray-600'>|</div>
-                <div className=''>
-                    Lisboa
-                </div>
-                <div className='mx-4 text-gray-600'>|</div>
-                <div className=''>
-                    Braga
-                </div>
-                <div className='mx-4 text-gray-600'>|</div>
-                <div className=''>
-                    Braga
-                </div>
-                <div className='mx-4 text-gray-600'>|</div>
-                <div className=''>
-                    Braga
-                </div>
-                <div className='mx-4 text-gray-600'>|</div>
-                <div className=''>
-                    Braga
-                </div>
-                <div className='mx-4 text-gray-600'>|</div>
-                <div className=''>
-                    Braga
-                </div>
-                <div className='mx-4 text-gray-600'>|</div>
-                <div className=''>
-                    Braga
-                </div>
-            </div>
-        </div>
-
-        <hr className='my-8' />
-
-        <div className=''>
-            <h1 className="text-2xl font-bold text-gray-800 mb-4">Serviços e Preços</h1>
-            <div className="grid sm:grid-cols-2 sm:grid-rows-[1fr,1fr] lg:grid-cols-3 lg:grid-rows-[1fr,1fr,1fr] gap-4">
-                <PageSupplierService />
-                <PageSupplierService />
-                <PageSupplierService />
-                <PageSupplierService />
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div className="animate-pulse order-first lg:order-none lg:col-span-1">
-    <div className="p-4 bg-white shadow-lg rounded-2xl space-y-6">
-        <div className="text-center my-4">
-            <div className="h-32 w-32 rounded-full  border-2 p-1 border-orange-400 bg-gray-400 mx-auto my-2"></div>
-            <div className='mb-2 flex flex-col gap-2 items-center justify-center'>
-                <div className="h-6 bg-gray-400 rounded w-64"></div>
-                <div className="h-4 bg-gray-400 rounded w-20"></div>
-            </div>
-            <div className='h-1 w-10 bg-orange-400 mx-auto' />
-        </div>
-        <div className="w-full p-2 bg-orange-100/50 rounded-lg">
-            <div className="flex items-center justify-around text-xs text-gray-400">
-                <p className="flex text-center flex-col">
-                    Data registo
-                    <div className="h-4 bg-gray-400 rounded w-15"></div>
-                </p>
-                <p className="flex text-center flex-col">
-                    Serviços
-                    <div className="h-4 bg-gray-400 rounded w-15"></div>
-                </p>
-                <p className="flex text-center flex-col">
-                    Visitantes
-                    <div className="h-4 bg-gray-400 rounded w-15"></div>
-                </p>
-            </div>
-        </div>
-
-        <div>
-            <p className="text-gray-600 text-center space-y-2 flex flex-col items-center">
-                <div className="h-4 bg-gray-400 rounded w-72"></div>
-                <div className="h-4 bg-gray-400 rounded w-64"></div>
-                <div className="h-4 bg-gray-400 rounded w-72"></div>
-            </p>
-        </div>
-
-        <div className="flex items-center justify-around text-xs text-gray-400">
-            <p className="flex text-center flex-col">
-                Email
-                <span className="font-bold text-center text-black">
-                    <div className="h-4 bg-gray-400 rounded w-32"></div>
-                </span>
-            </p>
-            <p className="flex text-center flex-col">
-                Telefone
-                <span className="font-bold text-center text-black">
-                    <div className="h-4 bg-gray-400 rounded w-16"></div>
-                </span>
-            </p>
-        </div>
-        <div className="flex items-center gap-2 justify-between w-40 pt-4 mx-auto text-gray-500 border-t border-gray-200 text-3xl">
-            <div>
-                <FaFacebook />
-            </div>
-            <div>
-                <FaInstagram />
-            </div>
-            <div>
-                <FaPinterest />
-            </div>
-            <div>
-                <FaLinkedin />
-            </div>
-            <div>
-                <FaLink />
-            </div>
-        </div>
-    </div>
-</div>
-<div className="animate-pulse flex space-x-4">
-    <div className="rounded-full bg-gray-400 h-12 w-12"></div>
-    <div className="flex-1 space-y-4 py-1">
-        <div className="h-4 bg-gray-400 rounded w-3/4"></div>
-        <div className="space-y-2">
-            <div className="h-4 bg-gray-400 rounded"></div>
-            <div className="h-4 bg-gray-400 rounded w-5/6"></div>
-        </div>
-    </div>
-</div>
-</> */}

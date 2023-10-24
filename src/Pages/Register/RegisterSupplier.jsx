@@ -169,7 +169,7 @@ export function RegisterSupplier() {
                         email: values.email,
                         password: values.password,
                 }).then((response) => {
-                        sessionStorage.setItem(SESSION_TOKEN, response.data.authorization.token);
+                        localStorage.setItem(SESSION_TOKEN, response.data.authorization.token);
                         dispatch(
                                 login(
                                         response.data.authorization.token,

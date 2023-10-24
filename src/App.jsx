@@ -22,12 +22,12 @@ export default function App() {
   const location = useLocation();
 
   // consts
-  const token = sessionStorage.getItem(SESSION_TOKEN);
-  const isSupplierRoute = ['/supplier/dashboard', '/supplier/services', '/supplier/portfolio', '/supplier/contacts'].includes(location.pathname);
+  const token = localStorage.getItem(SESSION_TOKEN);
+  const isSupplierRoute = [/*'/supplier/dashboard',*/ '/supplier/services', '/supplier/portfolio', '/supplier/contacts'].includes(location.pathname);
   const isLoginRoute = ['/settings'].includes(location.pathname);
 
   // Layout (Header + Footer) routes
-  const layoutRender = !['/login', '/signin', '/signin/supplier'].includes(location.pathname);
+  const layoutRender = !['/login', '/signin', '/signin/supplier', '/supplier/dashboard'].includes(location.pathname);
 
   // functions
   // Verify if user is authorized to access the route
@@ -49,7 +49,7 @@ export default function App() {
         })
         .catch((error) => {
           console.log(error);
-          sessionStorage.removeItem(SESSION_TOKEN);
+          localStorage.removeItem(SESSION_TOKEN);
         })
         .finally(() => {
           setIsLoading(false);

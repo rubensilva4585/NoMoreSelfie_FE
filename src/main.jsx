@@ -38,7 +38,7 @@ const routes = [
       },
       {
         path: "/supplier/dashboard",
-        element: <PageSearch />,
+        element: <Error404 />,
       },
       {
         path: "/supplier/services",

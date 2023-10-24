@@ -16,7 +16,7 @@ export default function PageSupplierService({ service }) {
                     <div className="flex items-center gap-2">
                         <FaCheck className="text-green-500" />
                         {service.category_name}
-                        <span className="text-gray-600 text-xs">(50€ - 300€)</span>
+                        <span className="text-gray-600 text-xs">(500€ - 700€)</span>
                     </div>
                     <div className="text-gray-400" >
                         {isOpen ? <FaAngleUp /> : <FaAngleDown />}

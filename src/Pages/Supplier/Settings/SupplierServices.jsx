@@ -23,7 +23,7 @@ export default function SupplierServices(props) {
         };
 
         const [text, setText] = useState('');
-        const token = sessionStorage.getItem('TOKEN');
+        const token = localStorage.getItem('TOKEN');
 
         const submitService = (e) => {
                 e.preventDefault();

@@ -2,7 +2,7 @@ import { API_URL, SESSION_TOKEN } from '../constants/General';
 import axios from 'axios';
 
 export const authToken = () => {
-        return 'Bearer ' + sessionStorage.getItem(SESSION_TOKEN);
+        return 'Bearer ' + localStorage.getItem(SESSION_TOKEN);
 }
 
 const errorHandler = (error) => {
@@ -13,6 +13,15 @@ const errorHandler = (error) => {
 
 export async function getUser() {
         const response = await axios.get(`${API_URL}/user`, {
+                headers: {
+                        'Authorization': authToken(),
+                },
+        });
+        return response.data;
+}
+
+export async function deleteUserAccount() {
+        const response = await axios.delete(`${API_URL}/user`, {
                 headers: {
                         'Authorization': authToken(),
                 },

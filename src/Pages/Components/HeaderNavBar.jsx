@@ -47,7 +47,7 @@ export default function HeaderNavBar({ home = false }) {
     const handleLogout = () => {
         doLogout();
         dispatch({ type: 'LOGOUT' });
-        sessionStorage.removeItem(SESSION_TOKEN);
+        localStorage.removeItem(SESSION_TOKEN);
         navigate('/login');
     };
 
@@ -58,7 +58,7 @@ export default function HeaderNavBar({ home = false }) {
                     ${home
                         ? `top-0 left-0 right-0 z-30 transition ease-in duration-200 ${isScrolled ? 'bg-white text-black fixed w-full shadow-md' : 'absolute text-white'}`
                         : 'bg-white text-black fixed w-full shadow-md z-30'}`}>
-                <nav className={`container px-6 ${sessionStorage.getItem("TOKEN") ? 'py-2' : 'py-4'} mx-auto md:px-12`}>
+                <nav className={`container px-6 ${userToken ? 'py-2' : 'py-4'} mx-auto md:px-12`}>
                     <div className="items-center justify-between md:flex">
                         <div className="flex items-center justify-between">
                             <Link to="/" className="text-center text-xl xl:text-2xl text-orange-400">
