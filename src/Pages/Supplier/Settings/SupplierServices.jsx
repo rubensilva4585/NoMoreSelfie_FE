@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import Cookies from 'js-cookie';
-import { getUserByID, updateUser } from '../../../services/user_api/user';
 import { SearchPriceRange } from '../../Search/SearchPriceRange';
 import { ServiceDescription } from './ServicesDescription';
 
@@ -27,7 +25,7 @@ export default function SupplierServices(props) {
 
         const submitService = (e) => {
                 e.preventDefault();
-                updateUser({ service_description: text }, token)
+                //updateUser({ service_description: text }, token)
         }
 
         return (

@@ -18,3 +18,9 @@ export async function getSupplierImagesById(id) {
         // console.log(response)
         return response.data;
 }
+
+// distritos
+export async function getDistricts() {
+        const response = await axios.get(`${API_URL}/general/districts/getalldistricts`);
+        return response.data;
+}

@@ -6,6 +6,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUserAvatar, getUserRole } from './../../redux/selectors';
 import { logout, update, updateAvatar } from '../../redux/actions';
 import { useNavigate } from 'react-router-dom';
+import Select from 'react-select';
+import "./ReactSelect.css";
+import { getDistricts } from '../../API/General';
 
 export default function PageUserSettings() {
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -14,6 +17,7 @@ export default function PageUserSettings() {
     const [isLoading, setIsLoading] = useState(true);
     const userRole = useSelector(getUserRole);
     const userAvatar = useSelector(getUserAvatar);
+    const [districts, setDistricts] = useState([]);
     // Unchanged user data
     const [user, setUser] = useState({});
     // Personal Info
@@ -24,8 +28,7 @@ export default function PageUserSettings() {
         // suppliers only
         company: "",
         nif: "",
-        address: '',
-        // district_id: '',
+        district_id: '',
     });
     const [personalInfoError, setPersonalInfoError] = useState({
         name: '',
@@ -34,8 +37,7 @@ export default function PageUserSettings() {
         // suppliers only
         company: "",
         nif: "",
-        address: '',
-        // district_id: '',
+        district_id: '',
     })
     const [isSubmittingPersonalInfo, setIsSubmittingPersonalInfo] = useState(false);
     // Change Email
@@ -85,8 +87,7 @@ export default function PageUserSettings() {
             // suppliers only
             company: "",
             nif: "",
-            address: '',
-            // district_id: '',
+            district_id: '',
         });
 
         if (!personalInfo.name) {
@@ -130,10 +131,10 @@ export default function PageUserSettings() {
                 isValid = false;
             }
 
-            if (!personalInfo.address) {
+            if (!personalInfo.district_id) {
                 setPersonalInfoError((prevErrors) => ({
                     ...prevErrors,
-                    address: 'Morada é obrigatória'
+                    district_id: 'Morada é obrigatória'
                 }));
                 isValid = false;
             }
@@ -161,7 +162,7 @@ export default function PageUserSettings() {
                 && {
                 company: personalInfo.company,
                 nif: personalInfo.nif,
-                address: personalInfo.address,
+                district_id: personalInfo.district_id,
             }),
         })
             .then((response) => {
@@ -172,7 +173,7 @@ export default function PageUserSettings() {
                         response.data.user.role,
                         response.data.user.avatar
                     ));
-                //setValues((prevValues) => ({ ...prevValues, email: '' }));
+                setPersonalInfo((prevPersonalInfo) => ({ ...prevPersonalInfo, hasEdited: false }));
             })
             .catch((error) => {
                 alert(error.response.data.error);
@@ -300,6 +301,8 @@ export default function PageUserSettings() {
     }
 
     useEffect(() => {
+        const abortController = new AbortController();
+
         getUser()
             .then((response) => {
                 setPersonalInfo({
@@ -309,10 +312,10 @@ export default function PageUserSettings() {
                     // suppliers only
                     company: response.company,
                     nif: response.nif,
-                    address: response.address,
-                    // district_id: '',
+                    district_id: response.district_id,
                     hasEdited: false,
                 });
+                console.log(response)
                 setUser(response);
             })
             .catch((error) => {
@@ -321,6 +324,15 @@ export default function PageUserSettings() {
             .finally(() => {
                 setIsLoading(false);
             });
+
+        getDistricts()
+            .then((response) => {
+                setDistricts(response.map((district) => ({ value: district.id, label: district.name })));
+            })
+
+        return () => {
+            abortController.abort();
+        };
     }, []);
 
     return (
@@ -433,21 +445,7 @@ export default function PageUserSettings() {
                                                     {personalInfoError.phone !== '' && <span className="text-red-600 text-sm">{personalInfoError.phone}</span>}
                                                 </div>
                                                 {userRole === 'supplier' &&
-                                                    <>
-                                                        <div className="relative">
-                                                            <label htmlFor="name">
-                                                                Morada
-                                                            </label>
-                                                            <input
-                                                                type="text"
-                                                                id="address"
-                                                                defaultValue={user.address}
-                                                                className={` rounded-lg flex-1 appearance-none border ${personalInfoError.address === '' ? 'border-gray-200' : 'border-red-500'} w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 hover:bg-gray-50`}
-                                                                name="address"
-                                                                placeholder="Vive em..."
-                                                            />
-                                                            {personalInfoError.address !== '' && <span className="text-red-600 text-sm">{personalInfoError.address}</span>}
-                                                        </div>
+                                                    <>                
                                                         <div className="relative">
                                                             <label htmlFor="name">
                                                                 Empresa
@@ -478,6 +476,24 @@ export default function PageUserSettings() {
                                                                 onChange={handleChangeNIF()}
                                                             />
                                                             {personalInfoError.nif !== '' && <span className="text-red-600 text-sm">{personalInfoError.nif}</span>}
+                                                        </div>
+                                                        <div className="relative">
+                                                            <label htmlFor="name">
+                                                                Vive em...
+                                                            </label>
+                                                            {districts && user.district && (
+                                                                <Select
+                                                                    options={districts}
+                                                                    onChange={(e) => setPersonalInfo({ ...personalInfo, district_id: e.value, hasEdited: true })}
+                                                                    placeholder="Vive em..."
+                                                                    defaultValue={user.district && districts && districts.find(district => district.value === user.district.id)}
+                                                                    isSearchable={true}
+                                                                    isClearable={true}
+                                                                    className='custom-select'
+                                                                    classNamePrefix='select'
+                                                                />
+                                                            )}
+                                                            {personalInfoError.district_id !== '' && <span className="text-red-600 text-sm">{personalInfoError.district_id}</span>}
                                                         </div>
                                                     </>
                                                 }

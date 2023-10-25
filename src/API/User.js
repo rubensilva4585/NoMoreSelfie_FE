@@ -125,5 +125,3 @@ export async function removeSupplierImage(imageId) {
                 errorHandler(error);
         }
 }
-
-
