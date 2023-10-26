@@ -29,6 +29,15 @@ export async function getSupplierDistricts() {
         return response.data;
 }
 
+export async function getSupplierRequests() {
+        const response = await axios.get(`${API_URL}/supplier/requests`, {
+                headers: {
+                        'Authorization': authToken(),
+                },
+        });
+        return response.data;
+}
+
 
 export async function deleteUserAccount() {
         const response = await axios.delete(`${API_URL}/user`, {
@@ -67,7 +76,7 @@ export async function updateUserPassword(formData) {
 
 export async function updateUserDistricts(districtsIds) {
         try {
-                const response = axios.put(`${API_URL}/updateuser/districts`, {district_ids: districtsIds}, {
+                const response = axios.put(`${API_URL}/updateuser/districts`, { district_ids: districtsIds }, {
                         headers: {
                                 'Authorization': authToken(),
                         },

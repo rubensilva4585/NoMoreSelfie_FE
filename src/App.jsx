@@ -1,11 +1,8 @@
 import * as React from "react";
-import {
-  useLocation,
-  Outlet,
-} from "react-router-dom";
-import store from './redux/store';
-import { login } from './redux/actions';
-import axios from 'axios';
+import { useLocation, Outlet } from "react-router-dom";
+import store from "./redux/store";
+import { login } from "./redux/actions";
+import axios from "axios";
 import Footer from "./Pages/Components/Footer";
 import Header from "./Pages/Components/Header";
 import SupplierPanel from "./Pages/Supplier/Settings/SupplierPanel";
@@ -23,11 +20,18 @@ export default function App() {
 
   // consts
   const token = localStorage.getItem(SESSION_TOKEN);
-  const isSupplierRoute = [/*'/supplier/dashboard',*/ '/supplier/services', '/supplier/portfolio', '/supplier/contacts'].includes(location.pathname);
-  const isLoginRoute = ['/settings'].includes(location.pathname);
+  const isSupplierRoute = [
+    "/supplier/dashboard",
+    "/supplier/services",
+    "/supplier/portfolio",
+    "/supplier/contacts",
+  ].includes(location.pathname);
+  const isLoginRoute = ["/settings"].includes(location.pathname);
 
   // Layout (Header + Footer) routes
-  const layoutRender = !['/login', '/signin', '/signin/supplier', '/supplier/dashboard'].includes(location.pathname);
+  const layoutRender = !["/login", "/signin", "/signin/supplier"].includes(
+    location.pathname
+  );
 
   // functions
   // Verify if user is authorized to access the route
@@ -38,11 +42,12 @@ export default function App() {
   // Effects
   React.useEffect(() => {
     if (token) {
-      axios.get('http://localhost:8000/api/user/', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      axios
+        .get("http://localhost:8000/api/user/", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         .then((response) => {
           const { id, name, role, avatar } = response.data;
           store.dispatch(login(token, id, name, role, avatar));
@@ -54,37 +59,33 @@ export default function App() {
         .finally(() => {
           setIsLoading(false);
         });
-    }
-    else
-      setIsLoading(false);
+    } else setIsLoading(false);
   }, []);
 
   return (
     <>
-      {isLoading
-        ? (
-          <div className="h-screen flex flex-col items-center justify-center gap-6">
-            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-orange-400" />
-            <div className="text-center text-3xl xl:text-4xl text-orange-400">
-              NoMoreSelfie
-            </div>
+      {isLoading ? (
+        <div className="h-screen flex flex-col items-center justify-center gap-6">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-orange-400" />
+          <div className="text-center text-3xl xl:text-4xl text-orange-400">
+            NoMoreSelfie
           </div>
-        ) : (
-          <>
-            {
-              (isSupplierRoute && !isAuthorized(['supplier'])) || (!token && isLoginRoute)
-                ? <ErrorUnauthorized />
-                : (
-                  <>
-                    {layoutRender && <Header />}
-                    {isSupplierRoute && <SupplierPanel />}
-                    <Outlet />
-                    {layoutRender && <Footer />}
-                  </>
-                )}
-          </>
-        )
-      }
+        </div>
+      ) : (
+        <>
+          {(isSupplierRoute && !isAuthorized(["supplier"])) ||
+          (!token && isLoginRoute) ? (
+            <ErrorUnauthorized />
+          ) : (
+            <>
+              {layoutRender && <Header />}
+              {isSupplierRoute && <SupplierPanel />}
+              <Outlet />
+              {layoutRender && <Footer />}
+            </>
+          )}
+        </>
+      )}
     </>
   );
 }
