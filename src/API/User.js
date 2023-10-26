@@ -20,6 +20,16 @@ export async function getUser() {
         return response.data;
 }
 
+export async function getSupplierDistricts() {
+        const response = await axios.get(`${API_URL}/supplier/requests/districts/`, {
+                headers: {
+                        'Authorization': authToken(),
+                },
+        });
+        return response.data;
+}
+
+
 export async function deleteUserAccount() {
         const response = await axios.delete(`${API_URL}/user`, {
                 headers: {
@@ -50,6 +60,20 @@ export async function updateUserPassword(formData) {
                         },
                 });
                 return response;
+        } catch (error) {
+                errorHandler(error);
+        }
+}
+
+export async function updateUserDistricts(districtsIds) {
+        try {
+                const response = axios.put(`${API_URL}/updateuser/districts`, {district_ids: districtsIds}, {
+                        headers: {
+                                'Authorization': authToken(),
+                        },
+                });
+                return response;
+
         } catch (error) {
                 errorHandler(error);
         }
@@ -125,3 +149,5 @@ export async function removeSupplierImage(imageId) {
                 errorHandler(error);
         }
 }
+
+

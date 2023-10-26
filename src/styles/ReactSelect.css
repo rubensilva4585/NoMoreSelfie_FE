@@ -45,3 +45,7 @@
 .select__placeholder{
         color: #A0AEC0;
 }
+
+.select__menu{
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, .5) !important;
+}

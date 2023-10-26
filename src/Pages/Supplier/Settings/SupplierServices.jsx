@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SearchPriceRange } from '../../Search/SearchPriceRange';
 import { ServiceDescription } from './ServicesDescription';
+import Select from 'react-select';
+import "../../../styles/ReactSelect.css";
+import { getDistricts } from '../../../API/General';
+import { updateUserDistricts } from '../../../API/User';
 
 export default function SupplierServices(props) {
         // const id = props.match.params.id;
         const options = ['Opção 1', 'Opção 2', 'Opção 3'];
         const [selectedOptions, setSelectedOptions] = useState([]);
+        const [districts, setDistricts] = useState([]);
+        const [userDistricts, setUserDistricts] = useState([]);
 
         const handleOptionChange = (index) => {
                 if (selectedOptions.includes(index)) {
@@ -28,6 +34,40 @@ export default function SupplierServices(props) {
                 //updateUser({ service_description: text }, token)
         }
 
+        useEffect(() => {
+                const abortController = new AbortController();
+
+                // getUser()
+                //     .then((response) => {
+                //         setPersonalInfo({
+                //             name: response.name,
+                //             phone: response.phone,
+                //             dob: response.dob,
+                //             // suppliers only
+                //             company: response.company,
+                //             nif: response.nif,
+                //             district_id: response.district_id,
+                //             hasEdited: false,
+                //         });
+                //         console.log(response)
+                //         setUser(response);
+                //     })
+                //     .catch((error) => {
+                //         alert(error.response.data.error);
+                //     })
+                //     .finally(() => {
+                //         setIsLoading(false);
+                //     });
+
+                getDistricts()
+                        .then((response) => {
+                                setDistricts(response.map((district) => ({ value: district.id, label: district.name })));
+                        })
+
+                return () => {
+                        abortController.abort();
+                };
+        }, []);
         return (
                 <form onSubmit={submitService}>
                         <section className=" bg-gray-100/50 ">
@@ -114,6 +154,38 @@ export default function SupplierServices(props) {
                                                         </div>
                                                 </div>
 
+                                                <div className="items-center w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
+                                                        <div className="max-w-xl md:max-w-sm mx-auto md:w-1/3 pr-5">
+                                                                <h3 className="text-gray-800 text-bold text-xl">Região</h3>
+                                                                <span className="text-sm">Insira quais distritos do pais fazem parte da sua zona da trabalho.</span>
+                                                        </div>
+                                                        <div className="max-w-xl mx-auto space-y-5 md:w-2/3 ">
+                                                                <div className=" relative flex flex-col gap-4">
+                                                                        <div className="relative flex flex-col">
+                                                                                {/* {districts && user.district && ( */}
+                                                                                        <Select
+                                                                                                options={districts}
+                                                                                                onChange={(e) => {setUserDistricts(e.map(option => option.value)); console.log(e.map(option => option.value))}}
+                                                                                                placeholder="Preencha com as regiões onde trabalha..."
+                                                                                                //defaultValue={user.district && districts && districts.find(district => district.value === user.district.id)}
+                                                                                                isSearchable={true}
+                                                                                                isClearable={true}
+                                                                                                className='custom-select'
+                                                                                                classNamePrefix='select'
+                                                                                                isMulti
+                                                                                        />
+                                                                                {/* )} */}
+                                                                                {/* {personalInfoError.district_id !== '' && <span className="text-red-600 text-sm">{personalInfoError.district_id}</span>} */}
+                                                                        </div>
+
+                                                                </div>
+                                                        </div>
+                                                </div>
+                                                {/* <button
+                                                                                type="submit"
+                                                                                className="py-2.5 px-4 text-orange-400 border-orange-400 border hover:bg-orange-400 hover:text-white w-fit transition ease-in duration-200 text-center text-sm font-semibold shadow-md focus:outline-none rounded-lg ">
+                                                                                Guardar Alterações
+                                                                        </button> */}
                                                 <hr />
 
                                                 <div className="items-center w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
@@ -125,20 +197,8 @@ export default function SupplierServices(props) {
                                                                 <div className=" relative flex flex-col gap-4">
                                                                         <div className="relative">
                                                                                 <ServiceDescription text={text} setText={setText} />
-                                                                                {/* <textarea
-                                                                                className="resize-none flex-1 w-full px-4 py-2 text-base text-gray-700 placeholder-gray-400 bg-white border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 hover:bg-gray-50"
-                                                                                id="comment"
-                                                                                placeholder="Dê informações sobre o seu serviço..."
-                                                                                name="comment"
-                                                                                rows="5"
-                                                                                cols="40" /> */}
-
                                                                         </div>
-                                                                        <button
-                                                                                type="submit"
-                                                                                className="py-2.5 px-4 text-orange-400 border-orange-400 border hover:bg-orange-400 hover:text-white w-fit transition ease-in duration-200 text-center text-sm font-semibold shadow-md focus:outline-none rounded-lg ">
-                                                                                Guardar Alterações
-                                                                        </button>
+                                                                       
                                                                 </div>
                                                         </div>
                                                 </div>

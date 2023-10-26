@@ -4,13 +4,14 @@ import { useEffect, useState } from 'react';
 import { FaFacebook, FaInstagram, FaLink, FaLinkedin, FaMapPin, FaPinterest } from 'react-icons/fa'
 import ImageGallery from "react-image-gallery";
 import PageSupplierService from './PageSupplierService';
-import { getSupplierImagesById, getSupplierServicesById, getUserById } from '../../API/General';
+import { getSupplierDistrictsById, getSupplierImagesById, getSupplierServicesById, getUserById } from '../../API/General';
 import { IMAGE_STORAGE_PATH } from '../../constants/General';
 
 
 export default function PageSupplier() {
     const [supplierData, setSupplierData] = useState(null)
     const [supplierServicesData, setSupplierServicesData] = useState(null)
+    const [supplierDistricts, setSupplierDistricts] = useState(null)
     const [supplierImages, setSupplierImages] = useState([
         {
             original: "../../../images/noimage.png",
@@ -23,48 +24,47 @@ export default function PageSupplier() {
     useEffect(() => {
         const abortController = new AbortController();
 
-        try {
-            getUserById(supplier_id)
-                .then((data) => {
-                    setSupplierData(data);
-                })
-                .catch((error) => {
-                        //alert("Erro ao carregar pagina")
-                        console.log("Erro API: ", error)
-                        window.location.replace("/error404")
-                });
+        getUserById(supplier_id)
+            .then((data) => {
+                setSupplierData(data);
+                console.log("data");
+            })
+            .catch((error) => {
+                console.log("Erro API: ", error)
+                window.location.replace("/error404")
+            });
 
-            getSupplierImagesById(supplier_id)
-                .then((data) => {
-                    console.log(data);
-                    data.length > 0 &&
-                        setSupplierImages(data.map((image) => {
-                            return {
-                                original: IMAGE_STORAGE_PATH + image.path,
-                                thumbnail: IMAGE_STORAGE_PATH + image.path,
-                            }
-                        }));
-                })
-                .catch((error) => {
-                    throw error;
-                });
+        getSupplierImagesById(supplier_id)
+            .then((data) => {
+                console.log("images");
+                data.length > 0 &&
+                    setSupplierImages(data.map((image) => {
+                        return {
+                            original: IMAGE_STORAGE_PATH + image.path,
+                            thumbnail: IMAGE_STORAGE_PATH + image.path,
+                        }
+                    }));
+            })
+            .catch((error) => {
+                throw error;
+            });
 
-            getSupplierServicesById(supplier_id)
-                .then((data) => {
-                    // console.log(data);
-                    setSupplierServicesData(data);
-                })
-                .catch((error) => {
-                    throw error;
-                });
-                
-        } catch (error) {
-            alert("Erro ao carregar pagina")
-            console.log("Erro geral: ", error);
-        } finally {
-            setIsLoading(false);
-        }
+        getSupplierServicesById(supplier_id)
+            .then((data) => {
+                setSupplierServicesData(data);
+            })
+            .catch((error) => {
+                throw error;
+            });
 
+        getSupplierDistrictsById(supplier_id)
+            .then((data) => {
+                console.log(data);
+                setSupplierDistricts(data);
+            })
+            .catch((error) => {
+                throw error;
+            });
         return () => {
             abortController.abort();
         };
@@ -72,7 +72,7 @@ export default function PageSupplier() {
 
     return (
         <section className=" bg-gray-100/50">
-            {isLoading ?
+            {!(supplierData && supplierImages && supplierServicesData && supplierDistricts) ?
                 (
                     <>
                         <div className="h-screen flex items-center justify-center">
@@ -118,21 +118,20 @@ export default function PageSupplier() {
                                 <div className=''>
                                     <h1 className="text-2xl font-bold text-gray-800 mb-4">Distritos</h1>
                                     <div id="service_districts" className="text-gray-600 w-full flex overflow-x-auto items-center text-lg rounded-lg p-2 bg-gray-100/50">
-                                        <div className=''>
-                                            Porto
-                                        </div>
-                                        <div className='mx-4 text-gray-600'>|</div>
-                                        <div className=''>
-                                            Aveiro
-                                        </div>
-                                        <div className='mx-4 text-gray-600'>|</div>
-                                        <div className=''>
-                                            Braga
-                                        </div>
-                                        <div className='mx-4 text-gray-600'>|</div>
-                                        <div className=''>
-                                            Coimbra
-                                        </div>
+                                        {
+                                            supplierDistricts.map((district, index) => {
+                                                return (
+                                                    <>
+                                                        <div key={index} className=''>
+                                                            {district.name}
+                                                        </div>
+                                                        {index < supplierDistricts.length - 1 && (        
+                                                            <div className='mx-4 text-gray-600'>|</div>
+                                                        )}
+                                                    </>
+                                                )
+                                            })
+                                        }
                                     </div>
                                 </div>
 
@@ -159,8 +158,8 @@ export default function PageSupplier() {
                             <div className="p-4 bg-white shadow-lg rounded-2xl space-y-6">
                                 <div className="text-center my-4">
                                     <div className='h-32 w-32 rounded-full border-2 p-1 border-orange-400 mx-auto my-2 overflow-hidden'>
-                                    <img className="object-cover w-full h-full rounded-full"
-                                        src={supplierData && supplierData.avatar ? IMAGE_STORAGE_PATH + supplierData.avatar : './../../images/noavatar.svg'} alt="" />
+                                        <img className="object-cover w-full h-full rounded-full"
+                                            src={supplierData && supplierData.avatar ? IMAGE_STORAGE_PATH + supplierData.avatar : './../../images/noavatar.svg'} alt="" />
                                     </div>
                                     <div className='mb-2'>
                                         <h3 className="font-bold text-3xl text-gray-800">{supplierData && supplierData.name}</h3>

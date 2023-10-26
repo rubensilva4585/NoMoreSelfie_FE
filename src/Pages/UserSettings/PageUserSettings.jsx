@@ -7,7 +7,7 @@ import { getUserAvatar, getUserRole } from './../../redux/selectors';
 import { logout, update, updateAvatar } from '../../redux/actions';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
-import "./ReactSelect.css";
+import "../../styles/ReactSelect.css";
 import { getDistricts } from '../../API/General';
 
 export default function PageUserSettings() {
@@ -17,9 +17,9 @@ export default function PageUserSettings() {
     const [isLoading, setIsLoading] = useState(true);
     const userRole = useSelector(getUserRole);
     const userAvatar = useSelector(getUserAvatar);
-    const [districts, setDistricts] = useState([]);
+    const [districts, setDistricts] = useState(null);
     // Unchanged user data
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState(null);
     // Personal Info
     const [personalInfo, setPersonalInfo] = useState({
         name: '',
@@ -60,7 +60,6 @@ export default function PageUserSettings() {
     // Functions
     const handleChange = (prop) => (e) => {
         setPersonalInfo({ ...personalInfo, [prop]: e.target.value, hasEdited: true });
-        console.log(personalInfo)
     };
     const handleChangeNIF = () => (e) => {
         let input = e.target.value.replace(/\D/g, '');
@@ -315,20 +314,18 @@ export default function PageUserSettings() {
                     district_id: response.district_id,
                     hasEdited: false,
                 });
-                console.log(response)
                 setUser(response);
             })
             .catch((error) => {
                 alert(error.response.data.error);
-            })
-            .finally(() => {
-                setIsLoading(false);
             });
 
         getDistricts()
             .then((response) => {
                 setDistricts(response.map((district) => ({ value: district.id, label: district.name })));
-            })
+            }).catch((error) => {
+                alert(error.response.data.error);
+            });
 
         return () => {
             abortController.abort();
@@ -344,7 +341,7 @@ export default function PageUserSettings() {
                             Definições de conta
                         </h2>
                     </div>
-                    {isLoading ? (
+                    {!(districts && user) ? (
                         <>
                             <div className="h-64 flex items-center justify-center">
                                 <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-orange-400 bg-gray-100/50"></div>
@@ -445,7 +442,7 @@ export default function PageUserSettings() {
                                                     {personalInfoError.phone !== '' && <span className="text-red-600 text-sm">{personalInfoError.phone}</span>}
                                                 </div>
                                                 {userRole === 'supplier' &&
-                                                    <>                
+                                                    <>
                                                         <div className="relative">
                                                             <label htmlFor="name">
                                                                 Empresa
@@ -477,22 +474,21 @@ export default function PageUserSettings() {
                                                             />
                                                             {personalInfoError.nif !== '' && <span className="text-red-600 text-sm">{personalInfoError.nif}</span>}
                                                         </div>
+
                                                         <div className="relative">
                                                             <label htmlFor="name">
                                                                 Vive em...
                                                             </label>
-                                                            {districts && user.district && (
-                                                                <Select
-                                                                    options={districts}
-                                                                    onChange={(e) => setPersonalInfo({ ...personalInfo, district_id: e.value, hasEdited: true })}
-                                                                    placeholder="Vive em..."
+                                                            <Select
+                                                                options={districts}
+                                                                onChange={(e) => setPersonalInfo({ ...personalInfo, district_id: e.value, hasEdited: true })}
+                                                                placeholder="Vive em..."
                                                                     defaultValue={user.district && districts && districts.find(district => district.value === user.district.id)}
                                                                     isSearchable={true}
                                                                     isClearable={true}
                                                                     className='custom-select'
                                                                     classNamePrefix='select'
                                                                 />
-                                                            )}
                                                             {personalInfoError.district_id !== '' && <span className="text-red-600 text-sm">{personalInfoError.district_id}</span>}
                                                         </div>
                                                     </>

@@ -24,3 +24,8 @@ export async function getDistricts() {
         const response = await axios.get(`${API_URL}/general/districts/getalldistricts`);
         return response.data;
 }
+
+export async function getSupplierDistrictsById(id) {
+        const response = await axios.get(`${API_URL}/supplier/requests/districts/${id}`);
+        return response.data;
+}

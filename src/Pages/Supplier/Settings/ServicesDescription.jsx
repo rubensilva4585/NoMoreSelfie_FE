@@ -23,16 +23,14 @@ export function ServiceDescription(props) {
 
     return (
         <>
-
-            {sDescription &&
                 <ReactQuill
                     theme="snow"
                     placeholder='Dê informações sobre o seu serviço...'
                     onChange={props.setText}
                     defaultValue={sDescription}
                     ref={reactQuillRef}
+                    className='h-40'
                 />
-            }
 
             {/* <div className="absolute bottom-2 right-2 text-sm text-gray-400">"asd"/{maxCharacterCount}</div> */}
         </>
