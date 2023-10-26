@@ -483,12 +483,12 @@ export default function PageUserSettings() {
                                                                 options={districts}
                                                                 onChange={(e) => setPersonalInfo({ ...personalInfo, district_id: e.value, hasEdited: true })}
                                                                 placeholder="Vive em..."
-                                                                    defaultValue={user.district && districts && districts.find(district => district.value === user.district.id)}
-                                                                    isSearchable={true}
-                                                                    isClearable={true}
-                                                                    className='custom-select'
-                                                                    classNamePrefix='select'
-                                                                />
+                                                                defaultValue={user.district && districts && districts.find(district => district.value === user.district.id)}
+                                                                isSearchable={true}
+                                                                isClearable={true}
+                                                                className='custom-select'
+                                                                classNamePrefix='select'
+                                                            />
                                                             {personalInfoError.district_id !== '' && <span className="text-red-600 text-sm">{personalInfoError.district_id}</span>}
                                                         </div>
                                                     </>
@@ -538,7 +538,6 @@ export default function PageUserSettings() {
                                                         id="email"
                                                         name="email"
                                                         placeholder="Escreva o seu novo Email"
-                                                        defaultValue={user.email}
                                                         onChange={(e) =>
                                                             setChangeEmail({ ...changeEmail, email: e.target.value })
                                                         }

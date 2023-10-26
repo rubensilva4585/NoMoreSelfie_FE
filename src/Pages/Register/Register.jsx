@@ -73,6 +73,14 @@ export default function Register() {
                         isValid = false;
                 }
 
+                if (!values.phone || values.phone.length < 9) {
+                        setValuesError((prevErrors) => ({
+                                ...prevErrors,
+                                phone: 'Telefone inválido'
+                        }));
+                        isValid = false;
+                }
+
                 if (!values.password || values.password.length < 6) {
                         setValuesError((prevErrors) => ({
                                 ...prevErrors,
