@@ -29,6 +29,7 @@ export default function PageUserSettings() {
         company: "",
         nif: "",
         district_id: '',
+        bio: '',
     });
     const [personalInfoError, setPersonalInfoError] = useState({
         name: '',
@@ -38,6 +39,7 @@ export default function PageUserSettings() {
         company: "",
         nif: "",
         district_id: '',
+        bio: '',
     })
     const [isSubmittingPersonalInfo, setIsSubmittingPersonalInfo] = useState(false);
     // Change Email
@@ -87,6 +89,7 @@ export default function PageUserSettings() {
             company: "",
             nif: "",
             district_id: '',
+            bio: '',
         });
 
         if (!personalInfo.name) {
@@ -137,6 +140,22 @@ export default function PageUserSettings() {
                 }));
                 isValid = false;
             }
+
+            if (!personalInfo.bio) {
+                setPersonalInfoError((prevErrors) => ({
+                    ...prevErrors,
+                    bio: 'Bio é obrigatória'
+                }));
+                isValid = false;
+            }
+
+            if (personalInfo.bio.length > 255) {
+                setPersonalInfoError((prevErrors) => ({
+                    ...prevErrors,
+                    bio: 'Bio tem de ter no máximo 255 caracteres'
+                }));
+                isValid = false;
+            }
         }
 
         return isValid;
@@ -162,6 +181,7 @@ export default function PageUserSettings() {
                 company: personalInfo.company,
                 nif: personalInfo.nif,
                 district_id: personalInfo.district_id,
+                bio: personalInfo.bio,
             }),
         })
             .then((response) => {
@@ -312,6 +332,7 @@ export default function PageUserSettings() {
                     company: response.company,
                     nif: response.nif,
                     district_id: response.district_id,
+                    bio: response.bio,
                     hasEdited: false,
                 });
                 setUser(response);
@@ -483,13 +504,29 @@ export default function PageUserSettings() {
                                                                 options={districts}
                                                                 onChange={(e) => setPersonalInfo({ ...personalInfo, district_id: e.value, hasEdited: true })}
                                                                 placeholder="Vive em..."
-                                                                    defaultValue={user.district && districts && districts.find(district => district.value === user.district.id)}
-                                                                    isSearchable={true}
-                                                                    isClearable={true}
-                                                                    className='custom-select'
-                                                                    classNamePrefix='select'
-                                                                />
+                                                                defaultValue={user.district && districts && districts.find(district => district.value === user.district.id)}
+                                                                isSearchable={true}
+                                                                isClearable={true}
+                                                                className='custom-select'
+                                                                classNamePrefix='select'
+                                                            />
                                                             {personalInfoError.district_id !== '' && <span className="text-red-600 text-sm">{personalInfoError.district_id}</span>}
+                                                        </div>
+
+                                                        <div className="relative">
+                                                            <label htmlFor="bio">
+                                                                Biografia
+                                                            </label>
+                                                            <textarea
+                                                                className={` rounded-lg flex-1 appearance-none border ${personalInfoError.bio === '' ? 'border-gray-200' : 'border-red-500'} w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 hover:bg-gray-50`}
+                                                                rows='3'
+                                                                id="bio"
+                                                                name="bio"
+                                                                defaultValue={user.bio}
+                                                                placeholder="Biografia..."
+                                                                onChange={handleChange("bio")}
+                                                            />
+                                                            {personalInfoError.bio !== '' && <span className="text-red-600 text-sm">{personalInfoError.bio}</span>}
                                                         </div>
                                                     </>
                                                 }
@@ -538,7 +575,6 @@ export default function PageUserSettings() {
                                                         id="email"
                                                         name="email"
                                                         placeholder="Escreva o seu novo Email"
-                                                        defaultValue={user.email}
                                                         onChange={(e) =>
                                                             setChangeEmail({ ...changeEmail, email: e.target.value })
                                                         }

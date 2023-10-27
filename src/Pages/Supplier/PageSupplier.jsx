@@ -6,6 +6,7 @@ import ImageGallery from "react-image-gallery";
 import PageSupplierService from './PageSupplierService';
 import { getSupplierDistrictsById, getSupplierImagesById, getSupplierServicesById, getUserById } from '../../API/General';
 import { IMAGE_STORAGE_PATH } from '../../constants/General';
+import SearchModal from '../Search/SearchModal';
 
 
 export default function PageSupplier() {
@@ -19,7 +20,16 @@ export default function PageSupplier() {
         }
     ])
     const [isLoading, setIsLoading] = useState(true)
+    const [modalOpen, setModalOpen] = useState(false);
     const { supplier_id } = useParams();
+
+    const openModal = () => {
+        setModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setModalOpen(false);
+    };
 
     useEffect(() => {
         const abortController = new AbortController();
@@ -125,7 +135,7 @@ export default function PageSupplier() {
                                                         <div key={index} className=''>
                                                             {district.name}
                                                         </div>
-                                                        {index < supplierDistricts.length - 1 && (        
+                                                        {index < supplierDistricts.length - 1 && (
                                                             <div className='mx-4 text-gray-600'>|</div>
                                                         )}
                                                     </>
@@ -238,6 +248,7 @@ export default function PageSupplier() {
                                 <div className="flex items-center justify-between gap-4 mt-6">
                                     <button
                                         className="py-2 transition ease-in duration-200 text-orange-500 uppercase rounded-md hover:bg-orange-400 hover:text-white border border-orange-400 focus:outline-none w-full"
+                                        onClick={openModal}
                                     >
                                         Pedir informação
                                     </button>
@@ -246,6 +257,9 @@ export default function PageSupplier() {
                                             className={`text-orange-400 hover:text-white drop-shadow-md text-2xl transition duration-200 ease-in-out`}
                                         />
                                     </button>
+                                    {modalOpen && ((
+                                        <SearchModal closeModal={closeModal} supplier_id={supplier_id} />
+                                    ))}
                                 </div>
                             </div>
                         </div>
