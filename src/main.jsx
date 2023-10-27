@@ -17,6 +17,7 @@ import SupplierContacts from "./Pages/Supplier/Settings/SupplierContacts";
 import Error404 from "./Pages/Error/Error404";
 import "./index.css";
 import SupplierDashboard from "./Pages/Supplier/Settings/SupplierDashboard";
+import PageAdmin from "./Pages/Admin/PageAdmin";
 
 // Routes
 const routes = [
@@ -68,6 +69,10 @@ const routes = [
       {
         path: "/login",
         element: <Login />,
+      },
+      {
+        path: "/admin",
+        element: <PageAdmin />,
       },
     ],
   },

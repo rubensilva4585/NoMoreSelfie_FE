@@ -26,6 +26,7 @@ export default function App() {
     "/supplier/portfolio",
     "/supplier/contacts",
   ].includes(location.pathname);
+  const isAdminRoute = ["/admin"].includes(location.pathname);
   const isLoginRoute = ["/settings"].includes(location.pathname);
 
   // Layout (Header + Footer) routes
@@ -74,6 +75,7 @@ export default function App() {
       ) : (
         <>
           {(isSupplierRoute && !isAuthorized(["supplier"])) ||
+          (isAdminRoute && !isAuthorized(["admin"])) ||
           (!token && isLoginRoute) ? (
             <ErrorUnauthorized />
           ) : (
