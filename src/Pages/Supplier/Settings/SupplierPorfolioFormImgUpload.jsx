@@ -4,6 +4,7 @@ import { FaPlus, FaTrash } from 'react-icons/fa';
 import axios from 'axios';
 import { IMAGE_TOTAL_MAX } from '../../../constants/General';
 import { uploadSupplierImages } from '../../../API/User';
+import toast from 'react-hot-toast';
 
 export default function SupplierPorfolioFormImgUpload({ totalImages, handleGetImages }) {
         // states
@@ -22,6 +23,25 @@ export default function SupplierPorfolioFormImgUpload({ totalImages, handleGetIm
                 }
         });
 
+        const toastPromise = (imageFiles) => toast.promise(
+                uploadSupplierImages(imageFiles)
+                        .then((response) => {
+                                if (response.status === 201) {
+                                        return handleGetImages();
+                                } else {
+                                        throw new Error('Falha no upload. Por favor, tente novamente.');
+                                }
+                        })
+                        .finally(() => {
+                                setIsLoading(false);
+                        }),
+                {
+                        loading: 'Adicionando imagem...',
+                        success: <b>Imagem adicionada com sucesso!</b>,
+                        error: <b>Erro ao adicionar imagem!</b>,
+                }
+        )
+
         const handleFileUpload = (imageFiles) => {
                 setIsLoading(true);
                 try {
@@ -36,24 +56,24 @@ export default function SupplierPorfolioFormImgUpload({ totalImages, handleGetIm
                         setIsLoading(false);
                         return;
                 }
-
-                uploadSupplierImages(imageFiles)
-                        .then((response) => {
-                                if (response.status === 201) {
-                                        return handleGetImages();
-                                } else {
-                                        throw new Error('Falha no upload. Por favor, tente novamente.');
-                                }
-                        })
-                        .catch((error) => {
-                                alert(error.response.data.error);
-                        })
-                        .finally(() => {
-                                setIsLoading(false);
-                        });
+                toastPromise(imageFiles)
+                // uploadSupplierImages(imageFiles)
+                //         .then((response) => {
+                //                 if (response.status === 201) {
+                //                         return handleGetImages();
+                //                 } else {
+                //                         throw new Error('Falha no upload. Por favor, tente novamente.');
+                //                 }
+                //         })
+                //         .catch((error) => {
+                //                 alert(error.response.data.error);
+                //         })
+                //         .finally(() => {
+                //                 setIsLoading(false);
+                //         });
         };
 
-        
+
         return (
                 <div className="h-60 w-full flex justify-center items-center border-2 border-dashed border-gray-300 rounded p-4 text-center cursor-pointer">
                         {isLoading

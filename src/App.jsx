@@ -10,6 +10,7 @@ import ErrorUnauthorized from "./Pages/Error/ErrorUnauthorized";
 import { SESSION_TOKEN } from "./constants/General";
 import { getUserRole } from "./redux/selectors";
 import { useSelector } from "react-redux";
+import { Toaster } from "react-hot-toast";
 import "./App.css";
 
 export default function App() {
@@ -65,6 +66,7 @@ export default function App() {
 
   return (
     <>
+      <Toaster />
       {isLoading ? (
         <div className="h-screen flex flex-col items-center justify-center gap-6">
           <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-orange-400" />
@@ -75,8 +77,8 @@ export default function App() {
       ) : (
         <>
           {(isSupplierRoute && !isAuthorized(["supplier"])) ||
-          (isAdminRoute && !isAuthorized(["admin"])) ||
-          (!token && isLoginRoute) ? (
+            (isAdminRoute && !isAuthorized(["admin"])) ||
+            (!token && isLoginRoute) ? (
             <ErrorUnauthorized />
           ) : (
             <>

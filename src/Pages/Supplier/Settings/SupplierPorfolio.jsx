@@ -3,6 +3,7 @@ import SupplierPorfolioFormImgUpload from './SupplierPorfolioFormImgUpload';
 import { IMAGE_STORAGE_PATH, IMAGE_TOTAL_MAX } from '../../../constants/General';
 import { FaTrash } from 'react-icons/fa';
 import { getSupplierImages, removeSupplierImage } from '../../../API/User';
+import toast from 'react-hot-toast';
 
 export default function SupplierPorfolio() {
         // states
@@ -13,17 +14,36 @@ export default function SupplierPorfolio() {
         // consts
         const totalImages = supplierImages.length;
 
-        // functions
-        const handleDeteleImage = (imageId) => {
-                setIsDeleting(true);
+        const toastPromise = (imageId) => toast.promise(
                 removeSupplierImage(imageId)
                         .then((data) => {
                                 setSupplierImages(supplierImages.filter((image) => image.id !== imageId));
-                        }).catch(error => {
-                                alert("Erro ao apagar imagem: " + error);
-                        }).finally(() => {
+                        })
+                        .finally(() => {
                                 setIsDeleting(false);
-                        });
+                        }),
+                {
+                        loading: 'Apagando imagem...',
+                        success: <b>Imagem apagada com sucesso!</b>,
+                        error: <b>Erro ao apagar imagem!</b>,
+                }
+        )
+
+
+
+
+        // functions
+        const handleDeteleImage = (imageId) => {
+                setIsDeleting(true);
+                toastPromise(imageId);
+                // removeSupplierImage(imageId)
+                //         .then((data) => {
+                //                 setSupplierImages(supplierImages.filter((image) => image.id !== imageId));
+                //         }).catch(error => {
+                //                 alert("Erro ao apagar imagem: " + error);
+                //         }).finally(() => {
+                //                 setIsDeleting(false);
+                //         });
         }
 
         const handleGetImages = () => {
@@ -50,7 +70,7 @@ export default function SupplierPorfolio() {
                 };
         }, []);
 
-        
+
         return (
                 <section className=" bg-gray-100/50 ">
                         <div className="container max-w-6xl mx-auto px-3 md:px-12 pb-16">

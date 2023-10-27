@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getUser, updateUser } from '../../../API/User';
-
 import { FaFacebook, FaInstagram, FaLink, FaLinkedin, FaPinterest, FaSpinner } from 'react-icons/fa';
-
+import toast from 'react-hot-toast';
 
 export default function SupplierContacts(props) {
         const usernamePattern = /^[a-zA-Z0-9][a-zA-Z0-9._]*$/;
@@ -44,13 +43,7 @@ export default function SupplierContacts(props) {
         useEffect(() => {
                 getUser()
                         .then((response) => {
-                                setSocial({
-                                        facebook: '',
-                                        instagram: '',
-                                        pinterest: '',
-                                        linkedin: '',
-                                        website: ''
-                                })
+                                setSocial({ ...social, ...response.social })
                                 setUser(response);
                                 console.log(response)
                         })
@@ -67,56 +60,70 @@ export default function SupplierContacts(props) {
                 console.log(social)
         };
 
+        const toastPromise = () => toast.promise(
+                updateUser({
+                        'facebook': social.facebook ? social.facebook : '',
+                        'instagram': social.instagram ? social.instagram : '',
+                        'linkedin': social.linkedin ? social.linkedin : '',
+                        'pinterest': social.pinterest ? social.pinterest : '',
+                        'website': social.website ? social.website : '',
+                }).then(() => {
+                        social.hasEdited = false;
+                })
+                        .finally(() => {
+                                console.log('cenas')
+                                setIsSubmitingSocials(false);
+                        }),
+                {
+                        loading: 'Atualizando redes sociais...',
+                        success: <b>Redes sociais atualizadas com sucesso!</b>,
+                        error: <b>Erro ao atualizar redes sociais!</b>,
+                }
+        )
+
         function submitSocials(e) {
                 e.preventDefault();
+                console.log(social)
                 setIsSubmitingSocials(true);
                 let hasErrors = false;
                 clearErrors();
 
-                const socials = {
-                        facebook: e.target.facebook.value,
-                        instagram: e.target.instagram.value,
-                        pinterest: e.target.pinterest.value,
-                        linkedin: e.target.linkedin.value,
-                        website: e.target.website.value
+                if (social.facebook && social.facebook.includes('facebook.com/')) {
+                        social.facebook = social.facebook.split('facebook.com/')[1];
                 }
-
-                if (socials.facebook.includes('facebook.com/')) {
-                        socials.facebook = socials.facebook.split('facebook.com/')[1];
-                }
-                if (!usernamePattern.test(socials.facebook) && socials.facebook !== '') {
+                if (!usernamePattern.test(social.facebook) && social.facebook !== '') {
                         updateError('facebook', 'Nome de utilizador inválido');
                         hasErrors = true;
                 }
 
-                if (socials.instagram.includes('instagram.com/')) {
-                        socials.instagram = socials.instagram.split('instagram.com/')[1];
+                if (social.instagram && social.instagram.includes('instagram.com/')) {
+                        social.instagram = social.instagram.split('instagram.com/')[1];
                 }
-                if (!usernamePattern.test(socials.instagram) && socials.instagram !== '') {
+                if (!usernamePattern.test(social.instagram) && social.instagram !== '') {
                         updateError('instagram', 'Nome de utilizador inválido');
                         hasErrors = true;
                 }
 
-                if (socials.pinterest.includes('pinterest.pt/')) {
-                        socials.pinterest = socials.pinterest.split('pinterest.pt/')[1];
+                if (social.pinterest && social.pinterest.includes('pinterest.pt/')) {
+                        social.pinterest = social.pinterest.split('pinterest.pt/')[1];
                 }
-                if (socials.pinterest.includes('pinterest.com/')) {
-                        socials.pinterest = socials.pinterest.split('pinterest.com/')[1];
+                if (social.pinterest && social.pinterest.includes('pinterest.com/')) {
+                        social.pinterest = social.pinterest.split('pinterest.com/')[1];
                 }
-                if (!usernamePattern.test(socials.pinterest) && socials.pinterest !== '') {
+                if (!usernamePattern.test(social.pinterest) && social.pinterest !== '') {
                         updateError('pinterest', 'Nome de utilizador inválido');
                         hasErrors = true;
                 }
 
-                if (socials.linkedin.includes('linkedin.com/in/')) {
-                        socials.linkedin = socials.linkedin.split('linkedin.com/in/')[1];
+                if (social.linkedin && social.linkedin.includes('linkedin.com/in/')) {
+                        social.linkedin = social.linkedin.split('linkedin.com/in/')[1];
                 }
-                if (!usernamePattern.test(socials.linkedin) && socials.linkedin !== '') {
+                if (!usernamePattern.test(social.linkedin) && social.linkedin !== '') {
                         updateError('linkedin', 'Nome de utilizador inválido');
                         hasErrors = true;
                 }
 
-                if (!websitePattern.test(socials.website) && socials.website !== '') {
+                if (social.website && !websitePattern.test(social.website) && social.website !== '') {
                         updateError('website', 'Website inválido');
                         hasErrors = true;
                 }
@@ -126,15 +133,22 @@ export default function SupplierContacts(props) {
                         return
                 };
 
-                console.log(socials)
-                updateUser(socials).then(() => {
-                        alert('Redes sociais atualizadas com sucesso!');
-                }).catch((error) => {
-                        alert(error.response.data.error);
-                }).finally(() => {
-                        console.log('cenas')
-                        setIsSubmitingSocials(false);
-                })
+                console.log(social)
+                toastPromise();
+                // updateUser({
+                //         'facebook': social.facebook ? social.facebook : '',
+                //         'instagram': social.instagram ? social.instagram : '',
+                //         'linkedin': social.linkedin ? social.linkedin : '',
+                //         'pinterest': social.pinterest ? social.pinterest : '',
+                //         'website': social.website ? social.website : '',
+                // }).then(() => {
+                //         alert('Redes sociais atualizadas com sucesso!');
+                // }).catch((error) => {
+                //         alert(error.response.data.error);
+                // }).finally(() => {
+                //         console.log('cenas')
+                //         setIsSubmitingSocials(false);
+                // })
         }
 
 
