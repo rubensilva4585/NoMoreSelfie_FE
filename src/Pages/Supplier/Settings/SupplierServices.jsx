@@ -1,367 +1,520 @@
 import React, { useEffect, useState } from "react";
-import { SearchPriceRange } from "../../Search/SearchPriceRange";
-import { ServiceDescription } from "./ServicesDescription";
+import { SupplierServicesServiceDescription } from "./SupplierServicesServiceDescription";
 import Select from "react-select";
 import "../../../styles/ReactSelect.css";
 import { getCategories, getDistricts } from "../../../API/General";
-import { getSupplierServices, updateUserDistricts } from "../../../API/User";
+import {
+	getSupplierDistricts,
+	getSupplierServices,
+	updateSupplierServices,
+	updateUserDistricts,
+} from "../../../API/User";
 import { FaTrash } from "react-icons/fa";
+import { is } from "date-fns/locale";
 import { set } from "date-fns";
 
 export default function SupplierServices(props) {
-  // const id = props.match.params.id;
-  const options = ["Opção 1", "Opção 2", "Opção 3"];
-  const [selectedOptions, setSelectedOptions] = useState([]);
-  const [districts, setDistricts] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [userDistricts, setUserDistricts] = useState([]);
-  const [services, setServices] = useState(null);
+	const [districts, setDistricts] = useState(null);
+	const [categories, setCategories] = useState(null);
+	const [userDistricts, setUserDistricts] = useState(null);
+	const [userServices, setUserServices] = useState(null);
+	const [selectedCategory, setSelectedCategory] = useState("");
+	const [isSumbitting, setIsSubmitting] = useState(false);
+	const [inputError, setInputError] = useState({
+		districts: "",
+		services: "",
+	});
 
-  const handleOptionChange = (index) => {
-    if (selectedOptions.includes(index)) {
-      setSelectedOptions(selectedOptions.filter((item) => item !== index));
-    } else {
-      setSelectedOptions([...selectedOptions, index]);
-    }
-  };
+	const handleSubmitServices = (e) => {
+		e.preventDefault();
+		setIsSubmitting(true);
+		setInputError({ service_description: "" });
 
-  const toggleDropdown = () => {
-    const dropdown = document.getElementById("custom-select-dropdown");
-    dropdown.classList.toggle("hidden");
-  };
+		if (userServices && userServices.length === 0) {
+			alert("Tem de adicionar pelo menos um serviço.");
+			setInputError({
+				...inputError,
+				services: "Tem de adicionar pelo menos um serviço.",
+			});
+			setIsSubmitting(false);
+			return;
+		}
 
-  const [text, setText] = useState("");
-  const token = localStorage.getItem("TOKEN");
+		if (userServices.some((service) => service.inPerson)) {
+			if (userDistricts && userDistricts.length === 0) {
+				setInputError({
+					...inputError,
+					districts: "Tem de adicionar pelo menos um distrito.",
+				});
+				setIsSubmitting(false);
+				return;
+			}
+			updateUserDistricts(userDistricts)
+				.then((response) => {
+					console.log(response);
+				})
+				.catch((error) => {
+					alert(error.response.data.error);
+				})
+				.finally(() => {
+					setIsSubmitting(false);
+				});
+		}
 
-  const submitService = (e) => {
-    e.preventDefault();
-    //updateUser({ service_description: text }, token)
-  };
-  const handleDeleteService = (categoryIndex, subcategoryIndex) => {
-    const updatedServices = [...services];
-    updatedServices[categoryIndex].subcategories.splice(subcategoryIndex, 1);
+		console.log(userServices);
 
-    if (updatedServices[categoryIndex].subcategories.length === 0) {
-      updatedServices.splice(categoryIndex, 1);
-    }
+		updateSupplierServices(userServices)
+			.then((response) => {
+				console.log(response);
+			})
+			.catch((error) => {
+				alert(error.response.data.error);
+			})
+			.finally(() => {
+				setIsSubmitting(false);
+			});
+	};
 
-    setServices(updatedServices);
-  };
+	const handleDeleteService = (categoryIndex, subcategoryIndex) => {
+		const updatedServices = [...userServices];
+		updatedServices[categoryIndex].subcategories.splice(
+			subcategoryIndex,
+			1
+		);
 
-  const handlePriceChange = (categoryIndex, subcategoryIndex, field, value) => {
-    const updatedServices = [...services];
-    updatedServices[categoryIndex].subcategories[subcategoryIndex][field] =
-      value;
-    setServices(updatedServices);
-  };
-  useEffect(() => {
-    const abortController = new AbortController();
+		if (updatedServices[categoryIndex].subcategories.length === 0) {
+			updatedServices.splice(categoryIndex, 1);
+		}
 
-    getCategories()
-      .then((response) => {
-        setCategories(response);
-        console.log(response);
-      })
-      .catch((error) => {
-        alert(error.response.data.error);
-      });
+		setUserServices(updatedServices);
+	};
 
-    getSupplierServices()
-      .then((response) => {
-        setServices(response);
-        console.log(response);
-      })
-      .catch((error) => {
-        alert(error.response.data.error);
-      });
+	const handlePriceChange = (
+		categoryIndex,
+		subcategoryIndex,
+		field,
+		value
+	) => {
+		const updatedServices = [...userServices];
+		updatedServices[categoryIndex].subcategories[subcategoryIndex][field] =
+			value;
+		setUserServices(updatedServices);
+	};
 
-    getDistricts().then((response) => {
-      setDistricts(
-        response.map((district) => ({
-          value: district.id,
-          label: district.name,
-        }))
-      );
-    });
+	const addSubcategoryToServices = (selectedSubcategory) => {
+		if (selectedCategory && selectedSubcategory) {
+			const updatedServices = [...userServices];
+			const categoryIndex = updatedServices.findIndex(
+				(service) => service.id === selectedCategory
+			);
 
-    return () => {
-      abortController.abort();
-    };
-  }, []);
-  return (
-    <form onSubmit={submitService}>
-      <section className=" bg-gray-100/50 ">
-        <div className="container max-w-6xl mx-auto px-3 md:px-12 pb-16">
-          <div className="space-y-6 bg-white border-t-2 border-orange-400 rounded-lg">
-            {!services ? (
-              <>
-                <div className="h-64 flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-orange-400 bg-gray-100/50"></div>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="items-center w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
-                  <div className="max-w-xl md:max-w-sm mx-auto md:w-1/3 pr-5">
-                    <h3 className="text-gray-800 text-bold text-xl">
-                      Categoria
-                    </h3>
-                    <span className="text-sm">
-                      Escolha as categorias e sub-categorias mais adequadas ao
-                      serviço que quer exercer.
-                    </span>
-                  </div>
-                  <div className="max-w-xl mx-auto space-y-5 md:w-2/3 ">
-                    <div className=" relative flex flex-col gap-4">
-                      <div className="relative flex gap-4">
-                        <select className="block w-full px-4 py-2 text-base text-gray-700 placeholder-gray-400 bg-white border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 hover:bg-gray-50">
-                          <option value="">Categoria</option>
-                          <option value="opcao1">Opção 1</option>
-                          <option value="opcao2">Opção 2</option>
-                          <option value="opcao3">Opção 3</option>
-                        </select>
-                        <div className="relative inline-block w-full">
-                          <div
-                            className="border border-gray-300 rounded-lg p-2 cursor-pointer"
-                            onClick={toggleDropdown}
-                          >
-                            Selecione as opções
-                          </div>
+			const subcategoryToAdd = categories
+				.find((category) => category.id === selectedCategory)
+				.subcategories.find(
+					(subcategory) => subcategory.id === selectedSubcategory
+				);
 
-                          <div
-                            id="custom-select-dropdown"
-                            className="absolute top-10 border border-gray-300 bg-white p-2 rounded-lg hidden z-10"
-                          >
-                            <label className="block font-bold text-gray-800">
-                              Escolha as opções:
-                            </label>
-                            {options.map((subCategory, index) => (
-                              <div
-                                key={index}
-                                className="inline-flex my-1 pt-1 items-center"
-                              >
-                                <input
-                                  type="checkbox"
-                                  className="w-5 h-5 text-orange-500 bg-gray-white border-gray-300 rounded focus:ring-orange-500 focus:ring-2"
-                                  checked={selectedOptions.includes(index)}
-                                  onChange={() => handleOptionChange(index)}
-                                />
-                                <span className="ml-2 text-gray-800">
-                                  {subCategory}
-                                </span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+			if (categoryIndex !== -1) {
+				updatedServices[categoryIndex].subcategories.push({
+					id: subcategoryToAdd.id,
+					name: subcategoryToAdd.name,
+					startPrice: 10,
+					endPrice: 200,
+				});
+			} else {
+				const categoryToAdd = categories.find(
+					(category) => category.id === selectedCategory
+				);
+				updatedServices.unshift({
+					id: categoryToAdd.id,
+					name: categoryToAdd.name,
+					inPerson: categoryToAdd.inPerson,
+					subcategories: [
+						{
+							id: subcategoryToAdd.id,
+							name: subcategoryToAdd.name,
+							startPrice: 10,
+							endPrice: 200,
+						},
+					],
+				});
+			}
+			setUserServices(updatedServices);
+			setSelectedSubcategory("");
+		}
+	};
 
-                <div className="items-center w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
-                  <div className="max-w-xl md:max-w-sm mx-auto md:w-1/3 pr-5">
-                    <h3 className="text-gray-800 text-bold text-xl">Preços</h3>
-                    <span className="text-sm">
-                      Defina os preços para cada sub-categoria escolhida.
-                    </span>
-                  </div>
-                  <div className="max-w-xl mx-auto space-y-5 md:w-2/3 max-h-96 overflow-auto">
-                    <div className=" relative flex flex-col gap-4">
-                      <table className="min-w-full">
-                        {services.map((category, categoryIndex) => (
-                          <>
-                            <thead key={categoryIndex}>
-                              <tr>
-                                <th className="px-4 py-0 text-left">
-                                  {category.category_name}
-                                </th>
-                                <th className="px-4 py-0 text-left"></th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {category.subcategories.map(
-                                (subcategory, subcategoryIndex) => (
-                                  <tr key={subcategoryIndex}>
-                                    <td className="px-4 py-1">
-                                      <div className="flex whitespace-nowrap items-center gap-2">
-                                        <FaTrash
-                                          className="text-gray-200 hover:text-red-500 cursor-pointer"
-                                          onClick={() =>
-                                            handleDeleteService(
-                                              categoryIndex,
-                                              subcategoryIndex
-                                            )
-                                          }
-                                        />
-                                        {subcategory.name}
-                                      </div>
-                                    </td>
-                                    <td className="px-4 py-1 flex items-center justify-end gap-1">
-                                      desde{" "}
-                                      <input
-                                        className="w-20 px-1 py-0 text-gray-700 bg-gray-200 rounded focus:outline-none focus:bg-white focus:ring-2 focus:ring-orange-400 transition ease-in duration-200"
-                                        type="number"
-                                        placeholder="€"
-                                        value={subcategory.startPrice}
-                                        onChange={(e) =>
-                                          handlePriceChange(
-                                            categoryIndex,
-                                            subcategoryIndex,
-                                            "startPrice",
-                                            e.target.value
-                                          )
-                                        }
-                                      />{" "}
-                                      até{" "}
-                                      <input
-                                        className="w-20 px-1 py-0 text-gray-700 bg-gray-200 rounded focus:outline-none focus:bg-white focus:ring-2 focus:ring-orange-400 transition ease-in duration-200"
-                                        type="number"
-                                        placeholder="€"
-                                        value={subcategory.endPrice}
-                                        onChange={(e) =>
-                                          handlePriceChange(
-                                            categoryIndex,
-                                            subcategoryIndex,
-                                            "endPrice",
-                                            e.target.value
-                                          )
-                                        }
-                                      />
-                                    </td>
-                                  </tr>
-                                )
-                              )}
-                            </tbody>
-                          </>
-                        ))}
+	useEffect(() => {
+		const abortController = new AbortController();
 
-                        {/* <thead>
-                      <tr>
-                        <th className="px-4 py-0 text-left">Subcategoria</th>
-                        <th className="px-4 py-0 text-left"></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td className="px-4 py-1">Subcategoria 1</td>
-                        <td className="px-4 py-1">
-                          desde{" "}
-                          <input
-                            className="w-16 px-1 py-0 text-gray-700 bg-gray-200 rounded focus:outline-none focus:bg-white focus:ring-2 focus:ring-orange-400 transition ease-in duration-200"
-                            type="number"
-                            placeholder="€"
-                          />{" "}
-                          até{" "}
-                          <input
-                            className="w-16 px-1 py-0 text-gray-700 bg-gray-200 rounded focus:outline-none focus:bg-white focus:ring-2 focus:ring-orange-400 transition ease-in duration-200"
-                            type="number"
-                            placeholder="€"
-                          />
-                        </td>
-                      </tr>
-                      <tr className="border-t">
-                        <td className="px-4 py-1">Subcategoria 2</td>
-                        <td className="px-4 py-1">
-                          desde{" "}
-                          <input
-                            className="w-16 px-1 py-0 text-gray-700 bg-gray-200 rounded focus:outline-none focus:bg-white focus:ring-2 focus:ring-orange-400 transition ease-in duration-200"
-                            type="number"
-                            placeholder="€"
-                          />{" "}
-                          até{" "}
-                          <input
-                            className="w-16 px-1 py-0 text-gray-700 bg-gray-200 rounded focus:outline-none focus:bg-white focus:ring-2 focus:ring-orange-400 transition ease-in duration-200"
-                            type="number"
-                            placeholder="€"
-                          />
-                        </td>
-                      </tr>
-                      <tr className="border-t">
-                        <td className="px-4 py-1">Subcategoria 3</td>
-                        <td className="px-4 py-1">
-                          desde{" "}
-                          <input
-                            className="w-16 px-1 py-0 text-gray-700 bg-gray-200 rounded focus:outline-none focus:bg-white focus:ring-2 focus:ring-orange-400 transition ease-in duration-200"
-                            type="number"
-                            placeholder="€"
-                          />{" "}
-                          até{" "}
-                          <input
-                            className="w-16 px-1 py-0 text-gray-700 bg-gray-200 rounded focus:outline-none focus:bg-white focus:ring-2 focus:ring-orange-400 transition ease-in duration-200"
-                            type="number"
-                            placeholder="€"
-                          />
-                        </td>
-                      </tr>
-                    </tbody> */}
-                      </table>
-                    </div>
-                  </div>
-                </div>
+		getSupplierDistricts()
+			.then((response) => {
+				setUserDistricts(response.map((district) => district.id));
+			})
+			.catch((error) => {
+				alert(error.response.data.error);
+			});
 
-                <div className="items-center w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
-                  <div className="max-w-xl md:max-w-sm mx-auto md:w-1/3 pr-5">
-                    <h3 className="text-gray-800 text-bold text-xl">Região</h3>
-                    <span className="text-sm">
-                      Insira quais distritos do pais fazem parte da sua zona da
-                      trabalho.
-                    </span>
-                  </div>
-                  <div className="max-w-xl mx-auto space-y-5 md:w-2/3 ">
-                    <div className=" relative flex flex-col gap-4">
-                      <div className="relative flex flex-col">
-                        {/* {districts && user.district && ( */}
-                        <Select
-                          options={districts}
-                          onChange={(e) => {
-                            setUserDistricts(e.map((option) => option.value));
-                            console.log(e.map((option) => option.value));
-                          }}
-                          placeholder="Preencha com as regiões onde trabalha..."
-                          //defaultValue={user.district && districts && districts.find(district => district.value === user.district.id)}
-                          isSearchable={true}
-                          isClearable={true}
-                          className="custom-select"
-                          classNamePrefix="select"
-                          isMulti
-                        />
-                        {/* )} */}
-                        {/* {personalInfoError.district_id !== '' && <span className="text-red-600 text-sm">{personalInfoError.district_id}</span>} */}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {/* <button
-                                                                                type="submit"
-                                                                                className="py-2.5 px-4 text-orange-400 border-orange-400 border hover:bg-orange-400 hover:text-white w-fit transition ease-in duration-200 text-center text-sm font-semibold shadow-md focus:outline-none rounded-lg ">
-                                                                                Guardar Alterações
-                                                                        </button> */}
-                <hr />
+		getCategories()
+			.then((response) => {
+				setCategories(response);
+			})
+			.catch((error) => {
+				alert(error.response.data.error);
+			});
 
-                <div className="items-center w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
-                  <div className="max-w-xl md:max-w-sm mx-auto md:w-1/3 pr-5">
-                    <h3 className="text-gray-800 text-bold text-xl">
-                      Descrição
-                    </h3>
-                    <span className="text-sm">
-                      Descreva o serviço que está a oferecer. Seja o mais
-                      pormenorizado possível para que os compradores possam
-                      perceber se a oferta corresponde às suas necessidades.
-                    </span>
-                  </div>
-                  <div className="max-w-xl mx-auto space-y-5 md:w-2/3 ">
-                    <div className=" relative flex flex-col gap-4">
-                      <div className="relative">
-                        <ServiceDescription text={text} setText={setText} />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-      </section>
-    </form>
-  );
+		getSupplierServices()
+			.then((response) => {
+				setUserServices(response);
+			})
+			.catch((error) => {
+				alert(error.response.data.error);
+			});
+
+		getDistricts().then((response) => {
+			setDistricts(
+				response.map((district) => ({
+					value: district.id,
+					label: district.name,
+				}))
+			);
+		});
+
+		return () => {
+			abortController.abort();
+		};
+	}, []);
+
+	return (
+		<form onSubmit={handleSubmitServices}>
+			<section className=" bg-gray-100/50 ">
+				<div className="container max-w-6xl mx-auto px-3 md:px-12 pb-16">
+					<div className="space-y-6 bg-white border-t-2 border-orange-400 rounded-lg">
+						{!(
+							userServices &&
+							categories &&
+							userDistricts &&
+							districts
+						) ? (
+							<>
+								<div className="h-64 flex items-center justify-center">
+									<div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-orange-400 bg-gray-100/50"></div>
+								</div>
+							</>
+						) : (
+							<>
+								<div className="items-center w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
+									<div className="max-w-xl md:max-w-sm mx-auto md:w-1/3 pr-5">
+										<h3 className="text-gray-800 text-bold text-xl">
+											Categoria
+										</h3>
+										<span className="text-sm">
+											Escolha as categorias e
+											subcategorias mais adequadas ao
+											serviço que quer exercer.
+										</span>
+									</div>
+									<div className="max-w-xl mx-auto space-y-5 md:w-2/3 ">
+										<div className=" relative flex flex-col gap-4">
+											<div className="relative flex gap-4">
+												<div className="relative inline-block w-2/3">
+													<Select
+														options={categories.map(
+															(category) => ({
+																label: category.name,
+																value: category.id,
+															})
+														)}
+														onChange={(e) => {
+															console.log(e);
+															setSelectedCategory(
+																Number(e.value)
+															);
+														}}
+														placeholder="Categoria"
+														isSearchable={true}
+														className="search-districts"
+														classNamePrefix="select"
+														noOptionsMessage={() =>
+															"Sem resultados."
+														}
+													/>
+												</div>
+												<div className="relative inline-block w-full">
+													<Select
+														options={categories
+															.filter(
+																(category) =>
+																	category.id ===
+																	selectedCategory
+															)
+															.flatMap(
+																(category) =>
+																	category.subcategories
+															)
+															.filter(
+																(subcategory) =>
+																	!userServices
+																		.flatMap(
+																			(
+																				service
+																			) =>
+																				service.subcategories
+																		)
+																		.some(
+																			(
+																				existingSubcategory
+																			) =>
+																				existingSubcategory.id ===
+																				subcategory.id
+																		)
+															)
+															.map(
+																(
+																	subcategory
+																) => ({
+																	label: subcategory.name,
+																	value: subcategory.id,
+																})
+															)}
+														onChange={(e) =>
+															addSubcategoryToServices(
+																Number(e.value)
+															)
+														}
+														value={null}
+														placeholder="Adicione uma subcategoria..."
+														isSearchable={true}
+														className="search-districts"
+														classNamePrefix="select"
+														closeMenuOnSelect={
+															false
+														}
+														noOptionsMessage={() =>
+															"Sem resultados."
+														}
+													/>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								{userServices.length > 0 && (
+									<>
+										<div className="items-center w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
+											<div className="max-w-xl md:max-w-sm mx-auto md:w-1/3 pr-5">
+												<h3 className="text-gray-800 text-bold text-xl">
+													Preços
+												</h3>
+												<span className="text-sm">
+													Defina os preços para cada
+													subcategoria escolhida.
+												</span>
+											</div>
+											<div className="max-w-xl mx-auto space-y-5 md:w-2/3 max-h-96 overflow-auto">
+												<div className=" relative flex flex-col gap-4">
+													<table className="min-w-full">
+														{userServices.map(
+															(
+																category,
+																categoryIndex
+															) => (
+																<>
+																	<thead
+																		key={
+																			categoryIndex
+																		}
+																	>
+																		<tr>
+																			<th className="px-4 py-0 text-left">
+																				{
+																					category.name
+																				}
+																			</th>
+																			<th className="px-4 py-0 text-left"></th>
+																		</tr>
+																	</thead>
+																	<tbody>
+																		{category.subcategories.map(
+																			(
+																				subcategory,
+																				subcategoryIndex
+																			) => (
+																				<tr
+																					key={
+																						subcategoryIndex
+																					}
+																				>
+																					<td className="px-4 py-1">
+																						<div className="flex whitespace-nowrap items-center gap-2">
+																							<FaTrash
+																								className="text-gray-200 hover:text-red-500 cursor-pointer"
+																								onClick={() =>
+																									handleDeleteService(
+																										categoryIndex,
+																										subcategoryIndex
+																									)
+																								}
+																							/>
+																							{
+																								subcategory.name
+																							}
+																						</div>
+																					</td>
+																					<td className="px-4 py-1 flex items-center justify-end gap-1">
+																						desde{" "}
+																						<input
+																							className="w-20 px-1 py-0 text-gray-700 bg-gray-200 rounded focus:outline-none focus:bg-white focus:ring-2 focus:ring-orange-400 transition ease-in duration-200"
+																							type="number"
+																							placeholder="€"
+																							value={
+																								subcategory.startPrice
+																							}
+																							onChange={(
+																								e
+																							) =>
+																								handlePriceChange(
+																									categoryIndex,
+																									subcategoryIndex,
+																									"startPrice",
+																									e
+																										.target
+																										.value
+																								)
+																							}
+																						/>{" "}
+																						até{" "}
+																						<input
+																							className="w-20 px-1 py-0 text-gray-700 bg-gray-200 rounded focus:outline-none focus:bg-white focus:ring-2 focus:ring-orange-400 transition ease-in duration-200"
+																							type="number"
+																							placeholder="€"
+																							value={
+																								subcategory.endPrice
+																							}
+																							onChange={(
+																								e
+																							) =>
+																								handlePriceChange(
+																									categoryIndex,
+																									subcategoryIndex,
+																									"endPrice",
+																									e
+																										.target
+																										.value
+																								)
+																							}
+																						/>
+																					</td>
+																				</tr>
+																			)
+																		)}
+																	</tbody>
+																</>
+															)
+														)}
+													</table>
+												</div>
+											</div>
+										</div>
+
+										{userServices.some(
+											(service) => service.inPerson
+										) && (
+											<div className="items-center w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
+												<div className="max-w-xl md:max-w-sm mx-auto md:w-1/3 pr-5">
+													<h3 className="text-gray-800 text-bold text-xl">
+														Região
+													</h3>
+													<span className="text-sm">
+														Insira quais distritos
+														do pais fazem parte da
+														sua zona da trabalho.
+													</span>
+												</div>
+												<div className="max-w-xl mx-auto space-y-5 md:w-2/3 ">
+													<div className=" relative flex flex-col gap-4">
+														<div className="relative flex flex-col">
+															<Select
+																options={
+																	districts
+																}
+																onChange={(
+																	e
+																) => {
+																	setUserDistricts(
+																		e.map(
+																			(
+																				option
+																			) =>
+																				option.value
+																		)
+																	);
+																}}
+																placeholder="Preencha com as regiões onde trabalha..."
+																isSearchable={
+																	true
+																}
+																isClearable={
+																	false
+																}
+																className="custom-select"
+																classNamePrefix="select"
+																isMulti
+																defaultValue={userDistricts.map(
+																	(
+																		district
+																	) =>
+																		districts.find(
+																			(
+																				d
+																			) =>
+																				d.value ===
+																				district
+																		)
+																)}
+																noOptionsMessage={() =>
+																	"Sem resultados."
+																}
+															/>
+															{inputError.districts !==
+																"" && (
+																<span className="text-red-600 text-sm">
+																	{
+																		inputError.districts
+																	}
+																</span>
+															)}
+														</div>
+													</div>
+												</div>
+											</div>
+										)}
+										<div className="justify-end w-full pr-10 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
+											<button
+												type="submit"
+												className="py-2.5 px-4 text-orange-400 border-orange-400 border hover:bg-orange-400 hover:text-white w-fit transition ease-in duration-200 text-center text-sm font-semibold shadow-md focus:outline-none rounded-lg "
+												disabled={isSumbitting}
+											>
+												{isSumbitting ? (
+													<div className="flex items-center justify-center">
+														<div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-orange-400"></div>
+													</div>
+												) : (
+													"Guardar Alterações"
+												)}
+											</button>
+										</div>
+									</>
+								)}
+								<hr />
+
+								<SupplierServicesServiceDescription />
+							</>
+						)}
+					</div>
+				</div>
+			</section>
+		</form>
+	);
 }

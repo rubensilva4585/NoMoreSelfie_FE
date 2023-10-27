@@ -38,7 +38,6 @@ export async function getSupplierRequests() {
         return response.data;
 }
 
-
 export async function deleteUserAccount() {
         const response = await axios.delete(`${API_URL}/user`, {
                 headers: {
@@ -167,4 +166,17 @@ export async function getSupplierServices() {
                 },
         });
         return response.data;
+}
+
+export async function updateSupplierServices(services) {
+        try {
+                const response = axios.put(`${API_URL}/supplier/services`, services, {
+                        headers: {
+                                'Authorization': authToken(),
+                        },
+                });
+                return response;
+        } catch (error) {
+                errorHandler(error);
+        }
 }
