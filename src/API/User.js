@@ -160,3 +160,11 @@ export async function removeSupplierImage(imageId) {
 }
 
 
+export async function getSupplierServices() {
+        const response = await axios.get(`${API_URL}/supplier/services`, {
+                headers: {
+                        'Authorization': authToken(),
+                },
+        });
+        return response.data;
+}

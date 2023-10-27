@@ -227,11 +227,7 @@ export default function PageSearch() {
             <>
               <div className="grid grid-cols-2 gap-6 md:grid-cols-3 xl:grid-cols-4">
                 {supData.filter(filterSuppliers).map((sup, index) => {
-                  return (
-                    <Link to={"/supplier/" + sup.id}>
-                      <SearchResultCard supplier={sup} />
-                    </Link>
-                  );
+                  return <SearchResultCard supplier={sup} />;
                 })}
               </div>
             </>
