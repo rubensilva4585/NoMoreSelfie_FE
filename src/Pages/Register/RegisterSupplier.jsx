@@ -16,7 +16,6 @@ export function RegisterSupplier() {
                 name: "",
                 company: "",
                 nif: "",
-                address: "",
                 phone: "",
                 email: "",
                 password: "",
@@ -28,7 +27,6 @@ export function RegisterSupplier() {
                 name: "",
                 company: "",
                 nif: "",
-                address: "",
                 phone: "",
                 email: "",
                 password: "",
@@ -69,7 +67,6 @@ export function RegisterSupplier() {
                         name: "",
                         company: "",
                         nif: "",
-                        address: "",
                         phone: "",
                         email: "",
                         password: "",
@@ -92,13 +89,6 @@ export function RegisterSupplier() {
                         isValid = false;
                 }
 
-                if (!values.address) {
-                        setValuesError((prevErrors) => ({
-                                ...prevErrors,
-                                address: 'Morada é obrigatória'
-                        }));
-                        isValid = false;
-                }
 
                 if (!values.phone || values.phone.length < 9 || !/^\d+$/.test(values.phone)) {
                         setValuesError((prevErrors) => ({
@@ -165,7 +155,6 @@ export function RegisterSupplier() {
                         phone: values.phone,  // verificar se aceita null
                         company: values.company,
                         nif: values.nif,
-                        address: values.address,
                         role: "supplier",
                         email: values.email,
                         password: values.password,
@@ -213,7 +202,13 @@ export function RegisterSupplier() {
                                                 <div className="absolute inset-0 bg-black opacity-25" />
                                         </div>
                                         <div className="lg:w-1/2 xl:w-7/12 p-6 sm:p-12">
-                                                <Link to="/">
+                                                <Link to="/"
+                                                        className="text-center flex justify-center items-center gap-3">
+                                                        <img
+                                                                src="../../../logo.png"
+                                                                alt="nomoresselfie logo"
+                                                                className="h-10"
+                                                        />
                                                         <h1 className="text-center text-3xl xl:text-4xl font-light">
                                                                 NoMoreSelfie
                                                         </h1>
@@ -278,63 +273,7 @@ export function RegisterSupplier() {
                                                                                         <p className="text-red-500 text-xs mt-1">{valuesError.nif}</p>
                                                                                 )}
 
-                                                                                <input
-                                                                                        className={`w-full mt-5 px-8 py-4 rounded-lg font-medium bg-gray-100 border ${valuesError.address ? 'border-red-500' : 'border-gray-200'
-                                                                                                } placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 focus:bg-gray-50`}
-                                                                                        type="text"
-                                                                                        id="address"
-                                                                                        name="address"
-                                                                                        placeholder="Vive em..."
-                                                                                        onChange={handleChange("address")}
-                                                                                />
-                                                                                {valuesError.address && (
-                                                                                        <p className="text-red-500 text-xs mt-1">{valuesError.address}</p>
-                                                                                )}
 
-                                                                                <Select
-                                                                                        options={options}
-                                                                                        // onChange={selectedOption => handleChange("district")(selectedOption.value)}
-                                                                                        placeholder="Vive em..."
-                                                                                        isSearchable={true}
-                                                                                        isClearable={true}
-                                                                                        className="w-full mt-5"
-                                                                                        classNames={{
-                                                                                                control: (state) =>
-                                                                                                        state.isFocused ? 'ring-2 ring-orange-400 border-trasparent bg-gray-50 outline-none font-medium text-sm pl-5' : 'bg-gray-100 font-medium text-sm pl-5 border-grey-300',
-                                                                                        }}
-                                                                                        theme={(theme) => ({
-                                                                                                ...theme,
-                                                                                                borderRadius: '.5rem',
-                                                                                                
-                                                                                                colors: {
-                                                                                                        ...theme.colors,
-                                                                                                        primary25: 'orange-500',
-                                                                                                        primary: 'orange-500',
-                                                                                                        primary75: 'orange-500',
-                                                                                                        primary50: 'orange-500',
-                                                                                                        //neutral0: 'rgb(243 244 246)',
-                                                                                                        //neutral5: 'red',
-                                                                                                        // neutral10: 'red',
-                                                                                                        // neutral20: 'red',
-                                                                                                        // neutral30: 'red',
-                                                                                                        // neutral40: 'red',
-                                                                                                        // neutral50: 'red',
-                                                                                                        // neutral60: 'red',
-                                                                                                        // neutral70: 'red',
-                                                                                                        // neutral80: 'red',
-                                                                                                        neutral90: 'red',
-                                                                                                         neutral100: 'red',
-                                                                                                }
-
-                                                                                        })}
-                                                                                // styles={{
-                                                                                //         control: provided => ({
-                                                                                //                 ...provided,
-                                                                                //                 borderColor: valuesError.address ? 'border-red-500' : 'border-gray-200',
-
-                                                                                //         })
-                                                                                // }}
-                                                                                />
 
                                                                                 <input
                                                                                         className={`w-full mt-5 px-8 py-4 rounded-lg font-medium bg-gray-100 border ${valuesError.email ? 'border-red-500' : 'border-gray-200'

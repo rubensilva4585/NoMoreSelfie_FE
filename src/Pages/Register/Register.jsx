@@ -161,7 +161,13 @@ export default function Register() {
       <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
         <div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1 overflow-hidden">
           <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
-            <Link to="/">
+            <Link to="/"
+              className="text-center flex justify-center items-center gap-3">
+              <img
+                src="../../../logo.png"
+                alt="nomoresselfie logo"
+                className="h-10"
+              />
               <h1 className="text-center text-3xl xl:text-4xl font-light">
                 NoMoreSelfie
               </h1>
@@ -171,33 +177,12 @@ export default function Register() {
                 Registe a sua conta
               </h1>
               <div className="w-full flex-1 mt-8">
-                <div className="flex flex-col items-center">
-                  <button className="w-full max-w-sm font-bold rounded-lg py-3 border-gray-200 hover:bg-gray-50 border text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline">
-                    <div className="bg-white p-1 rounded-full">
-                      <FcGoogle className="text-xl" />
-                    </div>
-                    <span className="ml-4">Continue com Google</span>
-                  </button>
 
-                  <button className="w-full max-w-sm font-bold rounded-lg py-3 border-gray-200 hover:bg-gray-50 border text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-5">
-                    <div className="bg-white p-1 rounded-full">
-                      <FaFacebookF className="text-xl text-blue-600" />
-                    </div>
-                    <span className="ml-4">Continue com Facebook</span>
-                  </button>
-                </div>
-
-                <div className="mb-12 mt-6 border-b text-center">
-                  <div className="leading-none p-1 px-3 inline-block text-sm text-gray-400 tracking-wide font-medium bg-white transform translate-y-1/2">
-                    Registar com email
-                  </div>
-                </div>
                 <div className="mx-auto max-w-sm">
                   <form action="#" autoComplete="off" onSubmit={handleSubmit}>
                     <input
-                      className={`w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border ${
-                        valuesError.name ? "border-red-500" : "border-gray-200"
-                      } placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 focus:bg-gray-50`}
+                      className={`w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border ${valuesError.name ? "border-red-500" : "border-gray-200"
+                        } placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 focus:bg-gray-50`}
                       type="text"
                       id="name"
                       name="name"
@@ -211,9 +196,8 @@ export default function Register() {
                     )}
 
                     <input
-                      className={`w-full mt-5 px-8 py-4 rounded-lg font-medium bg-gray-100 border ${
-                        valuesError.phone ? "border-red-500" : "border-gray-200"
-                      } placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 focus:bg-gray-50`}
+                      className={`w-full mt-5 px-8 py-4 rounded-lg font-medium bg-gray-100 border ${valuesError.phone ? "border-red-500" : "border-gray-200"
+                        } placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 focus:bg-gray-50`}
                       type="tel"
                       id="phone"
                       name="phone"
@@ -227,15 +211,14 @@ export default function Register() {
                     )}
 
                     <input
-                      className={`w-full mt-5 px-8 py-4 rounded-lg font-medium bg-gray-100 border ${
-                        valuesError.email ? "border-red-500" : "border-gray-200"
-                      } placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 focus:bg-gray-50`}
+                      className={`w-full mt-5 px-8 py-4 rounded-lg font-medium bg-gray-100 border ${valuesError.email ? "border-red-500" : "border-gray-200"
+                        } placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 focus:bg-gray-50`}
                       type="email"
                       id="email"
                       name="email"
                       placeholder="Email"
                       onChange={handleChange("email")}
-                      // required
+                    // required
                     />
                     {valuesError.email && (
                       <p className="text-red-500 text-xs mt-1">
@@ -258,17 +241,16 @@ export default function Register() {
                         </button>
                       )}
                       <input
-                        className={`w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border ${
-                          valuesError.password
-                            ? "border-red-500"
-                            : "border-gray-200"
-                        } placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 focus:bg-gray-50 mt-5`}
+                        className={`w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border ${valuesError.password
+                          ? "border-red-500"
+                          : "border-gray-200"
+                          } placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 focus:bg-gray-50 mt-5`}
                         type={values.showPassword ? "text" : "password"}
                         id="password"
                         name="password"
                         placeholder="Password"
                         onChange={handleChange("password")}
-                        // required
+                      // required
                       />
                     </div>
                     {valuesError.password && (
@@ -293,17 +275,16 @@ export default function Register() {
                         </button>
                       )}
                       <input
-                        className={`w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border ${
-                          valuesError.confirmPassword
-                            ? "border-red-500"
-                            : "border-gray-200"
-                        } placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 focus:bg-gray-50 mt-5`}
+                        className={`w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border ${valuesError.confirmPassword
+                          ? "border-red-500"
+                          : "border-gray-200"
+                          } placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200 focus:bg-gray-50 mt-5`}
                         type={values.showConfirmPassword ? "text" : "password"}
                         id="confirm_password"
                         name="confirm_password"
                         placeholder="Confirmar Password"
                         onChange={handleChange("confirmPassword")}
-                        // required
+                      // required
                       />
                     </div>
                     {valuesError.confirmPassword && (

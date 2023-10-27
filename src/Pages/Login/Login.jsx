@@ -114,42 +114,25 @@ export default function Login() {
       <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
         <div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1 overflow-hidden">
           <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
-            <Link to="/">
+
+            <Link to="/"
+              className="text-center flex justify-center items-center gap-3">
+              <img
+                src="../../../logo.png"
+                alt="nomoresselfie logo"
+                className="h-10"
+              />
               <h1 className="text-center text-3xl xl:text-4xl font-light">
                 NoMoreSelfie
               </h1>
             </Link>
+
             <div className="mt-12 flex flex-col items-center">
               <h1 className="text-xl xl:text-2xl font-bold">
                 Entre na sua conta
               </h1>
               <div className="w-full flex-1 mt-8">
-                <div className="flex flex-col items-center">
-                  <button className="w-full max-w-xs font-bold rounded-lg py-3 border-gray-200 hover:bg-gray-50 border text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline">
-                    <div className="bg-white p-1 rounded-full">
-                      <FcGoogle className="text-xl" />
-                    </div>
-                    <span className="ml-4">
-                      Continue com Google
-                    </span>
-                  </button>
-
-                  <button className="w-full max-w-xs font-bold rounded-lg py-3 border-gray-200 hover:bg-gray-50 border text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-5">
-                    <div className="bg-white p-1 rounded-full">
-                      <FaFacebookF className="text-xl text-blue-600" />
-                    </div>
-                    <span className="ml-4">
-                      Continue com Facebook
-                    </span>
-                  </button>
-                </div>
-
-                <div className="my-12 border-b text-center">
-                  <div className="leading-none p-1 px-3 inline-block text-sm text-gray-400 tracking-wide font-medium bg-white transform translate-y-1/2">
-                    Entrar com email
-                  </div>
-                </div>
-                <div className="mx-auto max-w-xs">
+                <div className="mx-auto max-w-sm">
                   <form action="#" autoComplete="off" onSubmit={handleSubmit}>
                     <input
                       className={`w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border ${valuesError.email ? 'border-red-500' : 'border-gray-200'
