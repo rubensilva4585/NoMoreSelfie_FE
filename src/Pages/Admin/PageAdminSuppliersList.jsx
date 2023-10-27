@@ -181,9 +181,10 @@ export default function PageAdminSuppliersList({
                                   className={`w-5 h-5 z-25 mr-2 bg-gray-white text-green-500 hover:text-green-600 border-gray-300 rounded focus:ring-0 focus:ring-offset-0 cursor-pointer`}
                                   checked={supplier.verified}
                                   onChange={() => {
-                                    handelValidateSupplier(supplier.id);
+                                    handelValidateSupplier(supplier.user_id);
                                   }}
                                 />
+                                {console.log(supplier)}
                                 <span class="relative">
                                   {supplier.verified ? "Verificado" : "Inativo"}
                                 </span>

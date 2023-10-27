@@ -7,7 +7,7 @@ export default function PageAdmin() {
   const [supliersData, setSupliersData] = useState(null);
 
   const handelValidateSupplier = (id) => {
-    const userIndex = supliersData.findIndex((user) => user.id === id);
+    const userIndex = supliersData.findIndex((user) => user.user_id === id);
     const updatedUsers = [...supliersData];
 
     validateSupplier(
