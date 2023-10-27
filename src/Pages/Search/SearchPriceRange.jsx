@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import './SearchPriceRange.css';
@@ -9,21 +9,6 @@ export function SearchPriceRange() {
     const handleRangeChange = (newRange) => {
         setRange(newRange);
     };
-
-    // const handleRangeInput = (start, end)=> {
-    //     console.log(start, end);
-    //     if (start < 1) {
-    //         start = 1;
-    //     }
-    //     if (end > 5000) {
-    //         end = 5000;
-    //     }
-    //     if (start > end) {
-    //         start = end;
-    //     }
-
-    //     setRange([start, end]);
-    // };
 
     return (
         <>

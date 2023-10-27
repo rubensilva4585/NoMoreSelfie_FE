@@ -34,3 +34,13 @@ export async function submitRequest(request) {
         const response = await axios.post(`${API_URL}/supplier/storerequest`, request);
         return response.data;
 }
+
+export async function getValidSuppliersList() {
+        const response = await axios.get(`${API_URL}/suppliers/valid`);
+        return response.data;
+}
+
+export async function getCategories() {
+        const response = await axios.get(`${API_URL}/general/categories/getallcategories`);
+        return response.data;
+}
