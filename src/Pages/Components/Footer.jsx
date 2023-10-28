@@ -4,6 +4,7 @@ import {
 	FaPinterest,
 	FaTwitter,
 } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
 	return (
@@ -99,48 +100,48 @@ export default function Footer() {
 
 							<ul className="mt-6 space-y-4 text-sm">
 								<li>
-									<a
-										href="#"
+									<Link
+										to={`/search?category_id=1`}
 										className="transition hover:opacity-75 text-gray-200"
 									>
 										Casamentos
-									</a>
+									</Link>
 								</li>
 
 								<li>
-									<a
-										href="#"
+									<Link
+										to={`/search?category_id=2`}
+										className="transition hover:opacity-75 text-gray-200"
+									>
+										Bebés
+									</Link>
+								</li>
+
+								<li>
+									<Link
+										to={`/search?category_id=3`}
+										className="transition hover:opacity-75 text-gray-200"
+									>
+										Edição
+									</Link>
+								</li>
+
+								<li>
+									<Link
+										to={`/search?category_id=4`}
 										className="transition hover:opacity-75 text-gray-200"
 									>
 										Drone
-									</a>
+									</Link>
 								</li>
 
 								<li>
-									<a
-										href="#"
+									<Link
+										to={`/search?category_id=5`}
 										className="transition hover:opacity-75 text-gray-200"
 									>
-										Bebé
-									</a>
-								</li>
-
-								<li>
-									<a
-										href="#"
-										className="transition hover:opacity-75 text-gray-200"
-									>
-										Moda
-									</a>
-								</li>
-
-								<li>
-									<a
-										href="#"
-										className="transition hover:opacity-75 text-gray-200"
-									>
-										Restauração
-									</a>
+										Festas
+									</Link>
 								</li>
 							</ul>
 						</div>
@@ -152,39 +153,39 @@ export default function Footer() {
 
 							<ul className="mt-6 space-y-4 text-sm">
 								<li>
-									<a
-										href="#"
+									<Link
+										to="/"
 										className="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
 									>
 										Página Principal
-									</a>
+									</Link>
 								</li>
 
 								<li>
-									<a
-										href="#"
+									<Link
+										to="/search"
 										className="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
 									>
 										Profissionais
-									</a>
+									</Link>
 								</li>
 
 								<li>
-									<a
-										href="#"
+									<Link
+										to="/login"
 										className="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
 									>
 										Aceder
-									</a>
+									</Link>
 								</li>
 
 								<li>
-									<a
-										href="#"
+									<Link
+										to="/register"
 										className="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
 									>
 										Registar
-									</a>
+									</Link>
 								</li>
 							</ul>
 						</div>

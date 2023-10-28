@@ -20,7 +20,10 @@ export default function PageAdminSuppliersList({
 	return (
 		<>
 			<section className=" bg-gray-100/50">
-				<div className="container max-w-6xl mx-auto px-3 md:px-12 pt-16">
+				<div
+					className="container max-w-6xl mx-auto px-3 md:px-12 pt-16"
+					style={{ minHeight: "500px" }}
+				>
 					{!supliersData ? (
 						<>
 							<div className="h-64 flex items-center justify-center">
@@ -104,122 +107,145 @@ export default function PageAdminSuppliersList({
 											</tr>
 										</thead>
 										<tbody>
-											{supliersData
-												.filter(filterSuppliers)
-												.map((supplier, index) => (
-													<tr>
-														<td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
-															<Link
-																to={
-																	"/supplier/" +
-																	supplier.user_id
-																}
-															>
-																<div className="flex items-center">
-																	<div className="flex-shrink-0">
-																		<a
-																			href="#"
-																			className="relative block"
+											{supliersData.filter(
+												filterSuppliers
+											).length > 0 ? (
+												<>
+													{supliersData
+														.filter(filterSuppliers)
+														.map(
+															(
+																supplier,
+																index
+															) => (
+																<tr>
+																	<td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
+																		<Link
+																			to={
+																				"/supplier/" +
+																				supplier.user_id
+																			}
 																		>
-																			<img
-																				alt="profil"
-																				src={
-																					supplier &&
-																					supplier.avatar
-																						? IMAGE_STORAGE_PATH +
-																						  supplier.avatar
-																						: "./../../images/noavatar.svg"
-																				}
-																				className="mx-auto object-cover rounded-full h-10 w-10 "
-																			/>
-																		</a>
-																	</div>
-																	<div className="ml-3 flex flex-col">
+																			<div className="flex items-center">
+																				<div className="flex-shrink-0">
+																					<a
+																						href="#"
+																						className="relative block"
+																					>
+																						<img
+																							alt="profil"
+																							src={
+																								supplier &&
+																								supplier.avatar
+																									? IMAGE_STORAGE_PATH +
+																									  supplier.avatar
+																									: "./../../images/noavatar.svg"
+																							}
+																							className="mx-auto object-cover rounded-full h-10 w-10 "
+																						/>
+																					</a>
+																				</div>
+																				<div className="ml-3 flex flex-col">
+																					<p className="text-gray-900 whitespace-no-wrap">
+																						{
+																							supplier.name
+																						}
+																					</p>
+																					<span className="text-gray-400 text-sm">
+																						{supplier.dob
+																							? `${
+																									new Date().getFullYear() -
+																									new Date(
+																										supplier.dob
+																									).getFullYear()
+																							  } anos`
+																							: ""}
+																					</span>
+																				</div>
+																			</div>
+																		</Link>
+																	</td>
+																	<td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
 																		<p className="text-gray-900 whitespace-no-wrap">
 																			{
-																				supplier.name
+																				supplier.company
 																			}
 																		</p>
-																		<span className="text-gray-400 text-sm">
-																			{supplier.dob
-																				? `${
-																						new Date().getFullYear() -
-																						new Date(
-																							supplier.dob
-																						).getFullYear()
-																				  } anos`
-																				: ""}
-																		</span>
-																	</div>
-																</div>
-															</Link>
-														</td>
-														<td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
-															<p className="text-gray-900 whitespace-no-wrap">
-																{
-																	supplier.company
-																}
-															</p>
-														</td>
-														<td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
-															<p className="text-gray-900 whitespace-no-wrap">
-																{supplier.nif}
-															</p>
-														</td>
-														<td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
-															<div className="text-sm bg-white flex flex-col gap-1">
-																{supplier.email && (
-																	<div className="flex gap-1 items-center">
-																		<FaEnvelope className="text-md text-gray-400 " />
-																		<p className="whitespace-no-wrap">
+																	</td>
+																	<td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
+																		<p className="text-gray-900 whitespace-no-wrap">
 																			{
-																				supplier.email
+																				supplier.nif
 																			}
 																		</p>
-																	</div>
-																)}
+																	</td>
+																	<td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
+																		<div className="text-sm bg-white flex flex-col gap-1">
+																			{supplier.email && (
+																				<div className="flex gap-1 items-center">
+																					<FaEnvelope className="text-md text-gray-400 " />
+																					<p className="whitespace-no-wrap">
+																						{
+																							supplier.email
+																						}
+																					</p>
+																				</div>
+																			)}
 
-																{supplier.phone && (
-																	<div className="flex gap-1 items-center">
-																		<FaPhoneAlt className="text-md text-gray-400 " />
-																		<p className="whitespace-no-wrap">
-																			{
-																				supplier.phone
-																			}
-																		</p>
-																	</div>
-																)}
-															</div>
-														</td>
-														<td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
-															<span
-																className={`relative inline-block px-3 py-1 font-semibold leading-tight rounded-full ${
-																	supplier.verified
-																		? "text-green-900 bg-green-200"
-																		: "text-red-900 bg-red-200"
-																}`}
-															>
-																<input
-																	type="checkbox"
-																	className={`w-5 h-5 z-25 mr-2 bg-gray-white text-green-500 hover:text-green-600 border-gray-300 rounded focus:ring-0 focus:ring-offset-0 cursor-pointer`}
-																	checked={
-																		supplier.verified
-																	}
-																	onChange={() => {
-																		handelValidateSupplier(
-																			supplier.user_id
-																		);
-																	}}
-																/>
-																<span className="relative">
-																	{supplier.verified
-																		? "Verificado"
-																		: "Inativo"}
-																</span>
-															</span>
-														</td>
-													</tr>
-												))}
+																			{supplier.phone && (
+																				<div className="flex gap-1 items-center">
+																					<FaPhoneAlt className="text-md text-gray-400 " />
+																					<p className="whitespace-no-wrap">
+																						{
+																							supplier.phone
+																						}
+																					</p>
+																				</div>
+																			)}
+																		</div>
+																	</td>
+																	<td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
+																		<span
+																			className={`relative inline-block px-3 py-1 font-semibold leading-tight rounded-full ${
+																				supplier.verified
+																					? "text-green-900 bg-green-200"
+																					: "text-red-900 bg-red-200"
+																			}`}
+																		>
+																			<input
+																				type="checkbox"
+																				className={`w-5 h-5 z-25 mr-2 bg-gray-white text-green-500 hover:text-green-600 border-gray-300 rounded focus:ring-0 focus:ring-offset-0 cursor-pointer`}
+																				checked={
+																					supplier.verified
+																				}
+																				onChange={() => {
+																					handelValidateSupplier(
+																						supplier.user_id
+																					);
+																				}}
+																			/>
+																			<span className="relative">
+																				{supplier.verified
+																					? "Verificado"
+																					: "Inativo"}
+																			</span>
+																		</span>
+																	</td>
+																</tr>
+															)
+														)}
+												</>
+											) : (
+												<tr>
+													<td
+														colSpan="5"
+														className="px-5 py-5 text-sm bg-white border-b border-gray-200 text-center"
+													>
+														Não foram encontrados
+														resultados.
+													</td>
+												</tr>
+											)}
 										</tbody>
 									</table>
 								</div>
