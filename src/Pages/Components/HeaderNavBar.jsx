@@ -253,6 +253,17 @@ export default function HeaderNavBar({ home = false }) {
 																				</>
 																			)}
 																			<Link
+																				to="/search?fav=true"
+																				className="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+																				role="menuitem"
+																			>
+																				<span className="flex flex-col">
+																					<span>
+																						Favoritos
+																					</span>
+																				</span>
+																			</Link>
+																			<Link
 																				to="/settings"
 																				className="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900"
 																				role="menuitem"

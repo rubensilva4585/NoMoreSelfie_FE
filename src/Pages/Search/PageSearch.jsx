@@ -9,16 +9,22 @@ import {
 } from "../../API/General";
 import Select from "react-select";
 import "../../styles/ReactSelect.css";
-import { FaTimes } from "react-icons/fa";
+import { FaHeart, FaTimes } from "react-icons/fa";
 import { useLocation } from "react-router";
 import toast from "react-hot-toast";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import { getUserFavorites } from "../../API/User";
+import { useSelector } from "react-redux";
+import { getUserToken } from "../../redux/selectors";
 
 export default function PageSearch() {
 	const location = useLocation();
 	const searchParams = new URLSearchParams(location.search);
 	const categoryId = searchParams.get("category_id");
 	const districtId = searchParams.get("district_id");
+	const fav = searchParams.get("fav");
 
+	const [userFavs, setUserFavs] = useState(null);
 	const [supData, setSupData] = useState(null);
 	const [districts, setDistricts] = useState(null);
 	const [categories, setCategories] = useState(null);
@@ -27,8 +33,10 @@ export default function PageSearch() {
 		district: districtId ? districtId : "",
 		minPrice: "",
 		maxPrice: "",
+		fav: fav ? true : false,
 	});
 	const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(false);
+	const token = useSelector(getUserToken);
 
 	const filterSuppliers = (supplier) => {
 		let isValid = true;
@@ -75,6 +83,10 @@ export default function PageSearch() {
 				return false;
 			}
 		}
+		if (isValid && filters.fav) {
+			isValid = userFavs.some((favorite) => favorite.id === supplier.id);
+		}
+
 		return isValid;
 	};
 
@@ -124,6 +136,14 @@ export default function PageSearch() {
 				toast.error("Ocorreu um problema.");
 			});
 
+		token &&
+			getUserFavorites()
+				.then((response) => {
+					setUserFavs(response);
+				})
+				.catch((error) => {
+					toast.error("Ocorreu um problema.");
+				});
 		return () => {
 			abortController.abort();
 		};
@@ -235,6 +255,23 @@ export default function PageSearch() {
 								<FaTimes />
 							</div>
 						)}
+						{token && userFavs && (
+							<div
+								onClick={() =>
+									setFilters({
+										...filters,
+										fav: !filters.fav,
+									})
+								}
+								className="p-2 mr-4 border rounded-full text-lg bg-gray-200 border-gray-400 text-gray-600 hover:border-gray-600 hover:text-gray-800 cursor-pointer text-md font-semibold flex items-center gap-2"
+							>
+								{filters.fav ? (
+									<AiFillHeart />
+								) : (
+									<AiOutlineHeart />
+								)}
+							</div>
+						)}
 						<button
 							className="flex items-center justify-center px-4 py-2 text-base font-semibold text-white bg-orange-400 rounded-lg shadow-md hover:bg-orange-500 focus:ring-orange-500 focus:ring-2 focus:ring-offset-2 focus:ring-offset-orange-200 focus:outline-none transition duration-200 ease-in"
 							type="button"
@@ -244,7 +281,7 @@ export default function PageSearch() {
 						</button>
 					</div>
 
-					{supData ? (
+					{supData && (!token || userFavs) ? (
 						<>
 							{supData.filter(filterSuppliers).length === 0 ? (
 								<div className="text-center w-full h-60">
