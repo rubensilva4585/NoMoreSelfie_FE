@@ -320,7 +320,6 @@ export function RegisterSupplier() {
 											name="email"
 											placeholder="Email"
 											onChange={handleChange("email")}
-											// required
 										/>
 										{valuesError.email && (
 											<p className="text-red-500 text-xs mt-1">
@@ -361,7 +360,6 @@ export function RegisterSupplier() {
 												onChange={handleChange(
 													"password"
 												)}
-												// required
 											/>
 										</div>
 										{valuesError.password && (
@@ -402,7 +400,6 @@ export function RegisterSupplier() {
 												onChange={handleChange(
 													"confirmPassword"
 												)}
-												// required
 											/>
 										</div>
 										{valuesError.confirmPassword && (

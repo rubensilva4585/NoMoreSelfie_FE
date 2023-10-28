@@ -64,11 +64,11 @@ export default function PageSupplier() {
 		if (isLiked) {
 			removeUserFavorites(supplier_id)
 				.then((response) => {
-					//alert("Removido dos favoritos!");
+					toast.success("Removido dos favoritos!");
 					setIsLiked(!isLiked);
 				})
 				.catch((error) => {
-					alert("Erro ao remover dos favoritos!");
+					toast.error("Erro ao remover dos favoritos!");
 				})
 				.finally(() => {
 					setIsSubmitting(false);
@@ -76,11 +76,11 @@ export default function PageSupplier() {
 		} else {
 			addUserFavorites(supplier_id)
 				.then((response) => {
-					//alert("Adicionado aos favoritos!");
+					toast.success("Adicionado aos favoritos!");
 					setIsLiked(!isLiked);
 				})
 				.catch((error) => {
-					alert("Erro ao adicionar aos favoritos!");
+					toast.error("Erro ao adicionar aos favoritos.");
 				})
 				.finally(() => {
 					setIsSubmitting(false);

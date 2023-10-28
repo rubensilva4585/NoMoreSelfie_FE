@@ -25,8 +25,6 @@ export function SearchPriceRange() {
                 />
             </div>
             <div className='flex justify-between'>
-                {/* <input type="number" value={range[0]} onChange={(e) => handleRangeInput(e.target.value, range[1])}/>
-                <input type="number" value={range[1]} onChange={(e) => handleRangeInput(range[0], e.target.value)}/> */}
                 <div>{range[0]} €</div>
                 <div>{range[1]} €</div>
             </div>

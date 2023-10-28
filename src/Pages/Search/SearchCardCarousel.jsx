@@ -12,6 +12,7 @@ import {
 } from "../../API/User";
 import { useSelector } from "react-redux";
 import { getUserToken } from "../../redux/selectors";
+import toast from "react-hot-toast";
 
 export default function SearchCardCarousel({ images, supplier_id }) {
 	const [isLiked, setIsLiked] = useState(false);
@@ -26,11 +27,11 @@ export default function SearchCardCarousel({ images, supplier_id }) {
 		if (isLiked) {
 			removeUserFavorites(supplier_id)
 				.then((response) => {
-					//alert("Removido dos favoritos!");
+					toast.success("Removido dos favoritos!");
 					setIsLiked(!isLiked);
 				})
 				.catch((error) => {
-					alert("Erro ao remover dos favoritos!");
+					toast.success("Erro ao remover dos favoritos!");
 				})
 				.finally(() => {
 					setIsSubmitting(false);
@@ -38,11 +39,11 @@ export default function SearchCardCarousel({ images, supplier_id }) {
 		} else {
 			addUserFavorites(supplier_id)
 				.then((response) => {
-					//alert("Adicionado aos favoritos!");
+					toast.success("Adicionado aos favoritos!");
 					setIsLiked(!isLiked);
 				})
 				.catch((error) => {
-					alert("Erro ao adicionar aos favoritos!");
+					toast.error("Erro ao adicionar aos favoritos.")
 				})
 				.finally(() => {
 					setIsSubmitting(false);

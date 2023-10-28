@@ -39,14 +39,6 @@ export default function SupplierPorfolio() {
 	const handleDeteleImage = (imageId) => {
 		setIsDeleting(true);
 		toastPromise(imageId);
-		// removeSupplierImage(imageId)
-		//         .then((data) => {
-		//                 setSupplierImages(supplierImages.filter((image) => image.id !== imageId));
-		//         }).catch(error => {
-		//                 alert("Erro ao apagar imagem: " + error);
-		//         }).finally(() => {
-		//                 setIsDeleting(false);
-		//         });
 	};
 
 	const handleGetImages = () => {

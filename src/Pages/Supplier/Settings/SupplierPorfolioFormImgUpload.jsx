@@ -68,20 +68,6 @@ export default function SupplierPorfolioFormImgUpload({
 			return;
 		}
 		toastPromise(imageFiles);
-		// uploadSupplierImages(imageFiles)
-		//         .then((response) => {
-		//                 if (response.status === 201) {
-		//                         return handleGetImages();
-		//                 } else {
-		//                         throw new Error('Falha no upload. Por favor, tente novamente.');
-		//                 }
-		//         })
-		//         .catch((error) => {
-		//                 alert(error.response.data.error);
-		//         })
-		//         .finally(() => {
-		//                 setIsLoading(false);
-		//         });
 	};
 
 	return (

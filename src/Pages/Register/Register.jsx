@@ -148,7 +148,6 @@ export default function Register() {
 						}));
 					}
 				} else if (error.request)
-					// METER POPUP DE ERRO
 					console.log(
 						"Error: Sem resposta do servidor",
 						error.request
@@ -236,7 +235,6 @@ export default function Register() {
 											name="email"
 											placeholder="Email"
 											onChange={handleChange("email")}
-											// required
 										/>
 										{valuesError.email && (
 											<p className="text-red-500 text-xs mt-1">
@@ -277,7 +275,6 @@ export default function Register() {
 												onChange={handleChange(
 													"password"
 												)}
-												// required
 											/>
 										</div>
 										{valuesError.password && (
@@ -318,7 +315,6 @@ export default function Register() {
 												onChange={handleChange(
 													"confirmPassword"
 												)}
-												// required
 											/>
 										</div>
 										{valuesError.confirmPassword && (
