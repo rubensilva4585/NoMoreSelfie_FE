@@ -44,7 +44,7 @@ export default function SearchResultCard({ supplier }) {
 			>
 				<a href="#" className="block w-full h-full bg-white">
 					<div>
-						<SearchCardCarousel images={supplier.images} />
+						<SearchCardCarousel images={supplier.images} supplier_id={supplier.id} />
 					</div>
 
 					{/* <img alt="blog photo" src="https://www.tailwind-kit.com/images/blog/1.jpg" className="object-cover w-full max-h-40" /> */}
@@ -62,7 +62,7 @@ export default function SearchResultCard({ supplier }) {
 										src={
 											supplier.avatar
 												? IMAGE_STORAGE_PATH +
-												  supplier.avatar
+												supplier.avatar
 												: "./../../images/noavatar.svg"
 										}
 										className="mx-auto object-cover rounded-full h-10 w-10 "

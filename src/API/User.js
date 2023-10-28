@@ -38,6 +38,15 @@ export async function getSupplierRequests() {
         return response.data;
 }
 
+export async function getUserFavorites() {
+        const response = await axios.get(`${API_URL}/favorites`, {
+                headers: {
+                        'Authorization': authToken(),
+                },
+        });
+        return response.data;
+}
+
 export async function deleteUserAccount() {
         const response = await axios.delete(`${API_URL}/user`, {
                 headers: {
@@ -76,6 +85,34 @@ export async function updateUserPassword(formData) {
 export async function updateUserDistricts(districtsIds) {
         try {
                 const response = axios.put(`${API_URL}/updateuser/districts`, { district_ids: districtsIds }, {
+                        headers: {
+                                'Authorization': authToken(),
+                        },
+                });
+                return response;
+
+        } catch (error) {
+                errorHandler(error);
+        }
+}
+
+export async function addUserFavorites(favoriteId) {
+        try {
+                const response = axios.post(`${API_URL}/favorites/add`, { supplier_id: favoriteId }, {
+                        headers: {
+                                'Authorization': authToken(),
+                        },
+                });
+                return response;
+
+        } catch (error) {
+                errorHandler(error);
+        }
+}
+
+export async function removeUserFavorites(favoriteId) {
+        try {
+                const response = axios.post(`${API_URL}/favorites/remove`, { supplier_id: favoriteId }, {
                         headers: {
                                 'Authorization': authToken(),
                         },

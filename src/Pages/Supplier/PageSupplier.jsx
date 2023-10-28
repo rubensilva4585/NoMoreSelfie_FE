@@ -1,4 +1,4 @@
-import { AiOutlineHeart } from "react-icons/ai";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
@@ -19,6 +19,7 @@ import {
 } from "../../API/General";
 import { IMAGE_STORAGE_PATH } from "../../constants/General";
 import SearchModal from "../Search/SearchModal";
+import { addUserFavorites, removeUserFavorites, getUserFavorites } from "../../API/User";
 
 export default function PageSupplier() {
 	const [supplierData, setSupplierData] = useState(null);
@@ -32,6 +33,7 @@ export default function PageSupplier() {
 	]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [modalOpen, setModalOpen] = useState(false);
+	const [isLiked, setIsLiked] = useState(false);
 	const { supplier_id } = useParams();
 
 	const openModal = () => {
@@ -40,6 +42,31 @@ export default function PageSupplier() {
 
 	const closeModal = () => {
 		setModalOpen(false);
+	};
+
+	const handleLike = () => {
+		if (isLiked) {
+			console.log(supplier_id)
+			removeUserFavorites(supplier_id)
+				.then((response) => {
+					alert("Removido dos favoritos!")
+					setIsLiked(!isLiked);
+				})
+				.catch((error) => {
+					alert("Erro ao remover dos favoritos!")
+				})
+		} else {
+			console.log(supplier_id)
+			addUserFavorites(supplier_id)
+				.then((response) => {
+					alert("Adicionado aos favoritos!")
+					setIsLiked(!isLiked);
+				})
+				.catch((error) => {
+					alert("Erro ao adicionar aos favoritos!")
+				})
+		}
+		console.log("like")
 	};
 
 	useEffect(() => {
@@ -88,6 +115,19 @@ export default function PageSupplier() {
 			.catch((error) => {
 				throw error;
 			});
+
+
+		getUserFavorites()
+			.then((response) => {
+				const favorites = response;
+				const isLiked = favorites.some((favorite) => favorite.id == supplier_id);
+				console.log(isLiked)
+				setIsLiked(isLiked);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+
 		return () => {
 			abortController.abort();
 		};
@@ -171,11 +211,11 @@ export default function PageSupplier() {
 													</div>
 													{index <
 														supplierDistricts.length -
-															1 && (
-														<div className="mx-4 text-gray-600">
-															|
-														</div>
-													)}
+														1 && (
+															<div className="mx-4 text-gray-600">
+																|
+															</div>
+														)}
 												</>
 											);
 										}
@@ -216,7 +256,7 @@ export default function PageSupplier() {
 										src={
 											supplierData && supplierData.avatar
 												? IMAGE_STORAGE_PATH +
-												  supplierData.avatar
+												supplierData.avatar
 												: "./../../images/noavatar.svg"
 										}
 										alt=""
@@ -291,46 +331,41 @@ export default function PageSupplier() {
 							</div>
 							<div className="flex items-center gap-2 justify-between w-40 pt-4 mx-auto text-gray-500 border-t border-gray-200 text-3xl">
 								<a
-									href={`https://facebook.com/${
-										supplierData &&
+									href={`https://facebook.com/${supplierData &&
 										supplierData.social.facebook
-									}`}
+										}`}
 									target="_blank"
 								>
 									<FaFacebook />
 								</a>
 								<a
-									href={`https://instagram.com/${
-										supplierData &&
+									href={`https://instagram.com/${supplierData &&
 										supplierData.social.instagram
-									}`}
+										}`}
 									target="_blank"
 								>
 									<FaInstagram />
 								</a>
 								<a
-									href={`https://pinterest.com/${
-										supplierData &&
+									href={`https://pinterest.com/${supplierData &&
 										supplierData.social.pinterest
-									}`}
+										}`}
 									target="_blank"
 								>
 									<FaPinterest />
 								</a>
 								<a
-									href={`https://linkedin.com/in/${
-										supplierData &&
+									href={`https://linkedin.com/in/${supplierData &&
 										supplierData.social.linkedin
-									}`}
+										}`}
 									target="_blank"
 								>
 									<FaLinkedin />
 								</a>
 								<a
-									href={`https://${
-										supplierData &&
+									href={`https://${supplierData &&
 										supplierData.social.website
-									}`}
+										}`}
 									target="_blank"
 								>
 									<FaLink />
@@ -346,11 +381,18 @@ export default function PageSupplier() {
 								</button>
 								<button
 									type="button"
-									className="w-fit px-4 py-2 text-base bg-white border rounded-lg text-grey-500 hover:bg-gray-200 "
+									className="w-fit px-4 py-2 text-base bg-white border rounded-lg text-grey-500 hover:bg-gray-200 transition duration-200 "
+									onClick={handleLike}
 								>
-									<AiOutlineHeart
-										className={`text-orange-400 hover:text-white drop-shadow-md text-2xl transition duration-200 ease-in-out`}
-									/>
+									{isLiked ?
+										<AiFillHeart
+											className={`text-orange-400  drop-shadow-md text-2xl transition duration-200 ease-in-out `}
+										/> :
+										<AiOutlineHeart
+											className={`text-orange-400  drop-shadow-md text-2xl transition duration-200 ease-in-out `}
+										/>
+									}
+
 								</button>
 								{modalOpen && (
 									<SearchModal

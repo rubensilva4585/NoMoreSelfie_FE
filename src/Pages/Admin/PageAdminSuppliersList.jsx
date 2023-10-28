@@ -112,7 +112,7 @@ export default function PageAdminSuppliersList({
 															<Link
 																to={
 																	"/supplier/" +
-																	supplier.id
+																	supplier.user_id
 																}
 															>
 																<div class="flex items-center">
@@ -125,9 +125,9 @@ export default function PageAdminSuppliersList({
 																				alt="profil"
 																				src={
 																					supplier &&
-																					supplier.avatar
+																						supplier.avatar
 																						? IMAGE_STORAGE_PATH +
-																						  supplier.avatar
+																						supplier.avatar
 																						: "./../../images/noavatar.svg"
 																				}
 																				class="mx-auto object-cover rounded-full h-10 w-10 "
@@ -142,12 +142,11 @@ export default function PageAdminSuppliersList({
 																		</p>
 																		<span className="text-gray-400 text-sm">
 																			{supplier.dob
-																				? `${
-																						new Date().getFullYear() -
-																						new Date(
-																							supplier.dob
-																						).getFullYear()
-																				  } anos`
+																				? `${new Date().getFullYear() -
+																				new Date(
+																					supplier.dob
+																				).getFullYear()
+																				} anos`
 																				: ""}
 																		</span>
 																	</div>
@@ -193,11 +192,10 @@ export default function PageAdminSuppliersList({
 														</td>
 														<td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
 															<span
-																class={`relative inline-block px-3 py-1 font-semibold leading-tight rounded-full ${
-																	supplier.verified
+																class={`relative inline-block px-3 py-1 font-semibold leading-tight rounded-full ${supplier.verified
 																		? "text-green-900 bg-green-200"
 																		: "text-red-900 bg-red-200"
-																}`}
+																	}`}
 															>
 																<input
 																	type="checkbox"
