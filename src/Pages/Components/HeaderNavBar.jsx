@@ -11,7 +11,12 @@ import {
 	getUserRole,
 	getUserToken,
 } from "../../redux/selectors";
-import { IMAGE_STORAGE_PATH, SESSION_TOKEN } from "../../constants/General";
+import {
+	IMAGE_STORAGE_PATH,
+	ROLE_ADMIN,
+	ROLE_SUPPLIER,
+	SESSION_TOKEN,
+} from "../../constants/General";
 
 export default function HeaderNavBar({ home = false }) {
 	const [burgerMenuOpen, setBurgerMenuOpen] = useState(false);
@@ -183,10 +188,10 @@ export default function HeaderNavBar({ home = false }) {
 																			} text-sm`}
 																		>
 																			{userRole ===
-																			"supplier"
+																			ROLE_SUPPLIER
 																				? "Fornecedor"
 																				: userRole ===
-																				  "admin"
+																				  ROLE_ADMIN
 																				? "Admin"
 																				: "Cliente"}
 																		</span>
@@ -202,7 +207,7 @@ export default function HeaderNavBar({ home = false }) {
 																			aria-labelledby="options-menu"
 																		>
 																			{userRole ===
-																				"supplier" && (
+																				ROLE_SUPPLIER && (
 																				<>
 																					<Link
 																						to={`/supplier/${userId}`}
@@ -231,7 +236,7 @@ export default function HeaderNavBar({ home = false }) {
 																				</>
 																			)}
 																			{userRole ===
-																				"admin" && (
+																				ROLE_ADMIN && (
 																				<>
 																					<Link
 																						to="/admin"
@@ -430,7 +435,7 @@ export default function HeaderNavBar({ home = false }) {
 									</div>
 								</li>
 								<li>
-									{userRole === "supplier" && (
+									{userRole === ROLE_SUPPLIER && (
 										<>
 											<Link
 												to={`/supplier/${userId}`}
@@ -496,7 +501,7 @@ export default function HeaderNavBar({ home = false }) {
 											</Link>
 										</>
 									)}
-									{userRole === "admin" && (
+									{userRole === ROLE_ADMIN && (
 										<>
 											<Link
 												to="/admin"

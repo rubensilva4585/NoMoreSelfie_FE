@@ -17,7 +17,11 @@ import {
 	getSupplierServicesById,
 	getUserById,
 } from "../../API/General";
-import { IMAGE_STORAGE_PATH } from "../../constants/General";
+import {
+	IMAGE_STORAGE_PATH,
+	ROLE_ADMIN,
+	ROLE_SUPPLIER,
+} from "../../constants/General";
 import SearchModal from "../Search/SearchModal";
 import {
 	addUserFavorites,
@@ -89,12 +93,12 @@ export default function PageSupplier() {
 
 		getUserById(supplier_id)
 			.then((data) => {
-				if (data.role != "supplier") {
+				if (data.role != ROLE_SUPPLIER) {
 					window.location.replace("/error404");
 					return;
 				}
 				if (!data.isVerified) {
-					if (!(userRole == "admin" || userID == data.id))
+					if (!(userRole == ROLE_ADMIN || userID == data.id))
 						window.location.replace("/error404");
 				}
 				setSupplierData(data);

@@ -7,7 +7,7 @@ import {
 	updateUser,
 	updateUserPassword,
 } from "../../API/User";
-import { IMAGE_STORAGE_PATH } from "../../constants/General";
+import { IMAGE_STORAGE_PATH, ROLE_SUPPLIER } from "../../constants/General";
 import { FaSpinner, FaTrash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserAvatar, getUserRole } from "./../../redux/selectors";
@@ -113,7 +113,7 @@ export default function PageUserSettings() {
 			isValid = false;
 		}
 
-		if (userRole === "supplier" || personalInfo.phone) {
+		if (userRole === ROLE_SUPPLIER || personalInfo.phone) {
 			if (
 				!personalInfo.phone ||
 				personalInfo.phone.length < 9 ||
@@ -127,7 +127,7 @@ export default function PageUserSettings() {
 			}
 		}
 
-		if (userRole === "supplier" || personalInfo.dob) {
+		if (userRole === ROLE_SUPPLIER || personalInfo.dob) {
 			if (
 				!personalInfo.dob ||
 				personalInfo.dob > new Date().toISOString().split("T")[0]
@@ -140,7 +140,7 @@ export default function PageUserSettings() {
 			}
 		}
 
-		if (userRole === "supplier") {
+		if (userRole === ROLE_SUPPLIER) {
 			if (!personalInfo.company) {
 				setPersonalInfoError((prevErrors) => ({
 					...prevErrors,
@@ -192,7 +192,7 @@ export default function PageUserSettings() {
 				phone: personalInfo.phone,
 				dob: personalInfo.dob,
 				// supliers only
-				...(userRole === "supplier" && {
+				...(userRole === ROLE_SUPPLIER && {
 					company: personalInfo.company,
 					nif: personalInfo.nif,
 					district_id: personalInfo.district_id,
@@ -481,7 +481,7 @@ export default function PageUserSettings() {
 									</h2>
 									<div className="max-w-sm mx-auto space-y-5 md:w-2/3 ">
 										<div className=" relative flex flex-col gap-4">
-											{userRole === "supplier" && (
+											{userRole === ROLE_SUPPLIER && (
 												<div className="max-w-sm mx-auto md:w-full md:mx-0">
 													<label htmlFor="name">
 														Foto de perfil
@@ -623,7 +623,7 @@ export default function PageUserSettings() {
 														</span>
 													)}
 												</div>
-												{userRole === "supplier" && (
+												{userRole === ROLE_SUPPLIER && (
 													<>
 														<div className="relative">
 															<label htmlFor="name">

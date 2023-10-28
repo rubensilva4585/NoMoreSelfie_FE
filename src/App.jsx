@@ -7,7 +7,7 @@ import Footer from "./Pages/Components/Footer";
 import Header from "./Pages/Components/Header";
 import SupplierPanel from "./Pages/Supplier/Settings/SupplierPanel";
 import ErrorUnauthorized from "./Pages/Error/ErrorUnauthorized";
-import { SESSION_TOKEN } from "./constants/General";
+import { ROLE_ADMIN, ROLE_SUPPLIER, SESSION_TOKEN } from "./constants/General";
 import { getUserRole } from "./redux/selectors";
 import { useSelector } from "react-redux";
 import { Toaster } from "react-hot-toast";
@@ -82,8 +82,8 @@ export default function App() {
 				</div>
 			) : (
 				<>
-					{(isSupplierRoute && !isAuthorized(["supplier"])) ||
-					(isAdminRoute && !isAuthorized(["admin"])) ||
+					{(isSupplierRoute && !isAuthorized([ROLE_SUPPLIER])) ||
+					(isAdminRoute && !isAuthorized([ROLE_ADMIN])) ||
 					(!token && isLoginRoute) ? (
 						<ErrorUnauthorized />
 					) : (

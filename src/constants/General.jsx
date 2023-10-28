@@ -9,3 +9,8 @@ export const API_URL = API_DOMAIN + ":" + API_PORT + "/api";
 // Images
 export const IMAGE_STORAGE_PATH = API_DOMAIN + ":" + API_PORT + "/storage/";
 export const IMAGE_TOTAL_MAX = 10;
+
+// roles
+export const ROLE_ADMIN = "admin";
+export const ROLE_USER = "user";
+export const ROLE_SUPPLIER = "supplier";
