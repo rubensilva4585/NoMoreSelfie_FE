@@ -311,20 +311,36 @@ export default function HeaderNavBar({ home = false }) {
 						</div>
 					</div>
 				</nav>
+				{burgerMenuOpen && (
+					<div
+						className=" md:hidden fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50"
+						onClick={toggleBurgerMenu}
+					></div>
+				)}
 			</header>
 
 			{/* BurgerMenu */}
 			<div
-				className={`fixed top-0 left-0 h-full w-64 bg-white transition-transform transform ${
+				className={`md:hidden fixed top-0 left-0 h-full w-80 bg-white transition-transform transform ${
 					burgerMenuOpen ? "translate-x-0" : "-translate-x-full"
 				} z-30`}
 			>
 				<div className="flex items-center justify-between h-16 px-6 bg-white border-b border-gray-200">
-					<a href="#" className="text-xl font-bold text-orange-400">
-						NoMoreSelfie
-					</a>
+					<div className="flex justify-center items-center gap-2">
+						<img
+							src="../../../logo.png"
+							alt="nomoresselfie logo"
+							className="h-10"
+						/>
+						<a
+							href="#"
+							className="text-xl text-orange-400 font-bold"
+						>
+							NoMoreSelfie
+						</a>
+					</div>
 					<button
-						className="focus:outline-none md:hidden"
+						className="focus:outline-none text-gray-400 hover:text-gray-800"
 						onClick={toggleBurgerMenu}
 					>
 						<FaTimes size={24} />
@@ -340,66 +356,257 @@ export default function HeaderNavBar({ home = false }) {
 							</div>
 						</li>
 						<li>
-							<a
-								href="#"
-								className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-200 rounded-md"
+							<Link
+								to={`/`}
+								onClick={() => {
+									setBurgerMenuOpen(false);
+								}}
 							>
-								<span className="inline-flex justify-center items-center ml-4">
-									<svg
-										className="w-5 h-5"
-										fill="none"
-										stroke="currentColor"
-										viewBox="0 0 24 24"
-										xmlns="http://www.w3.org/2000/svg"
-									>
-										<path
-											strokeLinecap="round"
-											strokeLinejoin="round"
-											strokeWidth="2.5"
-											d="M4 6h16M4 12h16M4 18h16"
-										></path>
-									</svg>
-								</span>
-								<span className="ml-2 text-sm tracking-wide truncate">
-									Página Inicial
-								</span>
-							</a>
+								<a
+									href="#"
+									className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-200 rounded-md"
+								>
+									<span className="inline-flex justify-center items-center ml-4">
+										<svg
+											className="w-5 h-5"
+											fill="none"
+											stroke="currentColor"
+											viewBox="0 0 24 24"
+											xmlns="http://www.w3.org/2000/svg"
+										>
+											<path
+												strokeLinecap="round"
+												strokeLinejoin="round"
+												strokeWidth="2.5"
+												d="M4 6h16M4 12h16M4 18h16"
+											></path>
+										</svg>
+									</span>
+									<span className="ml-2 text-sm tracking-wide truncate">
+										Página Inicial
+									</span>
+								</a>
+							</Link>
 						</li>
 						<li>
-							<a
-								href="#"
-								className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-200 rounded-md"
+							<Link
+								to={`/search`}
+								onClick={() => {
+									setBurgerMenuOpen(false);
+								}}
 							>
-								<span className="inline-flex justify-center items-center ml-4">
-									<svg
-										className="w-5 h-5"
-										fill="none"
-										stroke="currentColor"
-										viewBox="0 0 24 24"
-										xmlns="http://www.w3.org/2000/svg"
-									>
-										<path
-											strokeLinecap="round"
-											strokeLinejoin="round"
-											strokeWidth="2.5"
-											d="M4 6h16M4 12h16M4 18h16"
-										></path>
-									</svg>
-								</span>
-								<span className="ml-2 text-sm tracking-wide truncate">
-									Profissionais
-								</span>
-							</a>
+								<a
+									href="#"
+									className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-200 rounded-md"
+								>
+									<span className="inline-flex justify-center items-center ml-4">
+										<svg
+											className="w-5 h-5"
+											fill="none"
+											stroke="currentColor"
+											viewBox="0 0 24 24"
+											xmlns="http://www.w3.org/2000/svg"
+										>
+											<path
+												strokeLinecap="round"
+												strokeLinejoin="round"
+												strokeWidth="2.5"
+												d="M4 6h16M4 12h16M4 18h16"
+											></path>
+										</svg>
+									</span>
+									<span className="ml-2 text-sm tracking-wide truncate">
+										Profissionais
+									</span>
+								</a>
+							</Link>
 						</li>
 					</ul>
-				</div>
-				<div className="px-5 py-3">
-					<a
-						href="#"
-						className="flex items-center justify-center w-full h-11 px-6 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-orange-400 rounded-md hover:bg-orange-400 focus:outline-none focus:bg-orange-400"
-					>
-						Login
-					</a>
+
+					{userToken ? (
+						<>
+							<ul className="flex flex-col space-y-1">
+								<li className="px-5">
+									<div className="flex flex-row items-center h-8">
+										<div className="text-sm font-light tracking-wide text-gray-500">
+											Minha Conta
+										</div>
+									</div>
+								</li>
+								<li>
+									{userRole === "supplier" && (
+										<>
+											<Link
+												to={`/supplier/${userId}`}
+												onClick={() => {
+													setBurgerMenuOpen(false);
+												}}
+											>
+												<a
+													href="#"
+													className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-200 rounded-md"
+												>
+													<span className="inline-flex justify-center items-center ml-4">
+														<svg
+															className="w-5 h-5"
+															fill="none"
+															stroke="currentColor"
+															viewBox="0 0 24 24"
+															xmlns="http://www.w3.org/2000/svg"
+														>
+															<path
+																strokeLinecap="round"
+																strokeLinejoin="round"
+																strokeWidth="2.5"
+																d="M4 6h16M4 12h16M4 18h16"
+															></path>
+														</svg>
+													</span>
+													<span className="ml-2 text-sm tracking-wide truncate">
+														Meu Perfil
+													</span>
+												</a>
+											</Link>
+											<Link
+												to="/supplier/dashboard"
+												onClick={() => {
+													setBurgerMenuOpen(false);
+												}}
+											>
+												<a
+													href="#"
+													className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-200 rounded-md"
+												>
+													<span className="inline-flex justify-center items-center ml-4">
+														<svg
+															className="w-5 h-5"
+															fill="none"
+															stroke="currentColor"
+															viewBox="0 0 24 24"
+															xmlns="http://www.w3.org/2000/svg"
+														>
+															<path
+																strokeLinecap="round"
+																strokeLinejoin="round"
+																strokeWidth="2.5"
+																d="M4 6h16M4 12h16M4 18h16"
+															></path>
+														</svg>
+													</span>
+													<span className="ml-2 text-sm tracking-wide truncate">
+														Painel Fornecedor
+													</span>
+												</a>
+											</Link>
+										</>
+									)}
+									{userRole === "admin" && (
+										<>
+											<Link
+												to="/admin"
+												onClick={() => {
+													setBurgerMenuOpen(false);
+												}}
+											>
+												<a
+													href="#"
+													className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-200 rounded-md"
+												>
+													<span className="inline-flex justify-center items-center ml-4">
+														<svg
+															className="w-5 h-5"
+															fill="none"
+															stroke="currentColor"
+															viewBox="0 0 24 24"
+															xmlns="http://www.w3.org/2000/svg"
+														>
+															<path
+																strokeLinecap="round"
+																strokeLinejoin="round"
+																strokeWidth="2.5"
+																d="M4 6h16M4 12h16M4 18h16"
+															></path>
+														</svg>
+													</span>
+													<span className="ml-2 text-sm tracking-wide truncate">
+														Painel Administração
+													</span>
+												</a>
+											</Link>
+										</>
+									)}
+									<Link
+										to={`/settings`}
+										onClick={() => {
+											setBurgerMenuOpen(false);
+										}}
+									>
+										<a
+											href="#"
+											className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-200 rounded-md"
+										>
+											<span className="inline-flex justify-center items-center ml-4">
+												<svg
+													className="w-5 h-5"
+													fill="none"
+													stroke="currentColor"
+													viewBox="0 0 24 24"
+													xmlns="http://www.w3.org/2000/svg"
+												>
+													<path
+														strokeLinecap="round"
+														strokeLinejoin="round"
+														strokeWidth="2.5"
+														d="M4 6h16M4 12h16M4 18h16"
+													></path>
+												</svg>
+											</span>
+											<span className="ml-2 text-sm tracking-wide truncate">
+												Gerir Conta
+											</span>
+										</a>
+									</Link>
+
+									<a
+										href="#"
+										className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-200 rounded-md"
+										onClick={handleLogout}
+									>
+										<span className="inline-flex justify-center items-center ml-4">
+											<svg
+												className="w-5 h-5"
+												fill="none"
+												stroke="currentColor"
+												viewBox="0 0 24 24"
+												xmlns="http://www.w3.org/2000/svg"
+											>
+												<path
+													strokeLinecap="round"
+													strokeLinejoin="round"
+													strokeWidth="2.5"
+													d="M4 6h16M4 12h16M4 18h16"
+												></path>
+											</svg>
+										</span>
+										<span className="ml-2 text-sm tracking-wide truncate">
+											Sair
+										</span>
+									</a>
+								</li>
+							</ul>
+						</>
+					) : (
+						<Link to="/login">
+							<div className="px-5 py-3">
+								<a
+									href="#"
+									className="flex items-center justify-center w-full h-11 px-6 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-orange-400 rounded-md hover:bg-orange-400 focus:outline-none focus:bg-orange-400"
+								>
+									Login
+								</a>
+							</div>
+						</Link>
+					)}
 				</div>
 			</div>
 		</>
