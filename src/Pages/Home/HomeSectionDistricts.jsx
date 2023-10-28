@@ -10,9 +10,6 @@ export default function HomeSectionDistricts() {
                         <p className="text-4xl font-bold text-beige">
                             Procure profissionais perto de si
                         </p>
-                        {/* <p className="text-2xl font-light text-gray-400">
-                            Selecione por categoria
-                        </p> */}
                     </div>
 
                     <div className="flex gap-5 overflow-x-auto">

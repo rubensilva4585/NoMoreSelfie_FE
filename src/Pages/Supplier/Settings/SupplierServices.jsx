@@ -10,8 +10,6 @@ import {
 	updateUserDistricts,
 } from "../../../API/User";
 import { FaTrash } from "react-icons/fa";
-import { is } from "date-fns/locale";
-import { set } from "date-fns";
 
 export default function SupplierServices(props) {
 	const [districts, setDistricts] = useState(null);
@@ -188,7 +186,7 @@ export default function SupplierServices(props) {
 	return (
 		<form onSubmit={handleSubmitServices}>
 			<section className=" bg-gray-100/50 ">
-				<div className="container max-w-6xl mx-auto px-3 md:px-12 pb-16">
+				<div className="container max-w-6xl mx-auto sm:px-3 md:px-12 pb-16">
 					<div className="space-y-6 bg-white border-t-2 border-orange-400 rounded-lg">
 						{!(
 							userServices &&
@@ -216,8 +214,8 @@ export default function SupplierServices(props) {
 									</div>
 									<div className="max-w-xl mx-auto space-y-5 md:w-2/3 ">
 										<div className=" relative flex flex-col gap-4">
-											<div className="relative flex gap-4">
-												<div className="relative inline-block w-2/3">
+											<div className="relative flex gap-4 whitespace-nowrap flex-wrap sm:flex-nowrap">
+												<div className="relative inline-block w-full">
 													<Select
 														options={categories.map(
 															(category) => ({
@@ -490,7 +488,7 @@ export default function SupplierServices(props) {
 												</div>
 											</div>
 										)}
-										<div className="justify-end w-full pr-10 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
+										<div className="justify-end w-full pr-10 space-y-4 text-gray-500 inline-flex md:space-y-0">
 											<button
 												type="submit"
 												className="py-2.5 px-4 text-orange-400 border-orange-400 border hover:bg-orange-400 hover:text-white w-fit transition ease-in duration-200 text-center text-sm font-semibold shadow-md focus:outline-none rounded-lg "

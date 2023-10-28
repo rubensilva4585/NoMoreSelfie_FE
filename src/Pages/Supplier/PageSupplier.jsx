@@ -75,7 +75,7 @@ export default function PageSupplier() {
 		getUserById(supplier_id)
 			.then((data) => {
 				setSupplierData(data);
-				console.log("data");
+				console.log(data);
 			})
 			.catch((error) => {
 				console.log("Erro API: ", error);
@@ -262,53 +262,33 @@ export default function PageSupplier() {
 										alt=""
 									/>
 								</div>
+
 								<div className="mb-2">
 									<h3 className="font-bold text-3xl text-gray-800">
 										{supplierData && supplierData.name}
 									</h3>
-									<div className="inline-flex text-gray-700 items-center">
-										<svg
-											className="h-4 w-4 text-gray-400 mr-1"
-											fill="currentColor"
-											xmlns="http://www.w3.org/2000/svg"
-											viewBox="0 0 24 24"
-											width="24"
-											height="24"
-										>
-											<path
-												className=""
-												d="M5.64 16.36a9 9 0 1 1 12.72 0l-5.65 5.66a1 1 0 0 1-1.42 0l-5.65-5.66zm11.31-1.41a7 7 0 1 0-9.9 0L12 19.9l4.95-4.95zM12 14a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0-2a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"
-											/>
-										</svg>
-										{supplierData &&
-											supplierData.district.name}
-									</div>
+									{supplierData && supplierData.district && (
+										<div className="inline-flex text-gray-700 items-center">
+											<svg
+												className="h-4 w-4 text-gray-400 mr-1"
+												fill="currentColor"
+												xmlns="http://www.w3.org/2000/svg"
+												viewBox="0 0 24 24"
+												width="24"
+												height="24"
+											>
+												<path
+													className=""
+													d="M5.64 16.36a9 9 0 1 1 12.72 0l-5.65 5.66a1 1 0 0 1-1.42 0l-5.65-5.66zm11.31-1.41a7 7 0 1 0-9.9 0L12 19.9l4.95-4.95zM12 14a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0-2a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"
+												/>
+											</svg>
+											{supplierData &&
+												supplierData.district.name}
+										</div>
+									)}
 								</div>
 								<div className="h-1 w-10 bg-orange-400 mx-auto" />
 							</div>
-							{/* <div className="w-full p-2 bg-orange-100/50 rounded-lg">
-                                    <div className="flex items-center justify-around text-xs text-gray-400">
-                                        <p className="flex text-center flex-col">
-                                            Data registo
-                                            <span className="font-bold text-center text-black">
-                                                12/01/2021
-                                            </span>
-                                        </p>
-                                        <p className="flex text-center flex-col">
-                                            Serviços
-                                            <span className="font-bold text-center text-black">
-                                                13
-                                            </span>
-                                        </p>
-                                        <p className="flex text-center flex-col">
-                                            Visitantes
-                                            <span className="font-bold text-center text-black">
-                                                3234
-                                            </span>
-                                        </p>
-                                    </div>
-                                </div> */}
-
 							<div>
 								<p className="text-gray-600 text-center">
 									{supplierData && supplierData.bio}

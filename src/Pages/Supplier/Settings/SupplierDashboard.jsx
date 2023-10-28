@@ -28,7 +28,7 @@ export default function SupplierDashboard(props) {
 
 	return (
 		<section className=" bg-gray-100/50 ">
-			<div className="container max-w-6xl mx-auto px-3 md:px-12 pb-16">
+			<div className="container max-w-6xl mx-auto sm:px-3 md:px-12 pb-16">
 				{!requestsData ? (
 					<>
 						<div className="h-64 flex items-center justify-center">
@@ -128,7 +128,7 @@ export default function SupplierDashboard(props) {
 																		</p>
 																	</td>
 																	<td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
-																		<div className="text-sm bg-white flex flex-col gap-1">
+																		<div className="px-5 py-5 text-sm bg-white flex flex-col gap-1">
 																			{request.email && (
 																				<div className="flex gap-1 items-center">
 																					<FaEnvelope className="text-md text-gray-400 " />

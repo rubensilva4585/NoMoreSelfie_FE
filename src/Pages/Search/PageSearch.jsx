@@ -2,48 +2,46 @@ import { useEffect, useState } from "react";
 import { BsFilterLeft } from "react-icons/bs";
 import SearchResultCard from "./SearchResultCard";
 import SearchFilterSidebar from "./SearchFilterSidebar";
-import SearchServices from "./SearchServices.jsx";
 import {
 	getCategories,
 	getDistricts,
 	getValidSuppliersList,
 } from "../../API/General";
-import { Link } from "react-router-dom";
 import Select from "react-select";
 import "../../styles/ReactSelect.css";
 import { FaTimes } from "react-icons/fa";
+import { useLocation } from "react-router";
 
 export default function PageSearch() {
+	const location = useLocation();
+	const searchParams = new URLSearchParams(location.search);
+	const categoryId = searchParams.get("category_id");
+	const districtId = searchParams.get("district_id");
+	console.log(categoryId);
+	console.log(districtId);
+
 	const [supData, setSupData] = useState(null);
 	const [districts, setDistricts] = useState(null);
 	const [categories, setCategories] = useState(null);
 	const [filters, setFilters] = useState({
-		category: "",
-		district: "",
+		category: categoryId ? categoryId : "",
+		district: districtId ? districtId : "",
 		minPrice: "",
 		maxPrice: "",
 	});
 	const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(false);
 
 	const filterSuppliers = (supplier) => {
-		// console.log(filters);
 		let isValid = true;
 
 		if (isValid && filters.category) {
 			isValid = supplier.services.some(
-				(service) => service.category_id === filters.category
+				(service) => service.category_id === Number(filters.category)
 			);
 		}
-		// if (isValid && filters.sub_category) {
-		//   isValid = supplier.services.some((service) =>
-		//     service.subcategories.some(
-		//       (subcategory) => subcategory.id === filters.sub_category
-		//     )
-		//   );
-		// }
 		if (isValid && filters.district) {
 			isValid = supplier.districts.some(
-				(district) => district.id === filters.district
+				(district) => district.id === Number(filters.district)
 			);
 		}
 		if (isValid && filters.minPrice && filters.maxPrice) {
@@ -152,7 +150,7 @@ export default function PageSearch() {
 									</p>
 								</div>
 
-								<div className="flex justify-start w-4/4 ">
+								<div className="flex flex-wrap justify-start w-4/4 ">
 									<div className="relative w-56 h-14">
 										{categories && (
 											<Select
@@ -207,14 +205,6 @@ export default function PageSearch() {
 											/>
 										)}
 									</div>
-									{/* <div className="relative h-14">
-                    <button
-                      className="flex-shrink-0 h-full px-4 py-2 text-base font-semibold text-white bg-orange-400 rounded-e-lg shadow-md hover:bg-orange-500 focus:ring-orange-500 focus:ring-2 focus:ring-offset-2 focus:ring-offset-orange-200 focus:outline-none"
-                      type="submit"
-                    >
-                      Pesquisar
-                    </button>
-                  </div> */}
 								</div>
 							</div>
 						</div>
@@ -253,15 +243,23 @@ export default function PageSearch() {
 
 					{supData ? (
 						<>
-							<div className="grid grid-cols-2 gap-6 md:grid-cols-3 xl:grid-cols-4">
-								{supData
-									.filter(filterSuppliers)
-									.map((sup, index) => {
-										return (
-											<SearchResultCard supplier={sup} />
-										);
-									})}
-							</div>
+							{supData.filter(filterSuppliers).length === 0 ? (
+								<div className="text-center w-full h-60">
+									Não existem resultados.
+								</div>
+							) : (
+								<div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+									{supData
+										.filter(filterSuppliers)
+										.map((sup, index) => {
+											return (
+												<SearchResultCard
+													supplier={sup}
+												/>
+											);
+										})}
+								</div>
+							)}
 						</>
 					) : (
 						<div className="flex items-center justify-center">
