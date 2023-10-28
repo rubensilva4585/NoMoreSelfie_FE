@@ -18,11 +18,10 @@ export default function SupplierDashboard(props) {
 	useEffect(() => {
 		getSupplierRequests()
 			.then((response) => {
-				console.log(response);
 				setRequestsData(response);
 			})
 			.catch((error) => {
-				console.log(error);
+				toast.error("Ocorreu um problema.");
 			});
 	}, []);
 
@@ -128,7 +127,7 @@ export default function SupplierDashboard(props) {
 																		</p>
 																	</td>
 																	<td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
-																		<div className="px-5 py-5 text-sm bg-white flex flex-col gap-1">
+																		<div className="text-sm bg-white flex flex-col gap-1">
 																			{request.email && (
 																				<div className="flex gap-1 items-center">
 																					<FaEnvelope className="text-md text-gray-400 " />

@@ -12,6 +12,7 @@ import { getUserRole } from "./redux/selectors";
 import { useSelector } from "react-redux";
 import { Toaster } from "react-hot-toast";
 import "./App.css";
+import ScrollToTop from "./ScrollToTop";
 
 export default function App() {
 	// States
@@ -55,7 +56,7 @@ export default function App() {
 					store.dispatch(login(token, id, name, role, avatar));
 				})
 				.catch((error) => {
-					console.log(error);
+					toast.error("Ocorreu um problema.");
 					localStorage.removeItem(SESSION_TOKEN);
 				})
 				.finally(() => {
@@ -66,7 +67,6 @@ export default function App() {
 
 	return (
 		<>
-			<Toaster />
 			{isLoading ? (
 				<div className="h-screen flex flex-col items-center justify-center gap-6">
 					<div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-orange-400" />
@@ -90,6 +90,8 @@ export default function App() {
 					)}
 				</>
 			)}
+			<Toaster />
+			<ScrollToTop />
 		</>
 	);
 }

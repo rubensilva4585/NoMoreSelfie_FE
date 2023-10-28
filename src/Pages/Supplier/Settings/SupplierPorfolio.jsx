@@ -29,7 +29,7 @@ export default function SupplierPorfolio() {
 					setIsDeleting(false);
 				}),
 			{
-				loading: "Apagando imagem...",
+				loading: "A apagar imagem...",
 				success: <b>Imagem apagada com sucesso!</b>,
 				error: <b>Erro ao apagar imagem!</b>,
 			}

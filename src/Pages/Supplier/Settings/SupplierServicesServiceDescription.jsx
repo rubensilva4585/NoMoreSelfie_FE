@@ -3,6 +3,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 // import { ServiceDescription } from './ServicesDescription';
 import { getUser, updateUser } from "../../../API/User";
+import toast from "react-hot-toast";
 
 export function SupplierServicesServiceDescription() {
 	const reactQuillRef = useRef(null);
@@ -19,11 +20,10 @@ export function SupplierServicesServiceDescription() {
 		setIsSubmiting(true);
 		updateUser({ service_description: sDescription })
 			.then((response) => {
-				alert("Descrição do serviço atualizada com sucesso!");
-				console.log(response);
+				toast.success("Descrição do serviço atualizada com sucesso!");
 			})
 			.catch((error) => {
-				console.log(error);
+				toast.error("Ocorreu um problema.");
 			})
 			.finally(() => {
 				setIsSubmiting(false);
@@ -36,7 +36,7 @@ export function SupplierServicesServiceDescription() {
 				setSDescription(response.service_description);
 			})
 			.catch((error) => {
-				console.log(error);
+				toast.error("Ocorreu um problema.");
 			})
 			.finally(() => {
 				setIsLoading(false);

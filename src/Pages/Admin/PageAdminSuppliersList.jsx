@@ -19,8 +19,8 @@ export default function PageAdminSuppliersList({
 
 	return (
 		<>
-			<section class=" bg-gray-100/50">
-				<div class="container max-w-6xl mx-auto px-3 md:px-12 pt-16">
+			<section className=" bg-gray-100/50">
+				<div className="container max-w-6xl mx-auto px-3 md:px-12 pt-16">
 					{!supliersData ? (
 						<>
 							<div className="h-64 flex items-center justify-center">
@@ -29,16 +29,16 @@ export default function PageAdminSuppliersList({
 						</>
 					) : (
 						<>
-							<div class="flex flex-row justify-between w-full mb-1 sm:mb-0">
-								<h2 class="text-2xl leading-tight">
+							<div className="flex flex-row justify-between w-full mb-1 sm:mb-0">
+								<h2 className="text-2xl leading-tight">
 									Lista de Fornecedores
 								</h2>
-								<div class="text-end">
+								<div className="text-end">
 									<form>
-										<div class="relative">
-											<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+										<div className="relative">
+											<div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
 												<svg
-													class="w-4 h-4 text-gray-500"
+													className="w-4 h-4 text-gray-500"
 													aria-hidden="true"
 													xmlns="http://www.w3.org/2000/svg"
 													fill="none"
@@ -54,7 +54,7 @@ export default function PageAdminSuppliersList({
 												</svg>
 											</div>
 											<input
-												class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200"
+												className="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition ease-in duration-200"
 												type="search"
 												id="filtername"
 												name="filtername"
@@ -67,39 +67,39 @@ export default function PageAdminSuppliersList({
 									</form>
 								</div>
 							</div>
-							<div class="px-4 py-4 -mx-4 overflow-x-auto sm:-mx-8 sm:px-8">
-								<div class="inline-block min-w-full overflow-hidden rounded-lg shadow">
-									<table class="min-w-full leading-normal">
+							<div className="px-4 py-4 -mx-4 overflow-x-auto sm:-mx-8 sm:px-8">
+								<div className="inline-block min-w-full overflow-hidden rounded-lg shadow">
+									<table className="min-w-full leading-normal">
 										<thead>
 											<tr>
 												<th
 													scope="col"
-													class="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200"
+													className="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200"
 												>
 													Nome
 												</th>
 												<th
 													scope="col"
-													class="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200"
+													className="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200"
 												>
 													Empresa
 												</th>
 												<th
 													scope="col"
-													class="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200"
+													className="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200"
 												>
 													Nif
 												</th>
 												<th
 													scope="col"
-													class="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200"
+													className="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200"
 												>
 													Contacto
 												</th>
 
 												<th
 													scope="col"
-													class="px-5 py-3 w-40 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200"
+													className="px-5 py-3 w-40 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200"
 												></th>
 											</tr>
 										</thead>
@@ -108,60 +108,61 @@ export default function PageAdminSuppliersList({
 												.filter(filterSuppliers)
 												.map((supplier, index) => (
 													<tr>
-														<td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
+														<td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
 															<Link
 																to={
 																	"/supplier/" +
 																	supplier.user_id
 																}
 															>
-																<div class="flex items-center">
-																	<div class="flex-shrink-0">
+																<div className="flex items-center">
+																	<div className="flex-shrink-0">
 																		<a
 																			href="#"
-																			class="relative block"
+																			className="relative block"
 																		>
 																			<img
 																				alt="profil"
 																				src={
 																					supplier &&
-																						supplier.avatar
+																					supplier.avatar
 																						? IMAGE_STORAGE_PATH +
-																						supplier.avatar
+																						  supplier.avatar
 																						: "./../../images/noavatar.svg"
 																				}
-																				class="mx-auto object-cover rounded-full h-10 w-10 "
+																				className="mx-auto object-cover rounded-full h-10 w-10 "
 																			/>
 																		</a>
 																	</div>
-																	<div class="ml-3 flex flex-col">
-																		<p class="text-gray-900 whitespace-no-wrap">
+																	<div className="ml-3 flex flex-col">
+																		<p className="text-gray-900 whitespace-no-wrap">
 																			{
 																				supplier.name
 																			}
 																		</p>
 																		<span className="text-gray-400 text-sm">
 																			{supplier.dob
-																				? `${new Date().getFullYear() -
-																				new Date(
-																					supplier.dob
-																				).getFullYear()
-																				} anos`
+																				? `${
+																						new Date().getFullYear() -
+																						new Date(
+																							supplier.dob
+																						).getFullYear()
+																				  } anos`
 																				: ""}
 																		</span>
 																	</div>
 																</div>
 															</Link>
 														</td>
-														<td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
-															<p class="text-gray-900 whitespace-no-wrap">
+														<td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
+															<p className="text-gray-900 whitespace-no-wrap">
 																{
 																	supplier.company
 																}
 															</p>
 														</td>
-														<td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
-															<p class="text-gray-900 whitespace-no-wrap">
+														<td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
+															<p className="text-gray-900 whitespace-no-wrap">
 																{supplier.nif}
 															</p>
 														</td>
@@ -190,12 +191,13 @@ export default function PageAdminSuppliersList({
 																)}
 															</div>
 														</td>
-														<td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
+														<td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
 															<span
-																class={`relative inline-block px-3 py-1 font-semibold leading-tight rounded-full ${supplier.verified
+																className={`relative inline-block px-3 py-1 font-semibold leading-tight rounded-full ${
+																	supplier.verified
 																		? "text-green-900 bg-green-200"
 																		: "text-red-900 bg-red-200"
-																	}`}
+																}`}
 															>
 																<input
 																	type="checkbox"
@@ -209,10 +211,7 @@ export default function PageAdminSuppliersList({
 																		);
 																	}}
 																/>
-																{console.log(
-																	supplier
-																)}
-																<span class="relative">
+																<span className="relative">
 																	{supplier.verified
 																		? "Verificado"
 																		: "Inativo"}

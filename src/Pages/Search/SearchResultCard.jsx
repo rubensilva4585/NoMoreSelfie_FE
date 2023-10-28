@@ -4,9 +4,12 @@ import SearchCardCarousel from "./SearchCardCarousel";
 import SearchModal from "./SearchModal";
 import { IMAGE_STORAGE_PATH } from "../../constants/General";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { getUserID } from "../../redux/selectors";
 
 export default function SearchResultCard({ supplier }) {
 	const [modalOpen, setModalOpen] = useState(false);
+	const userID = useSelector(getUserID);
 
 	const openModal = (e) => {
 		e.stopPropagation();
@@ -44,7 +47,10 @@ export default function SearchResultCard({ supplier }) {
 			>
 				<a href="#" className="block w-full h-full bg-white">
 					<div>
-						<SearchCardCarousel images={supplier.images} supplier_id={supplier.id} />
+						<SearchCardCarousel
+							images={supplier.images}
+							supplier_id={supplier.id}
+						/>
 					</div>
 
 					{/* <img alt="blog photo" src="https://www.tailwind-kit.com/images/blog/1.jpg" className="object-cover w-full max-h-40" /> */}
@@ -62,7 +68,7 @@ export default function SearchResultCard({ supplier }) {
 										src={
 											supplier.avatar
 												? IMAGE_STORAGE_PATH +
-												supplier.avatar
+												  supplier.avatar
 												: "./../../images/noavatar.svg"
 										}
 										className="mx-auto object-cover rounded-full h-10 w-10 "
@@ -98,18 +104,14 @@ export default function SearchResultCard({ supplier }) {
 									</span>
 								</div>
 							</div>
-							{/* <p className="mb-2 text-xl font-medium text-gray-800">
-                            Work at home
-                        </p>
-                        <p className="font-light text-gray-400 text-md">
-                            Work at home, remote, is the new age of the job, every person can work at home....
-                        </p>        */}
-							<button
-								className=" px-6 py-2 transition ease-in duration-200 text-orange-500 uppercase rounded-md hover:bg-orange-400 hover:text-white border border-orange-400 focus:outline-none w-full"
-								onClick={openModal}
-							>
-								Pedir informação
-							</button>
+							{!(userID == supplier.id) && (
+								<button
+									className=" px-6 py-2 transition ease-in duration-200 text-orange-500 uppercase rounded-md hover:bg-orange-400 hover:text-white border border-orange-400 focus:outline-none w-full"
+									onClick={openModal}
+								>
+									Pedir informação
+								</button>
+							)}
 						</div>
 					</div>
 				</a>

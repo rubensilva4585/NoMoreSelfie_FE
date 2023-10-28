@@ -181,105 +181,72 @@ export default function PageUserSettings() {
 		return isValid;
 	};
 
-    const toastUpdateProfile = () => toast.promise(
-        updateUser({
-            name: personalInfo.name,
-            phone: personalInfo.phone,
-            dob: personalInfo.dob,
-            // supliers only
-            ...(userRole === "supplier" && {
-                company: personalInfo.company,
-                nif: personalInfo.nif,
-                district_id: personalInfo.district_id,
-                bio: personalInfo.bio,
-            }),
-        })
-            .then((response) => {
-                // alert("Perfil atualizado com sucesso!");
-                dispatch(
-                    update(
-                        response.data.user.name,
-                        response.data.user.role,
-                        response.data.user.avatar
-                    )
-                );
-                setPersonalInfo((prevPersonalInfo) => ({
-                    ...prevPersonalInfo,
-                    hasEdited: false,
-                }));
-            })
-            .finally(() => {
-                setIsSubmittingPersonalInfo(false);
-            })
-        , {
-            loading: 'Atualizando perfil...',
-            success: <b>Perfil atualizado com sucesso!</b>,
-            error: <b>Erro ao atualizar perfil!</b>,
-        }
-    )
+	const toastUpdateProfile = () =>
+		toast.promise(
+			updateUser({
+				name: personalInfo.name,
+				phone: personalInfo.phone,
+				dob: personalInfo.dob,
+				// supliers only
+				...(userRole === "supplier" && {
+					company: personalInfo.company,
+					nif: personalInfo.nif,
+					district_id: personalInfo.district_id,
+					bio: personalInfo.bio,
+				}),
+			})
+				.then((response) => {
+					dispatch(
+						update(
+							response.data.user.name,
+							response.data.user.role,
+							response.data.user.avatar
+						)
+					);
+					setPersonalInfo((prevPersonalInfo) => ({
+						...prevPersonalInfo,
+						hasEdited: false,
+					}));
+				})
+				.finally(() => {
+					setIsSubmittingPersonalInfo(false);
+				}),
+			{
+				loading: "A atualizar perfil...",
+				success: <b>Perfil atualizado com sucesso!</b>,
+				error: <b>Erro ao atualizar perfil!</b>,
+			}
+		);
 
+	function handleSubmitPersonalInfo(e) {
+		e.preventDefault();
+		setIsSubmittingPersonalInfo(true);
 
-    function handleSubmitPersonalInfo(e) {
-        e.preventDefault();
-        setIsSubmittingPersonalInfo(true);
+		if (!personalDataValidation()) {
+			setIsSubmittingPersonalInfo(false);
+			return;
+		}
 
-        if (!personalDataValidation()) {
-            setIsSubmittingPersonalInfo(false);
-            return;
-        }
+		toastUpdateProfile();
+	}
 
-        toastUpdateProfile()
-
-        // updateUser({
-        //     name: personalInfo.name,
-        //     phone: personalInfo.phone,
-        //     dob: personalInfo.dob,
-        //     // supliers only
-        //     ...(userRole === "supplier" && {
-        //         company: personalInfo.company,
-        //         nif: personalInfo.nif,
-        //         district_id: personalInfo.district_id,
-        //         bio: personalInfo.bio,
-        //     }),
-        // })
-        //     .then((response) => {
-        //         alert("Perfil atualizado com sucesso!");
-        //         dispatch(
-        //             update(
-        //                 response.data.user.name,
-        //                 response.data.user.role,
-        //                 response.data.user.avatar
-        //             )
-        //         );
-        //         setPersonalInfo((prevPersonalInfo) => ({
-        //             ...prevPersonalInfo,
-        //             hasEdited: false,
-        //         }));
-        //     })
-        //     .catch((error) => {
-        //         alert(error.response.data.error);
-        //     })
-        //     .finally(() => {
-        //         setIsSubmittingPersonalInfo(false);
-        //     });
-    }
-
-    const toastUpdateEmail = () => toast.promise(
-        updateUser({
-            email: changeEmail.email,
-        })
-            .then((response) => {
-                setUser(response.data.user);
-            })
-            .finally(() => {
-                setChangeEmail({ ...changeEmail, isSubmitting: false });
-            })
-        , {
-            loading: 'Atualizando email...',
-            success: <b>Email atualizado com sucesso!</b>,
-            error: <b>Erro ao atualizar email!</b>,
-        }
-    )
+	const toastUpdateEmail = () =>
+		toast.promise(
+			updateUser({
+				email: changeEmail.email,
+			})
+				.then((response) => {
+					setUser(response.data.user);
+				})
+				.finally(() => {
+					setChangeEmail({ ...changeEmail, isSubmitting: false });
+				}),
+			{
+				loading: "Atualizando email...",
+				success: <b>Email atualizado com sucesso!</b>,
+				error: <b>Erro ao atualizar email!</b>,
+			}
+		);
 
 	function handleSubmitUserEmail(e) {
 		e.preventDefault();
@@ -303,48 +270,36 @@ export default function PageUserSettings() {
 			return;
 		}
 
-        toastUpdateEmail()
-        // updateUser({
-        //     email: changeEmail.email,
-        // })
-        //     .then((response) => {
-        //         alert("Email alterado com sucesso!");
-        //         setUser(response.data.user);
-        //     })
-        //     .catch((error) => {
-        //         alert(error.response.data.error);
-        //     })
-        //     .finally(() => {
-        //         setChangeEmail({ ...changeEmail, isSubmitting: false });
-        //     });
-    }
+		toastUpdateEmail();
+	}
 
-    const toastSubmitPassword = () => toast.promise(
-        updateUserPassword({
-            oldpassword: changePassword.oldpassword,
-            newpassword: changePassword.newpassword,
-        })
-            .then((response) => {
-                setChangePassword({
-                    oldpassword: "",
-                    newpassword: "",
-                    passwordError: "",
-                    isSubmitting: false,
-                });
-            })
-            // .catch((error) => {
-            //     console.log(error);
-            //     setChangePassword({ ...changePassword, isSubmitting: false });
-            // })
-            .finally(() => {
-                setChangePassword({ ...changePassword, passwordError: "", isSubmitting: false });
-            }),
-        {
-            loading: 'Alterando password...',
-            success: <b>Password alterada com sucesso!</b>,
-            error: <b>Erro ao alterar password!</b>,
-        }
-    )
+	const toastSubmitPassword = () =>
+		toast.promise(
+			updateUserPassword({
+				oldpassword: changePassword.oldpassword,
+				newpassword: changePassword.newpassword,
+			})
+				.then((response) => {
+					setChangePassword({
+						oldpassword: "",
+						newpassword: "",
+						passwordError: "",
+						isSubmitting: false,
+					});
+				})
+				.finally(() => {
+					setChangePassword({
+						...changePassword,
+						passwordError: "",
+						isSubmitting: false,
+					});
+				}),
+			{
+				loading: "A alterar password...",
+				success: <b>Password alterada com sucesso!</b>,
+				error: <b>Erro ao alterar password!</b>,
+			}
+		);
 
 	function handleSubmitUserPassword(e) {
 		e.preventDefault();
@@ -354,177 +309,108 @@ export default function PageUserSettings() {
 			isSubmitting: true,
 		});
 
-        // Validation
-        if (
-            changePassword.oldpassword === "" ||
-            changePassword.newpassword === ""
-        ) {
-            setChangePassword({
-                ...changePassword,
-                passwordError: "Preencha todos os campos",
-                isSubmitting: false,
-            });
-            return;
-        }
-        if (changePassword.oldpassword === changePassword.newpassword) {
-            setChangePassword({
-                ...changePassword,
-                passwordError: "Password tem de ser diferente da atual",
-                isSubmitting: false,
-            });
-            return;
-        }
-        if (changePassword.oldpassword.length < 6 || changePassword.newpassword.length < 6) {
-            setChangePassword({
-                ...changePassword,
-                passwordError: "Password tem ter, no mínimo, 6 caracteres",
-                isSubmitting: false,
-            });
-            return;
-        }
+		// Validation
+		if (
+			changePassword.oldpassword === "" ||
+			changePassword.newpassword === ""
+		) {
+			setChangePassword({
+				...changePassword,
+				passwordError: "Preencha todos os campos",
+				isSubmitting: false,
+			});
+			return;
+		}
+		if (changePassword.oldpassword === changePassword.newpassword) {
+			setChangePassword({
+				...changePassword,
+				passwordError: "Password tem de ser diferente da atual",
+				isSubmitting: false,
+			});
+			return;
+		}
+		if (
+			changePassword.oldpassword.length < 6 ||
+			changePassword.newpassword.length < 6
+		) {
+			setChangePassword({
+				...changePassword,
+				passwordError: "Password tem ter, no mínimo, 6 caracteres",
+				isSubmitting: false,
+			});
+			return;
+		}
 
-        toastSubmitPassword()
+		toastSubmitPassword();
+	}
 
-        // updateUserPassword({
-        //     oldpassword: changePassword.oldpassword,
-        //     newpassword: changePassword.newpassword,
-        // })
-        //     .then((response) => {
-        //         alert("Password alterada com sucesso!");
-        //         setChangePassword({
-        //             oldpassword: "",
-        //             newpassword: "",
-        //             passwordError: "",
-        //             isSubmitting: false,
-        //         });
-        //     })
-        //     .catch((error) => {
-        //         console.log(error);
-        //         alert(error.response.data.error);
-        //         setChangePassword({ ...changePassword, isSubmitting: false });
-        //     });
-    }
+	const toastUploadAvatar = (selectedImage) =>
+		toast.promise(
+			updateProfileImage({
+				avatar: selectedImage,
+			})
+				.then((response) => {
+					if (response.status === 201) {
+						dispatch(updateAvatar(response.data.avatar));
+					} else {
+						throw new Error(
+							"Falha no upload. Por favor, tente novamente."
+						);
+					}
+				})
+				.catch((error) => {
+					alert(error.response.data.error);
+				}),
+			{
+				loading: "A atualizar foto de perfil...",
+				success: <b>Foto de perfil alterada com sucesso!</b>,
+				error: <b>Erro ao alterar foto de perfil!</b>,
+			}
+		);
 
-    const toastUploadAvatar = (selectedImage) => toast.promise(
-        updateProfileImage({
-            avatar: selectedImage,
-        })
-            .then((response) => {
-                if (response.status === 201) {
-                    dispatch(updateAvatar(response.data.avatar));
-                } else {
-                    throw new Error("Falha no upload. Por favor, tente novamente.");
-                }
-            })
-            .catch((error) => {
-                alert(error.response.data.error);
-            })
-            .finally(() => {
-                //setIsLoading(false);
-            })
-        , {
-            loading: 'Alterando foto de perfil...',
-            success: <b>Foto de perfil alterada com sucesso!</b>,
-            error: <b>Erro ao alterar foto de perfil!</b>,
-        }
-    )
+	const handleAvatarChange = (e) => {
+		const selectedImage = e.target.files[0];
 
-    const handleAvatarChange = (e) => {
-        const selectedImage = e.target.files[0];
+		if (!selectedImage) return;
 
-        if (!selectedImage) return;
+		toastUploadAvatar(selectedImage);
+	};
 
-        toastUploadAvatar(selectedImage)
-        // updateProfileImage({
-        //     avatar: selectedImage,
-        // })
-        //     .then((response) => {
-        //         if (response.status === 201) {
-        //             dispatch(updateAvatar(response.data.avatar));
-        //             alert("Foto de perfil alterada com sucesso!");
-        //         } else {
-        //             throw new Error("Falha no upload. Por favor, tente novamente.");
-        //         }
-        //     })
-        //     .catch((error) => {
-        //         alert(error.response.data.error);
-        //     })
-        //     .finally(() => {
-        //         //setIsLoading(false);
-        //     });
-    };
+	const toastDeleteAvatar = () =>
+		toast.promise(
+			removeProfileImage()
+				.then((response) => {
+					dispatch(updateAvatar(null));
+				})
+				.catch((error) => {}),
+			{
+				loading: "A remover foto de perfil...",
+				success: <b>Foto de perfil removida com sucesso!</b>,
+				error: <b>Erro ao remover foto de perfil!</b>,
+			}
+		);
 
-    const toastDeleteAvatar = () => toast.promise(
-        removeProfileImage()
-            .then((response) => {
+	const handleDeleteAvatar = () => {
+		toastDeleteAvatar();
+	};
 
-                //setUser((prevUser) => ({ ...prevUser, avatar: null }));
-                dispatch(
-                    updateAvatar(
-                        null
-                    ));
-            })
-            .catch((error) => {
+	const toastDeleteAccount = () =>
+		toast.promise(
+			deleteUserAccount().then((response) => {
+				navigate("/login");
+				dispatch(logout());
+				localStorage.removeItem(SESSION_TOKEN);
+			}),
+			{
+				loading: "Eliminando conta...",
+				success: <b>Conta eliminada com sucesso!</b>,
+				error: <b>Erro ao eliminar conta!</b>,
+			}
+		);
 
-            })
-            .finally(() => {
-                //setIsLoading(false);
-            })
-        , {
-            loading: 'Removendo foto de perfil...',
-            success: <b>Foto de perfil removida com sucesso!</b>,
-            error: <b>Erro ao remover foto de perfil!</b>,
-        }
-    )
-
-    const handleDeleteAvatar = () => {
-        toastDeleteAvatar()
-        // removeProfileImage()
-        //     .then((response) => {
-        //         alert('Foto de perfil removida com sucesso!');
-        //         //setUser((prevUser) => ({ ...prevUser, avatar: null }));
-        //         dispatch(
-        //             updateAvatar(
-        //                 null
-        //             ));
-        //     })
-        //     .catch((error) => {
-        //         alert(error.response.data.error);
-        //     })
-        //     .finally(() => {
-        //         //setIsLoading(false);
-        //     });
-    }
-
-    const toastDeleteAccount = () => toast.promise(
-        deleteUserAccount()
-            .then((response) => {
-                navigate("/login");
-                dispatch(logout());
-                localStorage.removeItem(SESSION_TOKEN);
-            })
-        , {
-            loading: 'Eliminando conta...',
-            success: <b>Conta eliminada com sucesso!</b>,
-            error: <b>Erro ao eliminar conta!</b>,
-        }
-    )
-
-    const handleDeleteAccount = () => {
-        if (window.confirm("Tem a certeza que pretende apagar a sua conta?")) {
-            toastDeleteAccount()
-            // deleteUserAccount()
-            //     .then((response) => {
-            //         alert("Conta apagada com sucesso!");
-            //         navigate("/login");
-            //         dispatch(logout());
-            //         localStorage.removeItem(SESSION_TOKEN);
-            //     })
-            //     .catch((error) => {
-            //         alert(error.response.data.error);
-            //     });
-        }
-    };
+	const handleDeleteAccount = () => {
+		toastDeleteAccount();
+	};
 
 	useEffect(() => {
 		const abortController = new AbortController();

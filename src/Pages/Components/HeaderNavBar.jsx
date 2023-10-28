@@ -28,8 +28,6 @@ export default function HeaderNavBar({ home = false }) {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	console.log(userName, userRole, userId);
-
 	useEffect(() => {
 		const handleScroll = () => {
 			setIsScrolled(window.scrollY > 0);

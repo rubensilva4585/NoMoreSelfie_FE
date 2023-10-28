@@ -11,14 +11,13 @@ import Select from "react-select";
 import "../../styles/ReactSelect.css";
 import { FaTimes } from "react-icons/fa";
 import { useLocation } from "react-router";
+import toast from "react-hot-toast";
 
 export default function PageSearch() {
 	const location = useLocation();
 	const searchParams = new URLSearchParams(location.search);
 	const categoryId = searchParams.get("category_id");
 	const districtId = searchParams.get("district_id");
-	console.log(categoryId);
-	console.log(districtId);
 
 	const [supData, setSupData] = useState(null);
 	const [districts, setDistricts] = useState(null);
@@ -91,11 +90,10 @@ export default function PageSearch() {
 	useEffect(() => {
 		getValidSuppliersList()
 			.then((res) => {
-				console.log(res);
 				setSupData(res);
 			})
 			.catch((err) => {
-				console.log(err);
+				toast.error("Ocorreu um problema.");
 			});
 
 		getDistricts()
@@ -108,12 +106,11 @@ export default function PageSearch() {
 				);
 			})
 			.catch((err) => {
-				console.log(err);
+				toast.error("Ocorreu um problema.");
 			});
 
 		getCategories()
 			.then((res) => {
-				console.log(res);
 				setCategories(
 					res.map((category) => ({
 						value: category.id,
@@ -122,7 +119,7 @@ export default function PageSearch() {
 				);
 			})
 			.catch((err) => {
-				console.log(err);
+				toast.error("Ocorreu um problema.");
 			});
 	}, []);
 

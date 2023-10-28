@@ -186,7 +186,6 @@ export function RegisterSupplier() {
 						}));
 					}
 				} else if (error.request)
-					// METER POPUP DE ERRO
 					console.log(
 						"Error: Sem resposta do servidor",
 						error.request

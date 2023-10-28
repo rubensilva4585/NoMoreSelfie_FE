@@ -37,7 +37,6 @@ export default function Register() {
 
 	const handleChange = (prop) => (e) => {
 		setValues({ ...values, [prop]: e.target.value });
-		console.log(values);
 	};
 	const handleChangePhone = () => (e) => {
 		let input = e.target.value.replace(/\D/g, "");
@@ -118,7 +117,6 @@ export default function Register() {
 			return;
 		}
 
-		console.log(values);
 		doRegister({
 			name: values.name,
 			phone: values.phone,

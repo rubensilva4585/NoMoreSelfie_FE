@@ -4,7 +4,7 @@ import HomeSectionDistrictsDistrictCard from "./HomeSectionDistrictsDistrictCard
 export default function HomeSectionDistricts() {
     return (
         <>
-            <section class=" bg-black">
+            <section className=" bg-black">
                 <div className="container mx-auto px-3 md:px-12 py-20">
                     <div className="title mb-12">
                         <p className="text-4xl font-bold text-beige">

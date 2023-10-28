@@ -101,7 +101,7 @@ export default function HomeSectionCategories() {
 
 	return (
 		<>
-			<section class=" bg-beige overflow-hidden">
+			<section className=" bg-beige overflow-hidden">
 				<div className="container mx-auto px-3 md:px-12 py-20">
 					<div className="title mb-14">
 						<p className="mb-2 text-4xl font-bold text-orange-400">

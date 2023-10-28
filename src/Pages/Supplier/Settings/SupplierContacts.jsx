@@ -52,10 +52,9 @@ export default function SupplierContacts(props) {
 			.then((response) => {
 				setSocial({ ...social, ...response.social });
 				setUser(response);
-				console.log(response);
 			})
 			.catch((error) => {
-				console.log(error);
+				toast.error("Ocorreu um problema.");
 			})
 			.finally(() => {
 				setIsLoading(false);
@@ -64,7 +63,6 @@ export default function SupplierContacts(props) {
 
 	const handleChange = (prop) => (e) => {
 		setSocial({ ...social, [prop]: e.target.value, hasEdited: true });
-		console.log(social);
 	};
 
 	const toastPromise = () =>
@@ -80,11 +78,10 @@ export default function SupplierContacts(props) {
 					social.hasEdited = false;
 				})
 				.finally(() => {
-					console.log("cenas");
 					setIsSubmitingSocials(false);
 				}),
 			{
-				loading: "Atualizando redes sociais...",
+				loading: "A atualizar redes sociais...",
 				success: <b>Redes sociais atualizadas com sucesso!</b>,
 				error: <b>Erro ao atualizar redes sociais!</b>,
 			}
@@ -92,7 +89,6 @@ export default function SupplierContacts(props) {
 
 	function submitSocials(e) {
 		e.preventDefault();
-		console.log(social);
 		setIsSubmitingSocials(true);
 		let hasErrors = false;
 		clearErrors();
@@ -152,22 +148,7 @@ export default function SupplierContacts(props) {
 			return;
 		}
 
-		console.log(social);
 		toastPromise();
-		// updateUser({
-		//         'facebook': social.facebook ? social.facebook : '',
-		//         'instagram': social.instagram ? social.instagram : '',
-		//         'linkedin': social.linkedin ? social.linkedin : '',
-		//         'pinterest': social.pinterest ? social.pinterest : '',
-		//         'website': social.website ? social.website : '',
-		// }).then(() => {
-		//         alert('Redes sociais atualizadas com sucesso!');
-		// }).catch((error) => {
-		//         alert(error.response.data.error);
-		// }).finally(() => {
-		//         console.log('cenas')
-		//         setIsSubmitingSocials(false);
-		// })
 	}
 
 	return (

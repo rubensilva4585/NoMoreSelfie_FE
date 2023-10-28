@@ -3,14 +3,16 @@ import { getCategories, getDistricts } from "../../API/General";
 import Select from "react-select";
 import "../../styles/ReactSelect.css";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+
 
 export default function HomeSectionSearchBar() {
 	const [districts, setDistricts] = useState(null);
 	const [categories, setCategories] = useState(null);
 	const [filters, setFilters] = useState({
-    category: "",
-    district: "",
-  });
+		category: "",
+		district: "",
+	});
 
 	useEffect(() => {
 		getDistricts()
@@ -23,12 +25,11 @@ export default function HomeSectionSearchBar() {
 				);
 			})
 			.catch((err) => {
-				console.log(err);
+				toast.error("Ocorreu um problema.");
 			});
 
 		getCategories()
 			.then((res) => {
-				console.log(res);
 				setCategories(
 					res.map((category) => ({
 						value: category.id,
@@ -37,17 +38,17 @@ export default function HomeSectionSearchBar() {
 				);
 			})
 			.catch((err) => {
-				console.log(err);
+				toast.error("Ocorreu um problema.");
 			});
 	}, []);
 
 	return (
 		<>
 			<section
-				class="relative bg-gray-100/50 overflow-x-hidden"
+				className="relative bg-gray-100/50 overflow-x-hidden"
 				id="sobre"
 			>
-				<div class="hidden absolute bottom-0 xl:block right-0 mt-[100px] ml-[-50%] h-[200%] w-[50%] rounded-l-[50%] overflow-hidden">
+				<div className="hidden absolute bottom-0 xl:block right-0 mt-[100px] ml-[-50%] h-[200%] w-[50%] rounded-l-[50%] overflow-hidden">
 					<img
 						src="../../../images/wallsearch.jpg"
 						alt=""

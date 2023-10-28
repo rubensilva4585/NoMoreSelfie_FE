@@ -4,15 +4,16 @@ export default function SupplierPanel() {
 	const activeTab = location.pathname.split("/")[2];
 
 	return (
-		<section class=" bg-gray-100/50">
-			<div class="container max-w-6xl mx-auto sm:px-3 md:px-12 pt-16">
-				<div class="flex flex-row justify-between w-full mb-1 sm:mb-0">
-					<h2 class="text-4xl leading-tight ml-3 sm:ml-0">
+		<section className=" bg-gray-100/50">
+			<div className="container max-w-6xl mx-auto sm:px-3 md:px-12 pt-16">
+				<div className="flex flex-row justify-between w-full mb-1 sm:mb-0">
+					<h2 className="text-4xl leading-tight ml-3 sm:ml-0">
 						Painel de Fornecedor
 					</h2>
 				</div>
-				<div class="py-4 overflow-hidden">
-					<div class="overflow-x-auto bg-white shadow sm:rounded-lg  sm:px-6 flex justify-start md:gap-4 whitespace-nowrap">
+				
+				<div className="py-4 overflow-hidden">
+					<div className="overflow-x-auto bg-white shadow sm:rounded-lg  sm:px-6 flex justify-start md:gap-4 whitespace-nowrap">
 						<Link
 							to="/supplier/dashboard"
 							className={`inline-block p-4 border-b-2 rounded-t-lg ease-in duration-100 text-lg ${

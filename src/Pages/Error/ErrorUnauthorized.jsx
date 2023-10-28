@@ -7,11 +7,11 @@ export default function ErrorUnauthorized() {
     return (
         <>
             <Header />
-            <main class="relative h-screen overflow-hidden bg-white">
-                <div class="container z-10 flex items-center justify-between h-screen px-6 pt-32 mx-auto md:pt-0">
-                    <div class="container relative flex flex-col-reverse items-center justify-between px-6 mx-auto lg:flex-row">
-                        <div class="w-full mb-16 text-center md:mb-8 lg:text-left">
-                            <h1 class="mt-12 font-sans text-5xl font-light text-center text-gray-700 lg:text-left lg:text-8xl md:mt-0">
+            <main className="relative h-screen overflow-hidden bg-white">
+                <div className="container z-10 flex items-center justify-between h-screen px-6 pt-32 mx-auto md:pt-0">
+                    <div className="container relative flex flex-col-reverse items-center justify-between px-6 mx-auto lg:flex-row">
+                        <div className="w-full mb-16 text-center md:mb-8 lg:text-left">
+                            <h1 className="mt-12 font-sans text-5xl font-light text-center text-gray-700 lg:text-left lg:text-8xl md:mt-0">
                                 Desculpe, não tem permissão para aceder a esta página
                             </h1>
                             <Link to={"/"}> 
@@ -20,7 +20,7 @@ export default function ErrorUnauthorized() {
                                 </button>
                             </Link>
                         </div>
-                        <div class="relative block w-full max-w-md mx-auto md:mt-0 lg:max-w-2xl">
+                        <div className="relative block w-full max-w-md mx-auto md:mt-0 lg:max-w-2xl">
                             <img src="./../../images/ErrorUnauthorized.svg" />
                         </div>
                     </div>

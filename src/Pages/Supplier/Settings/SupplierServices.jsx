@@ -10,6 +10,7 @@ import {
 	updateUserDistricts,
 } from "../../../API/User";
 import { FaTrash } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 export default function SupplierServices(props) {
 	const [districts, setDistricts] = useState(null);
@@ -29,7 +30,7 @@ export default function SupplierServices(props) {
 		setInputError({ service_description: "" });
 
 		if (userServices && userServices.length === 0) {
-			alert("Tem de adicionar pelo menos um serviço.");
+			toast.error("Adicione pelo menos um serviço.");
 			setInputError({
 				...inputError,
 				services: "Tem de adicionar pelo menos um serviço.",
@@ -49,24 +50,24 @@ export default function SupplierServices(props) {
 			}
 			updateUserDistricts(userDistricts)
 				.then((response) => {
-					console.log(response);
+					toast.success("Distritos atualizados com sucesso!");
 				})
 				.catch((error) => {
-					alert(error.response.data.error);
+					toast.error(
+						"Ocorreu um problema ao atualizar os distritos."
+					);
 				})
 				.finally(() => {
 					setIsSubmitting(false);
 				});
 		}
 
-		console.log(userServices);
-
 		updateSupplierServices(userServices)
 			.then((response) => {
-				console.log(response);
+				toast.success("Servicos atualizados com sucesso!");
 			})
 			.catch((error) => {
-				alert(error.response.data.error);
+				toast.error("Ocorreu um problema ao atualizar os servicos.");
 			})
 			.finally(() => {
 				setIsSubmitting(false);
@@ -138,7 +139,6 @@ export default function SupplierServices(props) {
 				});
 			}
 			setUserServices(updatedServices);
-			setSelectedSubcategory("");
 		}
 	};
 
@@ -224,7 +224,6 @@ export default function SupplierServices(props) {
 															})
 														)}
 														onChange={(e) => {
-															console.log(e);
 															setSelectedCategory(
 																Number(e.value)
 															);
