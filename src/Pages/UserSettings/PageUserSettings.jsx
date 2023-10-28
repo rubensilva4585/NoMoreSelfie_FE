@@ -113,27 +113,31 @@ export default function PageUserSettings() {
 			isValid = false;
 		}
 
-		if (
-			!personalInfo.phone ||
-			personalInfo.phone.length < 9 ||
-			!/^\d+$/.test(personalInfo.phone)
-		) {
-			setPersonalInfoError((prevErrors) => ({
-				...prevErrors,
-				phone: "Telefone inválido",
-			}));
-			isValid = false;
+		if (userRole === "supplier" || personalInfo.phone) {
+			if (
+				!personalInfo.phone ||
+				personalInfo.phone.length < 9 ||
+				!/^\d+$/.test(personalInfo.phone)
+			) {
+				setPersonalInfoError((prevErrors) => ({
+					...prevErrors,
+					phone: "Telefone inválido",
+				}));
+				isValid = false;
+			}
 		}
 
-		if (
-			!personalInfo.dob ||
-			personalInfo.dob > new Date().toISOString().split("T")[0]
-		) {
-			setPersonalInfoError((prevErrors) => ({
-				...prevErrors,
-				dob: "Data de nascimento inválida",
-			}));
-			isValid = false;
+		if (userRole === "supplier" || personalInfo.dob) {
+			if (
+				!personalInfo.dob ||
+				personalInfo.dob > new Date().toISOString().split("T")[0]
+			) {
+				setPersonalInfoError((prevErrors) => ({
+					...prevErrors,
+					dob: "Data de nascimento inválida",
+				}));
+				isValid = false;
+			}
 		}
 
 		if (userRole === "supplier") {
