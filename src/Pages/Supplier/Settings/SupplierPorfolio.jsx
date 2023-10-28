@@ -47,7 +47,7 @@ export default function SupplierPorfolio() {
 				setSupplierImages(data);
 			})
 			.catch((error) => {
-				alert("Erro ao carregar imagens: " + error);
+				toast.error("Erro ao carregar imagens.");
 			})
 			.finally(() => {
 				setIsLoading(false);

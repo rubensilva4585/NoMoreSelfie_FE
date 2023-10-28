@@ -63,7 +63,7 @@ export default function SupplierPorfolioFormImgUpload({
 					}/${IMAGE_TOTAL_MAX})`
 				);
 		} catch (error) {
-			alert(error);
+			toast.error("Erro ao adicionar imagem.");
 			setIsLoading(false);
 			return;
 		}

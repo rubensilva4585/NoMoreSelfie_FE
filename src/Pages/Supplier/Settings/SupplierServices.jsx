@@ -150,7 +150,7 @@ export default function SupplierServices(props) {
 				setUserDistricts(response.map((district) => district.id));
 			})
 			.catch((error) => {
-				alert(error.response.data.error);
+				toast.error("Ocorreu um problema ao carregar os distritos.");
 			});
 
 		getCategories()
@@ -158,7 +158,7 @@ export default function SupplierServices(props) {
 				setCategories(response);
 			})
 			.catch((error) => {
-				alert(error.response.data.error);
+				toast.error("Ocorreu um problema ao carregar os distritos.");
 			});
 
 		getSupplierServices()
@@ -166,7 +166,7 @@ export default function SupplierServices(props) {
 				setUserServices(response);
 			})
 			.catch((error) => {
-				alert(error.response.data.error);
+				toast.error("Ocorreu um problema ao carregar os distritos.");
 			});
 
 		getDistricts().then((response) => {

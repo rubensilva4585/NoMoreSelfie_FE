@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaCalendar, FaEnvelope, FaPhoneAlt, FaSearch } from "react-icons/fa";
 import { getSupplierRequests } from "../../../API/User";
 import { format } from "date-fns";
+import toast from "react-hot-toast";
 
 export default function SupplierDashboard(props) {
 	const [requestsData, setRequestsData] = useState([]);

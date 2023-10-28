@@ -362,9 +362,7 @@ export default function PageUserSettings() {
 						);
 					}
 				})
-				.catch((error) => {
-					alert(error.response.data.error);
-				}),
+				.catch((error) => {}),
 			{
 				loading: "A atualizar foto de perfil...",
 				success: <b>Foto de perfil alterada com sucesso!</b>,
@@ -434,9 +432,7 @@ export default function PageUserSettings() {
 				});
 				setUser(response);
 			})
-			.catch((error) => {
-				alert(error.response.data.error);
-			});
+			.catch((error) => {});
 
 		getDistricts()
 			.then((response) => {
@@ -447,9 +443,7 @@ export default function PageUserSettings() {
 					}))
 				);
 			})
-			.catch((error) => {
-				alert(error.response.data.error);
-			});
+			.catch((error) => {});
 
 		return () => {
 			abortController.abort();
