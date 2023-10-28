@@ -5,7 +5,6 @@ import "../../styles/ReactSelect.css";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 
-
 export default function HomeSectionSearchBar() {
 	const [districts, setDistricts] = useState(null);
 	const [categories, setCategories] = useState(null);
@@ -15,6 +14,8 @@ export default function HomeSectionSearchBar() {
 	});
 
 	useEffect(() => {
+		const abortController = new AbortController();
+
 		getDistricts()
 			.then((res) => {
 				setDistricts(
@@ -40,6 +41,10 @@ export default function HomeSectionSearchBar() {
 			.catch((err) => {
 				toast.error("Ocorreu um problema.");
 			});
+
+		return () => {
+			abortController.abort();
+		};
 	}, []);
 
 	return (

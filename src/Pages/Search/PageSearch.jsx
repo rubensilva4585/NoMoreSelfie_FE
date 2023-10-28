@@ -88,6 +88,8 @@ export default function PageSearch() {
 	};
 
 	useEffect(() => {
+		const abortController = new AbortController();
+
 		getValidSuppliersList()
 			.then((res) => {
 				setSupData(res);
@@ -121,6 +123,10 @@ export default function PageSearch() {
 			.catch((err) => {
 				toast.error("Ocorreu um problema.");
 			});
+
+		return () => {
+			abortController.abort();
+		};
 	}, []);
 
 	return (

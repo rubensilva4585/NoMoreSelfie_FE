@@ -61,6 +61,8 @@ export default function SearchCardCarousel({ images, supplier_id }) {
 	};
 
 	useEffect(() => {
+		const abortController = new AbortController();
+
 		token &&
 			getUserFavorites()
 				.then((response) => {
@@ -71,6 +73,10 @@ export default function SearchCardCarousel({ images, supplier_id }) {
 				.catch((error) => {
 					toast.error("Ocorreu um problema.");
 				});
+
+		return () => {
+			abortController.abort();
+		};
 	}, []);
 
 	return (

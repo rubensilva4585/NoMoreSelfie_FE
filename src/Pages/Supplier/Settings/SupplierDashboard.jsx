@@ -16,6 +16,8 @@ export default function SupplierDashboard(props) {
 	};
 
 	useEffect(() => {
+		const abortController = new AbortController();
+
 		getSupplierRequests()
 			.then((response) => {
 				setRequestsData(response);
@@ -23,6 +25,10 @@ export default function SupplierDashboard(props) {
 			.catch((error) => {
 				toast.error("Ocorreu um problema.");
 			});
+
+		return () => {
+			abortController.abort();
+		};
 	}, []);
 
 	return (

@@ -44,6 +44,8 @@ export default function App() {
 
 	// Effects
 	React.useEffect(() => {
+		const abortController = new AbortController();
+
 		if (token) {
 			axios
 				.get("http://localhost:8000/api/user/", {
@@ -63,6 +65,10 @@ export default function App() {
 					setIsLoading(false);
 				});
 		} else setIsLoading(false);
+
+		return () => {
+			abortController.abort();
+		};
 	}, []);
 
 	return (

@@ -34,10 +34,6 @@ export default function HeaderNavBar({ home = false }) {
 		};
 
 		window.addEventListener("scroll", handleScroll);
-
-		return () => {
-			window.removeEventListener("scroll", handleScroll);
-		};
 	}, []);
 
 	const toggleBurgerMenu = () => {

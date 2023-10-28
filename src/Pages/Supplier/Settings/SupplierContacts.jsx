@@ -48,6 +48,8 @@ export default function SupplierContacts(props) {
 	};
 
 	useEffect(() => {
+		const abortController = new AbortController();
+
 		getUser()
 			.then((response) => {
 				setSocial({ ...social, ...response.social });
@@ -59,6 +61,10 @@ export default function SupplierContacts(props) {
 			.finally(() => {
 				setIsLoading(false);
 			});
+
+		return () => {
+			abortController.abort();
+		};
 	}, []);
 
 	const handleChange = (prop) => (e) => {

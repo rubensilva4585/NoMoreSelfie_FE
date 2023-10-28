@@ -31,6 +31,8 @@ export function SupplierServicesServiceDescription() {
 	};
 
 	useEffect(() => {
+		const abortController = new AbortController();
+
 		getUser()
 			.then((response) => {
 				setSDescription(response.service_description);
@@ -41,6 +43,10 @@ export function SupplierServicesServiceDescription() {
 			.finally(() => {
 				setIsLoading(false);
 			});
+
+		return () => {
+			abortController.abort();
+		};
 	}, []);
 	return (
 		<>

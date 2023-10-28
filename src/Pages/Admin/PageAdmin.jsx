@@ -32,6 +32,8 @@ export default function PageAdmin() {
 	};
 
 	useEffect(() => {
+		const abortController = new AbortController();
+
 		getSuppliersList()
 			.then((response) => {
 				setSupliersData(response);
@@ -39,6 +41,10 @@ export default function PageAdmin() {
 			.catch((error) => {
 				toast.error("Ocorreu um problema.");
 			});
+
+		return () => {
+			abortController.abort();
+		};
 	}, []);
 
 	return (
