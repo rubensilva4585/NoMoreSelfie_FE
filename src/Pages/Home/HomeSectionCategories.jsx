@@ -81,49 +81,49 @@ export default function HomeSectionCategories() {
 
 					<Slider {...settings}>
 						<HomeSectionCategoriesCategory
-							imageUrl="https://www.tailwind-kit.com/images/blog/1.jpg"
+							imageUrl="https://images.unsplash.com/photo-1481066717861-4775e000c88a?auto=format&fit=crop&q=80&w=1974&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 							title="Casamento"
 							category_id={1}
 						/>
 						<HomeSectionCategoriesCategory
-							imageUrl="https://www.tailwind-kit.com/images/blog/2.jpg"
-							title="Drone"
+							imageUrl="https://images.unsplash.com/photo-1627666433456-5d09003892d1?auto=format&fit=crop&q=80&w=2070&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+							title="Bebés"
 							category_id={2}
 						/>
 						<HomeSectionCategoriesCategory
-							imageUrl="https://www.tailwind-kit.com/images/blog/3.jpg"
-							title="Festa e Aniversario"
+							imageUrl="https://images.unsplash.com/photo-1627244714766-94dab62ed964?auto=format&fit=crop&q=80&w=1965&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+							title="Edição"
 							category_id={3}
 						/>
 						<HomeSectionCategoriesCategory
-							imageUrl="https://www.tailwind-kit.com/images/blog/4.jpg"
-							title="Empresariais"
+							imageUrl="https://images.unsplash.com/photo-1508444845599-5c89863b1c44?auto=format&fit=crop&q=80&w=2069&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+							title="Drone"
 							category_id={4}
 						/>
 						<HomeSectionCategoriesCategory
-							imageUrl="https://www.tailwind-kit.com/images/blog/5.jpg"
-							title="Bebé"
+							imageUrl="https://plus.unsplash.com/premium_photo-1677221924410-0d27f4940396?auto=format&fit=crop&q=80&w=1974&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+							title="Festas"
 							category_id={5}
 						/>
 						<HomeSectionCategoriesCategory
-							imageUrl="https://www.tailwind-kit.com/images/blog/6.jpg"
+							imageUrl="https://images.unsplash.com/photo-1532635260-3db6e1ba8589?auto=format&fit=crop&q=80&w=1974&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 							title="Restauração"
-							category_id={6}
-						/>
-						<HomeSectionCategoriesCategory
-							imageUrl="https://www.tailwind-kit.com/images/blog/2.jpg"
-							title="Turismo"
 							category_id={7}
 						/>
 						<HomeSectionCategoriesCategory
-							imageUrl="https://www.tailwind-kit.com/images/blog/3.jpg"
-							title="Moda"
+							imageUrl="https://images.unsplash.com/photo-1609861517208-e5b7b4cd4b87?auto=format&fit=crop&q=80&w=1935&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+							title="Turismo"
 							category_id={8}
 						/>
 						<HomeSectionCategoriesCategory
-							imageUrl="https://www.tailwind-kit.com/images/blog/4.jpg"
-							title="Lazer"
+							imageUrl="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&q=80&w=1974&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+							title="Moda"
 							category_id={9}
+						/>
+						<HomeSectionCategoriesCategory
+							imageUrl="https://images.unsplash.com/photo-1565992441121-4367c2967103?auto=format&fit=crop&q=80&w=2023&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+							title="Desporto"
+							category_id={12}
 						/>
 					</Slider>
 				</div>

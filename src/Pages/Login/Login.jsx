@@ -201,16 +201,6 @@ export default function Login() {
 												{valuesError.password}
 											</p>
 										)}
-										<div className="flex items-center mt-2">
-											<div className="flex ml-auto">
-												<Link
-													to=""
-													className="inline-flex text-xs text-gray-400 hover:text-gray-600"
-												>
-													Esqueceu-se da sua password?
-												</Link>
-											</div>
-										</div>
 										<button
 											className="mt-5 tracking-wide font-semibold bg-orange-400 text-white w-full py-4 rounded-lg hover:bg-orange-500 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
 											type="submit"
