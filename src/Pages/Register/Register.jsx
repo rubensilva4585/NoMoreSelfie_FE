@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
-import { FcGoogle } from "react-icons/fc";
-import { FaFacebookF, FaSpinner } from "react-icons/fa";
+import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { doRegister } from "../../API/Auth";
 import { SESSION_TOKEN } from "../../constants/General";

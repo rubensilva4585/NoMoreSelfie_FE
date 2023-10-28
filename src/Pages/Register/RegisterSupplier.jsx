@@ -6,7 +6,6 @@ import { ROLE_SUPPLIER, SESSION_TOKEN } from "../../constants/General";
 import { doRegister } from "../../API/Auth";
 import { useDispatch } from "react-redux";
 import { login } from "./../../redux/actions";
-import Select from "react-select";
 
 export function RegisterSupplier() {
 	const [selectedDate, setSelectedDate] = useState(null);

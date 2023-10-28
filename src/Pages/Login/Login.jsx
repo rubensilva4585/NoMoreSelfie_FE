@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { FcGoogle } from "react-icons/fc";
-import { FaFacebookF, FaSpinner } from "react-icons/fa";
-import "./Login.css";
+import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { doLogin } from "../../API/Auth";

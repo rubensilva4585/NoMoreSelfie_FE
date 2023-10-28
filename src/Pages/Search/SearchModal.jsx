@@ -3,7 +3,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { FaSpinner } from "react-icons/fa";
 import { submitRequest } from "../../API/General";
 import toast from "react-hot-toast";
-import "./SearchModal.css";
+import "../../styles/SearchModal.css";
 
 export default function SearchModal(props) {
 	const [isSubmiting, setIsSubmiting] = useState(false);

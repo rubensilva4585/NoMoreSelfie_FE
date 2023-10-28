@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import "./SearchCardCarousel.css";
+import "../../styles/SearchCardCarousel.css";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { IMAGE_STORAGE_PATH } from "../../constants/General";
 import {
@@ -43,7 +43,7 @@ export default function SearchCardCarousel({ images, supplier_id }) {
 					setIsLiked(!isLiked);
 				})
 				.catch((error) => {
-					toast.error("Erro ao adicionar aos favoritos.")
+					toast.error("Erro ao adicionar aos favoritos.");
 				})
 				.finally(() => {
 					setIsSubmitting(false);

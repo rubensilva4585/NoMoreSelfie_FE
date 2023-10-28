@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { FaPlus, FaTrash } from "react-icons/fa";
-import axios from "axios";
+import { FaPlus } from "react-icons/fa";
 import { IMAGE_TOTAL_MAX } from "../../../constants/General";
 import { uploadSupplierImages } from "../../../API/User";
 import toast from "react-hot-toast";

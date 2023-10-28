@@ -6,7 +6,6 @@ import {
 	FaInstagram,
 	FaLink,
 	FaLinkedin,
-	FaMapPin,
 	FaPinterest,
 } from "react-icons/fa";
 import ImageGallery from "react-image-gallery";
