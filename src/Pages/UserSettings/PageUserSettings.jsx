@@ -173,7 +173,7 @@ export default function PageUserSettings() {
 				isValid = false;
 			}
 
-			if (personalInfo.bio.length > 255) {
+			if (personalInfo.bio && personalInfo.bio.length > 255) {
 				setPersonalInfoError((prevErrors) => ({
 					...prevErrors,
 					bio: "Bio tem de ter no máximo 255 caracteres",

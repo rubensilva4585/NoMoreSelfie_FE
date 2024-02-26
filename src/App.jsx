@@ -10,7 +10,7 @@ import ErrorUnauthorized from "./Pages/Error/ErrorUnauthorized";
 import { ROLE_ADMIN, ROLE_SUPPLIER, SESSION_TOKEN } from "./constants/General";
 import { getUserRole } from "./redux/selectors";
 import { useSelector } from "react-redux";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import "./App.css";
 import ScrollToTop from "./ScrollToTop";
 
